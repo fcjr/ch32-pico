@@ -1,0 +1,61 @@
+{
+  "source": "https://jlcpcb.com/pcb-impedance-calculator",
+  "observed": "2026-10-11",
+  "name": "JLC04101H-3313(Finished thickness1.00mm\u00b110%)",
+  "template_id": "ec061f4270694a2fb0dbaf1e51681920",
+  "nominal_finished_thickness_mm": 1.0,
+  "tolerance_percent": 10,
+  "layers": [
+    {
+      "name": "F.Cu",
+      "thickness_mm": 0.035
+    },
+    {
+      "name": "prepreg",
+      "material": "3313 RC57%",
+      "thickness_mm": 0.0994,
+      "epsilon_r": 4.1
+    },
+    {
+      "name": "In1.Cu",
+      "thickness_mm": 0.0152,
+      "net": "GND"
+    },
+    {
+      "name": "core",
+      "material": "NP-155F",
+      "thickness_mm": 0.7,
+      "epsilon_r": 4.53
+    },
+    {
+      "name": "In2.Cu",
+      "thickness_mm": 0.0152,
+      "net": "3V3_OUT"
+    },
+    {
+      "name": "prepreg",
+      "material": "3313 RC57%",
+      "thickness_mm": 0.0994,
+      "epsilon_r": 4.1
+    },
+    {
+      "name": "B.Cu",
+      "thickness_mm": 0.035
+    }
+  ],
+  "usb_impedance_status": "Uniform pair calculator: 90 ohm, 0.1537 mm width / 0.1999 mm gap. Paired section uses these dimensions; package/contact fanouts remain nonuniform. Geometry and sampled L2 coverage checked; no measured impedance or USB compliance claim.",
+  "loss_tangent_status": "0.02 is a modelling assumption, not a JLC measured value.",
+  "usb_calculator_observation": {
+    "observed_utc": "2026-10-12T01:15:11.607092+00:00",
+    "target_ohm": 90,
+    "type": "Differential Pair (Non coplanar)",
+    "signal_layer": "L1",
+    "reference_layer": "L2",
+    "input_spacing_mm": 0.2,
+    "result_width_mm": 0.1537,
+    "result_spacing_mm": 0.1999,
+    "width_spacing_complement": false,
+    "calculator_tolerance_percent": 0.5,
+    "board_verified_90_ohm": false
+  }
+}

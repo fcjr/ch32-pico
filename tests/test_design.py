@@ -1,0 +1,57 @@
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2026 ch32-pico contributors
+"""Check the interface contract against independently recorded Pico dimensions."""
+
+import unittest
+
+from hardware.design import HEADER, MECHANICAL, TARGET_PINS, validate
+from hardware.generate import board, footprint
+
+
+class DesignContract(unittest.TestCase):
+    def test_pico_header_orientation(self):
+        # Datasheet figure 3 and KiCad's Module:RaspberryPi_Pico_Common_THT.
+        self.assertEqual(MECHANICAL.position(1), (1.61, 1.37))
+        self.assertEqual(MECHANICAL.position(20), (1.61, 49.63))
+        self.assertEqual(MECHANICAL.position(21), (19.39, 49.63))
+        self.assertEqual(MECHANICAL.position(40), (19.39, 1.37))
+        for n in range(1, 20):
+            self.assertAlmostEqual(MECHANICAL.position(n + 1)[1] - MECHANICAL.position(n)[1], 2.54)
+
+    def test_ground_and_supply_positions(self):
+        pins = {p.number: p.proposed for p in HEADER}
+        self.assertEqual({n for n, net in pins.items() if net == "GND"}, {3, 8, 13, 18, 23, 28, 33, 38})
+        self.assertEqual({n: pins[n] for n in (35, 36, 37, 39, 40)},
+                         {35: "NC", 36: "3V3_OUT", 37: "3V3_EN", 39: "VSYS", 40: "VBUS"})
+
+    def test_gpio_budget_and_debug_reservation(self):
+        validate()
+        gpio = [p for p in HEADER if p.proposed in TARGET_PINS and p.number != 30]
+        self.assertEqual(len(gpio), 16)
+        self.assertNotIn("PD1", {p.proposed for p in HEADER})
+        self.assertEqual(HEADER[29].proposed, "PD7")
+
+    def test_peripheral_placement(self):
+        pins = {p.number: p.proposed for p in HEADER}
+        # CH32 default peripheral pins from WCH PeripheralPins.c. No remap
+        # conflicts between these UART, I2C, SPI, and ADC assignments.
+        self.assertEqual([pins[n] for n in (1, 2)], ["PD5", "PD6"])
+        self.assertEqual([pins[n] for n in (6, 7)], ["PC1", "PC2"])
+        self.assertEqual([pins[n] for n in (21, 24, 25)], ["PC7", "PC5", "PC6"])
+        self.assertEqual([pins[n] for n in (31, 32, 34)], ["PA2", "PA1", "PC4"])
+
+    def test_holes_fit_and_clear_header_copper(self):
+        for x, y in MECHANICAL.mounting_holes:
+            r = MECHANICAL.mounting_drill / 2
+            self.assertGreater(min(x, 21 - x, y, 51 - y), r)
+            for pin in range(1, 41):
+                px, py = MECHANICAL.position(pin)
+                gap = ((px - x) ** 2 + (py - y) ** 2) ** 0.5 - r - MECHANICAL.header_pad / 2
+                self.assertGreater(gap, 0.25)
+
+    def test_generation_is_stable(self):
+        self.assertEqual(board(footprint()), board(footprint()))
+
+
+if __name__ == "__main__":
+    unittest.main()

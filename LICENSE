@@ -1,0 +1,22 @@
+ch32-pico license scope
+
+Copyright (c) 2026 ch32-pico contributors
+
+Original software, scripts, tests, firmware changes and their documentation
+are licensed under MIT. The full text is in LICENSES/MIT.txt.
+
+Original hardware designs, including the circuit, pin mapping, placement,
+routing, schematic, PCB and manufacturing outputs, are licensed under the
+CERN Open Hardware Licence Version 2 - Permissive (CERN-OHL-P-2.0).
+The full text is in LICENSES/CERN-OHL-P-2.0.txt.
+
+Python source code uses MIT; the original hardware design expressed by or
+generated from that code uses CERN-OHL-P-2.0.
+
+Third-party materials retain their own licenses and notices. These grants
+cover only the contributors' original work. See docs/licensing.md and
+LICENSES/third-party/ for the scope and applicable upstream notices.
+
+No trademark rights or endorsement are granted for the Left Shift Logical
+name or logo. The project licenses do not relicense third-party CAD data,
+datasheets, screenshots or supplier 3D models.

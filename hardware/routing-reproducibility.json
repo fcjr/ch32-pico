@@ -1,0 +1,8 @@
+{
+  "engine": "KiCadRoutingTools",
+  "revision": "ad7f24deb8fbffa6c498a09a6ebda46e012c37ff",
+  "independent_runs": 2,
+  "trace_via_geometry_sha256": "7f151ddb4ce39bf99e24f3bada5c8eec08711009666fdaa43e54e01be54f4993",
+  "identical": true,
+  "note": "Two complete independent generations with all vias 0.45/0.20 mm produced identical copper geometry."
+}

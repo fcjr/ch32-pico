@@ -1,0 +1,102 @@
+--- a/rvswdio_programmer/rvswdio_programmer.c
++++ b/rvswdio_programmer/rvswdio_programmer.c
+@@ -3,7 +3,7 @@
+ #include <string.h>
+ #include "rv003usb.h"
+ 
+-#define CH5xx_SUPPORT 1
++#define CH5xx_SUPPORT 0
+ 
+ // For RVBB_REMAP
+ //        PC1+PC2 = SWIO (Plus 5.1k pull-up to PD2)
+@@ -112,6 +112,8 @@
+ 					// if we expect this, we can use 0x0e to get status.
+ 					funPinMode( PIN_TARGETPOWER, PIN_TARGETPOWER_MODE );
+ 					funDigitalWrite( PIN_TARGETPOWER, POWER_ON );
++					Delay_Ms(2);
++					ConfigureIOForRVSWIO();
+ 					int r = InitializeSWDSWIO( &state );
+ 					if( cmd == 0x0e )
+ 						*(retbuffptr++) = r;
+@@ -119,11 +121,17 @@
+ 				}
+ 				case 0x02: // Power-down 
+ 					printf( "Power down\n" );
++					// Release both tied SWIO pins before removing target power.
++					funPinMode( PIN_SWD_IN, GPIO_CFGLR_IN_FLOAT );
++					funPinMode( PIN_SWD_OUT, GPIO_CFGLR_IN_FLOAT );
+ 					funDigitalWrite( PIN_TARGETPOWER, POWER_OFF );
++					Delay_Ms(20); // Board uses 1k discharge and <=2.2uF nominal.
+ 					break;
+ 				case 0x03: // Power-up
+ 					funPinMode( PIN_TARGETPOWER, PIN_TARGETPOWER_MODE );
+ 					funDigitalWrite( PIN_TARGETPOWER, POWER_ON );
++					Delay_Ms(2);
++					ConfigureIOForRVSWIO();
+ 					break;
+ 				case 0x04: // Delay( uint16_t us )
+ 					Delay_Us(iptr[0] | (iptr[1]<<8) );
+@@ -526,9 +534,17 @@
+ {
+ 	SystemInit();
+ 	Delay_Ms(1); // Ensures USB re-enumeration after bootloader or reset; Spec demand >2.5µs ( TDDIS )
+-	usb_setup();
++
+ 
+ 	funGpioInitAll();
++	// PD2 drives a regulator CE input. It never supplies the target load.
++	funDigitalWrite( PIN_TARGETPOWER, POWER_ON );
++	funPinMode( PIN_TARGETPOWER, PIN_TARGETPOWER_MODE );
++	Delay_Ms(2);
++	funPinMode( PC6, GPIO_CFGLR_IN_FLOAT ); // External VBUS_N level translator.
++	funDigitalWrite( PD5, 0 );
++	funPinMode( PD5, GPIO_CFGLR_OUT_10Mhz_PP );
++	int usb_attached = 0;
+ 
+ 	ConfigureIOForRVSWIO();
+ #ifdef STATUS_LED
+@@ -563,6 +579,11 @@
+ 
+ 	while(1)
+ 	{
++		// Keep the USB pull-up off when powered only through VSYS.
++		int vbus_present = !funDigitalRead( PC6 );
++		if( vbus_present && !usb_attached ) usb_setup();
++		if( !vbus_present ) funDigitalWrite( PD5, 0 );
++		usb_attached = vbus_present;
+ 		//printf( "%lu %lu %lu %08lx\n", rv003usb_internal_data.delta_se0_cyccount, rv003usb_internal_data.last_se0_cyccount, rv003usb_internal_data.se0_windup, RCC->CTLR );
+ #if RV003USB_EVENT_DEBUGGING
+ 		uint32_t * ue;
+--- a/rvswdio_programmer/usb_config.h
++++ b/rvswdio_programmer/usb_config.h
+@@ -5,8 +5,8 @@
+ #define ENDPOINTS 2
+ 
+ #define USB_PORT D     // [A,C,D] GPIO Port to use with D+, D- and DPU
+-#define USB_PIN_DP 3   // [0-4] GPIO Number for USB D+ Pin
+-#define USB_PIN_DM 4   // [0-4] GPIO Number for USB D- Pin
++#define USB_PIN_DP 4   // [0-4] GPIO Number for USB D+ Pin
++#define USB_PIN_DM 3   // [0-4] GPIO Number for USB D- Pin
+ #define USB_PIN_DPU 5  // [0-7] GPIO for feeding the 1.5k Pull-Up on USB D- Pin; Comment out if not used / tied to 3V3!
+ 
+ #define RV003USB_OPTIMIZE_FLASH    1 // Only disable it if you need to save 16 bytes of RAM or you want to customize usb_pid_handle_ack or usb_pid_handle_setup
+@@ -83,7 +83,7 @@
+ 	0x01,					// bConfigurationValue
+ 	0x00,					// iConfiguration
+ 	0x80,					// bmAttributes (was 0xa0)
+-	0x64,					// bMaxPower (200mA)
++	0x32,					// bMaxPower (100mA board budget)
+ 
+ 	//Class FF device.
+ 	9,					// bLength
+@@ -112,8 +112,8 @@
+ 	100,          // Interval (We don't use it.)
+ };
+ 
+-#define STR_MANUFACTURER u"CNLohr"
+-#define STR_PRODUCT      u"RV003 RVSWDIO Programmer"
++#define STR_MANUFACTURER u"CH32 Pico prototype"
++#define STR_PRODUCT      u"CH32 Pico SWIO"
+ #ifndef STR_SERIAL
+ #define STR_SERIAL       u"RVSWDIO003-01"
+ #endif

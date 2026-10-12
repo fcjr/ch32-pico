@@ -1,0 +1,12 @@
+Copyright (c) 2026 ch32-pico contributors
+SPDX-License-Identifier: CERN-OHL-P-2.0
+
+Original ch32-pico hardware design source is licensed under the CERN Open
+Hardware Licence Version 2 - Permissive. See ../LICENSES/CERN-OHL-P-2.0.txt
+for the full terms and ../docs/licensing.md for third-party exceptions.
+Python program code itself is MIT licensed; its original hardware design
+content and generated design outputs are CERN-OHL-P-2.0.
+
+This source and products are provided as is, without warranty, as specified
+in section 5 of the licence. Keep applicable notices with redistributions
+and make them available to recipients of boards made from this design.

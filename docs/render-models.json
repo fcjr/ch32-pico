@@ -1,0 +1,86 @@
+{
+  "importer": "easyeda2kicad 1.0.1",
+  "retrieved": "2026-10-12",
+  "models": {
+    "TSSOP-20_4.4x6.5mm_P0.65mm": {
+      "lcsc": "C5187096",
+      "source": "https://www.lcsc.com/product-detail/C5187096.html",
+      "file": "TSSOP-20_L6.5-W4.4-H1.0-LS6.4-P0.65.wrl",
+      "sha256": "78533b244071e94c304ab8cd40a109e9f8224b7e201dc7976fbe3a6e235f7def",
+      "rotate_z": 180,
+      "offset_y": 0
+    },
+    "USB_C_Receptacle_G-Switch_GT-USB-7010ASV": {
+      "lcsc": "C2988369",
+      "source": "https://www.lcsc.com/product-detail/C2988369.html",
+      "file": "USB-C-SMD_G-SWITCH_GT-USB-7010ASV.wrl",
+      "sha256": "84fb7576c0f553689df975d18a43c2cc8fe67c814771bcc66b37752f2a2fc202",
+      "rotate_z": 0,
+      "offset_y": 1.325
+    },
+    "ST_USBLC6-2P6_SOT666": {
+      "lcsc": "C15999",
+      "source": "https://www.lcsc.com/product-detail/C15999.html",
+      "file": "SOT-666-6P_L1.6-W1.2-H0.6-LS1.6-P0.50.wrl",
+      "sha256": "4ee81f61215b62e91b94cea183a25692ac367af9225a857088ad8052919985f4",
+      "rotate_z": 90,
+      "offset_y": 0
+    },
+    "SW-SMD_L3.9-W3.0-P4.45": {
+      "lcsc": "C720477",
+      "source": "https://www.lcsc.com/product-detail/C720477.html",
+      "file": "SW-SMD_L3.9-W2.9-H2.0-LS4.8.wrl",
+      "sha256": "a50e37006d74f9e6a8b7b8a4b8a230b7dd84019b09a90928d3d4b8bac93d79e5",
+      "rotate_z": 0,
+      "offset_y": 0
+    },
+    "SOT-23-5_L3.0-W1.7-P0.95-LS2.8-BL": {
+      "lcsc": "C82942",
+      "source": "https://www.lcsc.com/product-detail/C82942.html",
+      "file": "SOT-23-5_L2.9-W1.6-H1.1-LS2.8-P0.95.wrl",
+      "sha256": "a31f19311654f993ffb94fb7fcd835845aabb3e184ee28f9c23578d347cbf660",
+      "rotate_z": 270,
+      "offset_y": 0
+    },
+    "SOD-123_L2.7-W1.6-LS3.7-RD-1": {
+      "lcsc": "C8598",
+      "source": "https://www.lcsc.com/product-detail/C8598.html",
+      "file": "SOD-123_L2.7-W1.6-LS3.7-RD-1.wrl",
+      "sha256": "d3ddc29be75150a01be47d76ac0311dc4713929842f4a2c3a8bd860de2578ea9",
+      "rotate_z": 0,
+      "offset_y": 0
+    },
+    "SOT-23-3_L2.9-W1.3-P1.90-LS2.4-BR": {
+      "lcsc": "C8545",
+      "source": "https://www.lcsc.com/product-detail/C8545.html",
+      "file": "SOT-23-3P_L2.9-W1.3-H1.0-LS2.4-P0.95.wrl",
+      "sha256": "6d0af3fdee819c602d1b3906e3031015573ebcb85f3a357833e5def01e2ebe32",
+      "rotate_z": 180,
+      "offset_y": 0
+    },
+    "LED-SMD_L1.6-W0.8-R-RD": {
+      "lcsc": "C2286",
+      "source": "https://www.lcsc.com/product-detail/C2286.html",
+      "file": "LED0603_L1.6-W0.8-H0.6.wrl",
+      "sha256": "a7a077fe5829637e95caf32a6a71f3cef4cf8d8c6955b651f9e70816ecbd53e4",
+      "rotate_z": 0,
+      "offset_y": 0
+    },
+    "C0402": {
+      "lcsc": "C1525",
+      "source": "https://www.lcsc.com/product-detail/C1525.html",
+      "file": "C0402_L1.0-W0.5-H0.5.wrl",
+      "sha256": "c20fe21cf8899edf2ae6dbf00c69756b1e5f5bc4029d9c1ce67875d905c8a199",
+      "rotate_z": 0,
+      "offset_y": 0
+    },
+    "R0402": {
+      "lcsc": "C11702",
+      "source": "https://www.lcsc.com/product-detail/C11702.html",
+      "file": "R0402_L1.0-W0.5-H0.4.wrl",
+      "sha256": "ced0a40a718711c2ae16482a4f46a9eb6a0a33ecf9f9d8c2e18c160fa951a420",
+      "rotate_z": 0,
+      "offset_y": 0
+    }
+  }
+}

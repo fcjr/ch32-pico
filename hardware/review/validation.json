@@ -1,0 +1,354 @@
+{
+  "status": "routing checked; not released for ordering",
+  "saved_at": "2026-10-12T17:03:53.513729+00:00",
+  "engine": "krt",
+  "selection": "passing DRC/connectivity, then minimum vias and trace length",
+  "checks": {
+    "physical_components": 41,
+    "source_pad_net_parity": true,
+    "violations": 0,
+    "unconnected": 0,
+    "violation_types": {},
+    "via_count": 97,
+    "trace_length_mm": 879.553,
+    "trace_via_geometry_sha256": "7f151ddb4ce39bf99e24f3bada5c8eec08711009666fdaa43e54e01be54f4993",
+    "via_in_paste": [],
+    "changed_critical_segments": [],
+    "changed_critical_vias": [],
+    "foreign_tracks_on_ground_layer": 0,
+    "usb_geometry": {
+      "status": "geometry audit; impedance and USB performance not certified",
+      "all_usb_tracks_on_F_Cu": true,
+      "usb_vias": 0,
+      "paths": {
+        "DP": {
+          "connector_to_resistor_mm": {
+            "A6": 10.7928,
+            "B6": 7.8428
+          },
+          "resistor_to_programmer_mm": 1.045
+        },
+        "DM": {
+          "connector_to_resistor_mm": {
+            "A7": 8.6771,
+            "B7": 7.6771
+          },
+          "resistor_to_programmer_mm": 1.045
+        }
+      },
+      "ground_reference_sampling": {
+        "layer": "In1.Cu",
+        "net": "GND",
+        "longitudinal_step_max_mm": 0.05,
+        "transverse_samples": "trace center and both edges",
+        "sample_count": 1716,
+        "uncovered_sample_count": 0,
+        "uncovered_samples": []
+      },
+      "limitations": [
+        "Sampling does not prove continuous copper coverage between samples or adequate lateral return width.",
+        "Centerline lengths exclude package, pad spreading and resistor electrical length.",
+        "Connector, ESD and resistor fanouts are not uniform differential transmission lines.",
+        "The JLC calculator describes a uniform pair only; assembled-board USB validation remains required."
+      ]
+    },
+    "usb_geometry_passes": true,
+    "passes_connectivity_and_drc": true
+  },
+  "board_sha256": "a17cb7df5bfba40c9c3ec2b4166ca5c04f9bea77905971b759898072db755837",
+  "comparison": {
+    "status": "passed",
+    "started_at": "2026-10-12T05:08:40.963032+00:00",
+    "krt_commit": "ad7f24deb8fbffa6c498a09a6ebda46e012c37ff",
+    "krt_environment": {
+      "KICAD_RIP_PREEXISTING": "0"
+    },
+    "freerouting_version": "2.5.0",
+    "signal_layers": [
+      "F.Cu",
+      "In2.Cu",
+      "B.Cu"
+    ],
+    "candidates": {
+      "krt": {
+        "physical_components": 41,
+        "source_pad_net_parity": true,
+        "violations": 0,
+        "unconnected": 0,
+        "violation_types": {},
+        "via_count": 97,
+        "trace_length_mm": 879.553,
+        "trace_via_geometry_sha256": "7f151ddb4ce39bf99e24f3bada5c8eec08711009666fdaa43e54e01be54f4993",
+        "via_in_paste": [],
+        "changed_critical_segments": [],
+        "changed_critical_vias": [],
+        "foreign_tracks_on_ground_layer": 0,
+        "usb_geometry": {
+          "status": "geometry audit; impedance and USB performance not certified",
+          "all_usb_tracks_on_F_Cu": true,
+          "usb_vias": 0,
+          "paths": {
+            "DP": {
+              "connector_to_resistor_mm": {
+                "A6": 10.7928,
+                "B6": 7.8428
+              },
+              "resistor_to_programmer_mm": 1.045
+            },
+            "DM": {
+              "connector_to_resistor_mm": {
+                "A7": 8.6771,
+                "B7": 7.6771
+              },
+              "resistor_to_programmer_mm": 1.045
+            }
+          },
+          "ground_reference_sampling": {
+            "layer": "In1.Cu",
+            "net": "GND",
+            "longitudinal_step_max_mm": 0.05,
+            "transverse_samples": "trace center and both edges",
+            "sample_count": 1716,
+            "uncovered_sample_count": 0,
+            "uncovered_samples": []
+          },
+          "limitations": [
+            "Sampling does not prove continuous copper coverage between samples or adequate lateral return width.",
+            "Centerline lengths exclude package, pad spreading and resistor electrical length.",
+            "Connector, ESD and resistor fanouts are not uniform differential transmission lines.",
+            "The JLC calculator describes a uniform pair only; assembled-board USB validation remains required."
+          ]
+        },
+        "usb_geometry_passes": true,
+        "passes_connectivity_and_drc": true,
+        "seconds": 10.65
+      },
+      "freerouting": {
+        "physical_components": 41,
+        "source_pad_net_parity": true,
+        "violations": 8,
+        "unconnected": 10,
+        "violation_types": {
+          "hole_clearance": 8
+        },
+        "via_count": 52,
+        "trace_length_mm": 836.461,
+        "trace_via_geometry_sha256": "fffc3791b3d6b56f04578c2fd317c89ba4e6fa9fff71feb4bd3741900ab7b54c",
+        "via_in_paste": [],
+        "changed_critical_segments": [],
+        "changed_critical_vias": [],
+        "foreign_tracks_on_ground_layer": 0,
+        "usb_geometry": {
+          "status": "geometry audit; impedance and USB performance not certified",
+          "all_usb_tracks_on_F_Cu": true,
+          "usb_vias": 0,
+          "paths": {
+            "DP": {
+              "connector_to_resistor_mm": {
+                "A6": 10.7928,
+                "B6": 7.8428
+              },
+              "resistor_to_programmer_mm": 1.045
+            },
+            "DM": {
+              "connector_to_resistor_mm": {
+                "A7": 8.6771,
+                "B7": 7.6771
+              },
+              "resistor_to_programmer_mm": 1.045
+            }
+          },
+          "ground_reference_sampling": {
+            "layer": "In1.Cu",
+            "net": "GND",
+            "longitudinal_step_max_mm": 0.05,
+            "transverse_samples": "trace center and both edges",
+            "sample_count": 1689,
+            "uncovered_sample_count": 0,
+            "uncovered_samples": []
+          },
+          "limitations": [
+            "Sampling does not prove continuous copper coverage between samples or adequate lateral return width.",
+            "Centerline lengths exclude package, pad spreading and resistor electrical length.",
+            "Connector, ESD and resistor fanouts are not uniform differential transmission lines.",
+            "The JLC calculator describes a uniform pair only; assembled-board USB validation remains required."
+          ]
+        },
+        "usb_geometry_passes": true,
+        "passes_connectivity_and_drc": false,
+        "seconds": 11.85
+      }
+    },
+    "fabrication_ready": false,
+    "seed": {
+      "physical_components": 41,
+      "source_pad_net_parity": true,
+      "violations": 4,
+      "unconnected": 81,
+      "violation_types": {
+        "track_dangling": 1,
+        "via_dangling": 3
+      },
+      "via_count": 8,
+      "trace_length_mm": 42.683,
+      "trace_via_geometry_sha256": "2d3f340b9737e1c21a7a2b3bd07e21d122b0e9ae771e4ebf2617709efb7c27d2",
+      "via_in_paste": [],
+      "changed_critical_segments": [],
+      "changed_critical_vias": [],
+      "foreign_tracks_on_ground_layer": 0,
+      "usb_geometry": {
+        "status": "geometry audit; impedance and USB performance not certified",
+        "all_usb_tracks_on_F_Cu": true,
+        "usb_vias": 0,
+        "paths": {
+          "DP": {
+            "connector_to_resistor_mm": {
+              "A6": 10.7928,
+              "B6": 7.8428
+            },
+            "resistor_to_programmer_mm": 1.045
+          },
+          "DM": {
+            "connector_to_resistor_mm": {
+              "A7": 8.6771,
+              "B7": 7.6771
+            },
+            "resistor_to_programmer_mm": 1.045
+          }
+        },
+        "ground_reference_sampling": {
+          "layer": "In1.Cu",
+          "net": "GND",
+          "longitudinal_step_max_mm": 0.05,
+          "transverse_samples": "trace center and both edges",
+          "sample_count": 1467,
+          "uncovered_sample_count": 0,
+          "uncovered_samples": []
+        },
+        "limitations": [
+          "Sampling does not prove continuous copper coverage between samples or adequate lateral return width.",
+          "Centerline lengths exclude package, pad spreading and resistor electrical length.",
+          "Connector, ESD and resistor fanouts are not uniform differential transmission lines.",
+          "The JLC calculator describes a uniform pair only; assembled-board USB validation remains required."
+        ]
+      },
+      "usb_geometry_passes": true,
+      "passes_connectivity_and_drc": false
+    },
+    "input_sha256": "654a7a13d5bbdbfde930604b48bd907ee1f615a9645714167ad8125ff6fd3efe",
+    "prepared": {
+      "physical_components": 41,
+      "source_pad_net_parity": true,
+      "violations": 4,
+      "unconnected": 56,
+      "violation_types": {
+        "via_dangling": 3,
+        "track_dangling": 1
+      },
+      "via_count": 10,
+      "trace_length_mm": 154.244,
+      "trace_via_geometry_sha256": "ca3892381f013cc0c3bf97bd820e78cf69f1850a964136a15452897aff5498b4",
+      "via_in_paste": [],
+      "changed_critical_segments": [],
+      "changed_critical_vias": [],
+      "foreign_tracks_on_ground_layer": 0,
+      "usb_geometry": {
+        "status": "geometry audit; impedance and USB performance not certified",
+        "all_usb_tracks_on_F_Cu": true,
+        "usb_vias": 0,
+        "paths": {
+          "DP": {
+            "connector_to_resistor_mm": {
+              "A6": 10.7928,
+              "B6": 7.8428
+            },
+            "resistor_to_programmer_mm": 1.045
+          },
+          "DM": {
+            "connector_to_resistor_mm": {
+              "A7": 8.6771,
+              "B7": 7.6771
+            },
+            "resistor_to_programmer_mm": 1.045
+          }
+        },
+        "ground_reference_sampling": {
+          "layer": "In1.Cu",
+          "net": "GND",
+          "longitudinal_step_max_mm": 0.05,
+          "transverse_samples": "trace center and both edges",
+          "sample_count": 1467,
+          "uncovered_sample_count": 0,
+          "uncovered_samples": []
+        },
+        "limitations": [
+          "Sampling does not prove continuous copper coverage between samples or adequate lateral return width.",
+          "Centerline lengths exclude package, pad spreading and resistor electrical length.",
+          "Connector, ESD and resistor fanouts are not uniform differential transmission lines.",
+          "The JLC calculator describes a uniform pair only; assembled-board USB validation remains required."
+        ]
+      },
+      "usb_geometry_passes": true,
+      "passes_connectivity_and_drc": false
+    }
+  },
+  "usb_mechanical_fit": {
+    "part": "GT-USB-7010ASV",
+    "lcsc": "C2988369",
+    "drawing": "https://datasheet.lcsc.com/datasheet/pdf/a1d5a66cf718dd88763ab794dba802b2.pdf?productCode=C2988369",
+    "mouth_recess_mm": 1.15,
+    "minimum_mated_gap_mm": null,
+    "reference_mated_gap_mm": 1.85,
+    "nominal_cable_margin_mm": 0.6999999999999997,
+    "remaining_cable_margin_mm": null,
+    "allowances_mm": {
+      "board_edge": 0.2,
+      "assembly_position": 0.1,
+      "mouth_position": 0.15
+    },
+    "mounting_holes": [
+      {
+        "center_mm": [
+          4.8,
+          2.0
+        ],
+        "nominal_shell_clearance_mm": 0.18,
+        "head_diameter_at_shell_contact_mm": 2.46
+      },
+      {
+        "center_mm": [
+          4.8,
+          49.0
+        ],
+        "nominal_shell_clearance_mm": 39.4687,
+        "head_diameter_at_shell_contact_mm": 81.0373
+      },
+      {
+        "center_mm": [
+          16.2,
+          2.0
+        ],
+        "nominal_shell_clearance_mm": 0.18,
+        "head_diameter_at_shell_contact_mm": 2.46
+      },
+      {
+        "center_mm": [
+          16.2,
+          49.0
+        ],
+        "nominal_shell_clearance_mm": 39.4687,
+        "head_diameter_at_shell_contact_mm": 81.0373
+      }
+    ],
+    "upper_screw_heads_compatible": false,
+    "physical_fit_tested": false
+  },
+  "open_reviews": [
+    "Final PCB/assembly price, purchase minimums and 20-board allocation (docs/cost.md)",
+    "Measured USB performance; nonuniform connector/package fanouts (docs/usb-routing.md)",
+    "Physical cable/locating-peg fit; upper holes exclude ordinary screw heads (docs/mechanical.md)",
+    "Decoupling, rail current/drop, inrush and USB suspend power budget",
+    "Factory programmer flashing, USB/SWIO timing, target flash/readback/recovery and stack margin",
+    "JLC placement rotations, order quantity/attrition and target pre-order allocation"
+  ]
+}

@@ -1,0 +1,5 @@
+["kicad-cli", "pcb", "drc", "--severity-all", "--refill-zones", "--save-board", "--format", "json", "-o", "/Users/fcjr/.t3/projects/ch32-dev/hardware/review/ch32-pico.drc.json", "/Users/fcjr/.t3/projects/ch32-dev/hardware/review/ch32-pico.kicad_pcb"]
+Found 0 violations
+Found 0 unconnected items
+Saved DRC Report to /Users/fcjr/.t3/projects/ch32-dev/hardware/review/ch32-pico.drc.json
+Saved board

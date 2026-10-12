@@ -42,7 +42,7 @@ electrical-check: schematic
 	$(KICAD_CLI) sch export netlist --format kicadxml -o build/ch32-pico.net.xml build/ch32-pico.kicad_sch
 	$(PYTHON) -m hardware.verify
 
-check: electrical-check
+check: electrical-check placement-check
 	$(PYTHON) -m unittest discover -s tests -v
 	$(KICAD_CLI) pcb drc --exit-code-violations --severity-all --format json -o build/mechanical-drc.json build/ch32-pico-mechanical.kicad_pcb
 

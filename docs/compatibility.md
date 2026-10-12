@@ -1,3 +1,5 @@
+> **Revision B:** See the [current X035 pinout](revision-b.md). The material below describes the retained Rev A board.
+
 # Pico compatibility contract
 
 Target: match as much of the original RP2040 Raspberry Pi Pico as practical,
@@ -57,7 +59,7 @@ each peripheral correctly. UART flow-control pins do not match Pico positions.
 | USB connector/enclosure | Micro-USB | USB-C needs a different opening; upper mounting holes cannot take ordinary screw heads |
 
 The unconnected **physical header pins** are 12, 14, 15, 16, 17, 19, 20, 26,
-27, and 29, plus ADC_VREF at 35. These positions are marked `-` on the back silkscreen, meaning unconnected.
+27, and 29, plus ADC_VREF at 35. These positions are marked `NC` on the back silkscreen, meaning unconnected.
 Duplicating GPIOs or adding an I2C expander would not make them equivalent
 native Pico GPIOs, so neither is part of this revision.
 
@@ -68,6 +70,8 @@ external references on a carrier must not drive the target's entire supply.
 
 The programming pads are top-side test pads, not the Pico's underside Arm
 SWD connector. See [programming](programming.md) for their actual assignment.
+The back marks pin 30 as `RST`, the target's PD7 reset input. Corner labels
+include physical pin numbers 1, 20, 21 and 40. See the [marking review](markings.md).
 
 ## Source of truth and references
 

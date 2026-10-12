@@ -75,11 +75,14 @@ def verify_board(path):
 
 
 def main():
+    from .markings import audit
     count=verify_board(ROOT/'build/ch32-pico-placed.kicad_pcb')
+    markings=audit(parse((ROOT/'build/ch32-pico-placed.kicad_pcb').read_text()))
     report=json.loads((ROOT/'build/placement-drc.json').read_text())
     if report['violations']: raise SystemExit(f"Placement failed: {len(report['violations'])} DRC violations")
     summary={'components':count,'source_pad_net_parity':True,'placement_violations':0,
-             'unrouted_connections':len(report['unconnected_items']),'fabrication_ready':False}
+             'unrouted_connections':len(report['unconnected_items']),'fabrication_ready':False,
+             'silkscreen':markings}
     (ROOT/'build/placement-verification.json').write_text(json.dumps(summary,indent=2)+'\n')
     print(json.dumps(summary))
 

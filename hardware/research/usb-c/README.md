@@ -1,4 +1,25 @@
-# USB-C fit candidate
+# USB-C footprint sources
+
+Rev B selects **GT-USB-7010AW, C963411**, whose manufacturer drawing dated
+2023-02-01 specifies 5 A on VBUS. `scripts/prepare_pd_footprints.py` reproduces
+its land pattern using the shared shell geometry in the pinned KiCad input
+below, with the AW SMT row and rear-stake dimensions. The SMT row moves
+0.050 mm tailward within the drawing's ±0.05 mm land-pattern tolerance to
+meet the PCB's 0.20 mm hole-to-copper rule. The 1.85 mm mating gap is a reference
+dimension. Qualify plug fit and the 1.20 mm stake on our 1.00 mm board.
+
+The script also reproduces the TI RPW0010A load-switch lands from drawing
+4225183/A. Corner terminals use overlapping rectangular pads with the same
+number, avoiding the imported model's 5 μm routing anchor. Stencil aperture
+reduction remains an assembly review item; the drawing recommends less than
+100% paste coverage on the large lands.
+
+Manufacturer reference hashes are in `hardware/research/rev-b-sources.json`.
+The referenced PDFs are cached under `build/references/ch32x035-review/`.
+The original KiCad geometry retains its upstream library license and exception.
+
+## Retained Rev A provenance
+
 
 `USB_C_Receptacle_G-Switch_GT-USB-7010ASV.kicad_mod` is an unmodified
 KiCad 10.0.6 library footprint, copied from `Connector_USB.pretty`.

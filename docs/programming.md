@@ -1,9 +1,33 @@
+> **Rev A reference.** The [Rev B migration](revision-b.md) supersedes the circuit, pinout, costs and manufacturing status below.
+
 # Programming and USB debug console
 
 The low-cost design has two CH32V003 chips. U2 is the onboard USB programmer;
 U1 runs the application. The user selected HID programming and the minichlink
 debug console to keep the BOM low. This is not a USB CDC serial port and does
 not appear in Arduino Serial Monitor.
+
+## Reading the front labels
+
+`P` means programmer U2 and `T` means application target U1. All seven test
+pads are accessible from the component side. Keep USB at the top when using
+the [front/back illustration](images/ch32-pico.png).
+
+| Silkscreen | Contact | Function |
+| --- | --- | --- |
+| PSWIO | TP1 | Programmer PD1/SWIO, first flash and recovery |
+| PRST | TP2 | Programmer PD7/reset |
+| TSWIO | TP5 | Target PD1/SWIO |
+| TRST | TP6 | Target PD7/reset, also header pin 30 |
+| GND | TP4 | Common ground |
+| T3V3 | TP3 | Switched target supply, measurement only |
+| 3V3 | TP7 | Main 3.3 V output, measurement or high-impedance voltage sense |
+| RESET | SW1 | Resets the target; the programmer keeps running |
+| PRG | D3 | Programmer status LED |
+
+With the front facing you, `PRST` is left of the project name and `PSWIO`
+is right. `TRST` is left of the reset button; `TSWIO` is above and right.
+The back labels describe the through-hole/castellated header, not these pads.
 
 ## First flash of each assembled board
 

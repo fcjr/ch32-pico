@@ -15,7 +15,22 @@ def main():
     parser.add_argument('--output',type=Path)
     args=parser.parse_args()
     app=wx.App(False)
-    board=k.LoadBoard(str(args.board))
+    source=args.board.resolve()
+    if args.action=='export':
+        # The overlapping castellations and round header lands are already
+        # connected copper. Give the router only the inboard header terminals,
+        # so it cannot start a new trace on the board edge. The SES is imported
+        # into the ORIGINAL board, whose castellations remain unchanged.
+        from .sexp import parse,children,dump
+        from .fabrication import copy_rules
+        doc=parse(source.read_text())
+        for fp in children(doc,'footprint'):
+            fp[:]=[p for p in fp if not (isinstance(p,list) and p[0]=='pad' and
+                any(v[1]=='pad_prop_castellated' for v in children(p,'property')))]
+        source=args.exchange.resolve().with_suffix('.export.kicad_pcb')
+        source.write_text(dump(doc)+'\n')
+        copy_rules(args.board.resolve(),source)
+    board=k.LoadBoard(str(source))
     # SES is a routing delta: fixed input copper may be omitted. Preserve the
     # exact same input tracks on import that were declared fixed on export.
     for t in board.GetTracks():t.SetLocked(True)

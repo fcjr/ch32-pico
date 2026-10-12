@@ -5,6 +5,7 @@ import hashlib
 import json
 from collections import Counter
 from .circuit import COMPONENTS
+from .design import MCU_PART
 from .cost_review import report as cost_report
 from .library import ROOT
 from .sexp import parse, children, one
@@ -88,11 +89,11 @@ def report():
         ref = next(p[2] for p in children(fp, 'property') if p[1] == 'Reference')
         if ref not in fitted:
             continue
-        for pad in children(fp, 'pad'):
-            if pad[2] == 'smd':
-                smd += 1
-            elif pad[2] == 'thru_hole':
-                pth += 1
+        # L-shaped terminals can contain several overlapping copper pads.
+        # Paste-only apertures are stencil geometry, not extra solder joints.
+        terminals={(pad[1],pad[2]) for pad in children(fp,'pad') if pad[1]}
+        smd += sum(kind=='smd' for _,kind in terminals)
+        pth += sum(kind=='thru_hole' for _,kind in terminals)
     fees = {
         'single_side_setup': policy['standard_single_side_setup_usd'],
         'single_side_stencil': policy['standard_single_side_stencil_usd'],
@@ -122,13 +123,15 @@ def report():
             'Actual sourcing quote, purchase minimums and order-specific attrition'],
         'attrition_assumption': 'max(fitted quantity + displayed loss count, displayed assembly minimum), per C-code per batch',
         'attrition_verified_for_order': False, 'assembly_rotations_verified': False,
-        'mcu_prepurchase_candidate': prepurchase_candidate(source['parts']['C5187096'],
-            next(r['provisional_quantity'] for r in rows if r['lcsc'] == 'C5187096')),
+        'mcu_prepurchase_candidate': prepurchase_candidate(source['parts'][MCU_PART],
+            next(r['provisional_quantity'] for r in rows if r['lcsc'] == MCU_PART)),
         'mcu_allocation_confirmed': False, 'rows': rows,
     }
 
 
 def main():
+    from .release import require_current_layout
+    require_current_layout()
     result = report()
     out = ROOT / 'build/order-review'; out.mkdir(exist_ok=True)
     (out / 'order-review.json').write_text(json.dumps(result, indent=2) + '\n')

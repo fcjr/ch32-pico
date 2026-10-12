@@ -22,23 +22,23 @@ class DesignContract(unittest.TestCase):
         pins = {p.number: p.proposed for p in HEADER}
         self.assertEqual({n for n, net in pins.items() if net == "GND"}, {3, 8, 13, 18, 23, 28, 33, 38})
         self.assertEqual({n: pins[n] for n in (35, 36, 37, 39, 40)},
-                         {35: "NC", 36: "3V3_OUT", 37: "3V3_EN", 39: "VSYS", 40: "VBUS"})
+                         {35: "NC", 36: "3V3_OUT", 37: "NC", 39: "VSYS", 40: "PD_OUT"})
 
     def test_gpio_budget_and_debug_reservation(self):
         validate()
         gpio = [p for p in HEADER if p.proposed in TARGET_PINS and p.number != 30]
-        self.assertEqual(len(gpio), 16)
-        self.assertNotIn("PD1", {p.proposed for p in HEADER})
-        self.assertEqual(HEADER[29].proposed, "PD7")
+        self.assertEqual(len(gpio), 26)
+        self.assertNotIn("PC18", {p.proposed for p in HEADER})
+        self.assertEqual(HEADER[29].proposed, "PA21")
 
     def test_peripheral_placement(self):
         pins = {p.number: p.proposed for p in HEADER}
         # CH32 default peripheral pins from WCH PeripheralPins.c. No remap
         # conflicts between these UART, I2C, SPI, and ADC assignments.
-        self.assertEqual([pins[n] for n in (1, 2)], ["PD5", "PD6"])
-        self.assertEqual([pins[n] for n in (6, 7)], ["PC1", "PC2"])
-        self.assertEqual([pins[n] for n in (21, 24, 25)], ["PC7", "PC5", "PC6"])
-        self.assertEqual([pins[n] for n in (31, 32, 34)], ["PA2", "PA1", "PC4"])
+        self.assertEqual([pins[n] for n in (1, 2)], ["PB10", "PB11"])
+        self.assertEqual([pins[n] for n in (6, 7)], ["PA11", "PA10"])
+        self.assertEqual([pins[n] for n in (21, 24, 25)], ["PA6", "PA5", "PA7"])
+        self.assertEqual([pins[n] for n in (31, 32, 34)], ["PA0", "PA1", "PA2"])
 
     def test_holes_fit_and_clear_header_copper(self):
         for x, y in MECHANICAL.mounting_holes:

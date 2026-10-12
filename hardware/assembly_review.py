@@ -14,15 +14,15 @@ from .usb_review import pad_centers
 # Explicit orientation anchors; LED numbering differs from the discrete diode.
 ANCHORS = {
     'J2': ('A6', 'D+ contact A6; socket mouth faces the short USB edge'),
-    'D1': ('1', 'Cathode / band, VSYS (anode goes to USB VBUS)'),
-    'D2': ('1', 'Pin 1, USB D+; pin 2 GND and pin 5 VBUS'),
-    'Q1': ('1', 'Pin 1, gate; pin 2 source GND, pin 3 drain'),
-    'U2': ('1', 'Pin 1 / dot, programmer PD4 (USB D+)'),
-    'U1': ('1', 'Pin 1 / dot, target PD4'),
+    'D1': ('1', 'Cathode / band, VIN_SYS; anode USB VBUS'),
+    'D4': ('1', 'Cathode / band, VIN_SYS; anode header VSYS'),
+    'D2': ('1', 'Pin 1, USB D+; pin 2 GND and pin 5 fixed 3.3 V'),
+    'U1': ('1', 'Pin 1 / dot, PA15; CH32X035C8T6 LQFP48'),
+    'U3': ('1', 'Pin 1, PD_ENABLE; pin 5 VBUS input, pin 6 switched PD_OUT'),
+    'U4': ('1', 'Pin 1, 3.3 V feedback; pin 3 VIN_SYS, pin 4 GND'),
     'D3': ('2', 'Cathode, GND; pin 1 is the LED anode'),
-    'SW1': ('1', 'Contact 1, target RESET; contact 2 GND'),
-    'U4': ('1', 'Pin 1, VIN; pin 2 GND; pin 5 main 3.3 V'),
-    'U5': ('1', 'Pin 1, VIN; pin 2 GND; pin 5 target 3.3 V'),
+    'SW1': ('1', 'Contact 1, PA21 RESET; contact 2 GND'),
+    'SW2': ('1', 'Contact 1, BOOT_PULLUP; contact 2 fixed 3.3 V'),
 }
 
 

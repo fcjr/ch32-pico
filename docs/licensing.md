@@ -30,13 +30,13 @@ The software uses the [standard MIT license](https://opensource.org/license/mit)
 ## Third-party software
 
 - [rv003usb](https://github.com/cnlohr/rv003usb), revision
-  `5524a833c656a6007fca9f6c947fd49ddcc16eb6`, supplies the onboard programmer.
+  `5524a833c656a6007fca9f6c947fd49ddcc16eb6`, supplies the Rev A onboard programmer. Rev B removes that programmer.
   Its [MIT notice](../LICENSES/third-party/rv003usb-MIT.txt) is retained.
   The board patch is original MIT-licensed work. Upstream bitbang files offer
   MIT or NewBSD; this project uses the MIT option.
 - [ch32fun](https://github.com/cnlohr/ch32fun), revision
-  `1e4887e11d4bfa739ed5604524b69f5be9f9275b`, supplies target support and
-  minichlink. Its [MIT notices](../LICENSES/third-party/ch32fun-MIT.txt) name
+  `1e4887e11d4bfa739ed5604524b69f5be9f9275b`, supplies target support, minichlink and the PD implementation being evaluated
+  for Rev B. Its [MIT notices](../LICENSES/third-party/ch32fun-MIT.txt) name
   CNLohr and the other contributors. Its bundled arithmetic support retains
   [the upstream notices](../LICENSES/third-party/ch32fun-libgcc.txt).
 - KiCad, KiKit, KiCadRoutingTools, Freerouting, easyeda2kicad and the compiler

@@ -1,3 +1,5 @@
+> **Rev A reference.** The [Rev B migration](revision-b.md) supersedes the circuit, pinout, costs and manufacturing status below.
+
 # Five prototype panels
 
 The requested batch is five panels with four identical boards each, for 20

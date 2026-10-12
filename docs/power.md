@@ -1,3 +1,5 @@
+> **Rev A reference.** The [Rev B migration](revision-b.md) supersedes the circuit, pinout, costs and manufacturing status below.
+
 # Power review
 
 USB VBUS feeds VSYS through D1, with its cathode at VSYS. Header pin 39 is

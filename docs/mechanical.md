@@ -1,3 +1,5 @@
+> **Rev A reference.** The [Rev B migration](revision-b.md) supersedes the circuit, pinout, costs and manufacturing status below.
+
 # USB-C and Pico mechanical fit
 
 ## Connector and footprint

@@ -1,68 +1,49 @@
 # ch32-pico
 
-A small RISC-V development board from Left Shift Logical, built around the
-CH32V003 with USB-C power and an onboard open-source programmer. It fits the
-Raspberry Pi Pico's board outline and header layout, including castellated
-edges and all four mounting holes.
+A RISC-V development board from Left Shift Logical, built around one
+CH32X035C8T6 with native USB and USB Power Delivery. It keeps the Raspberry Pi
+Pico's 21 × 51 mm outline, 40 header positions, castellated edges and four
+mounting holes.
 
-![ch32-pico front and back PCB renders](docs/images/ch32-pico.png)
+![ch32-pico Rev B, front and back](docs/images/ch32-pico.png)
 
-Front and back views of the current PCB design.
+**Rev B is a routed prototype, not ready to order.** The schematic, board and
+four-up KiKit panel pass the local electrical and layout checks. Application
+firmware and physical power testing are still unfinished.
 
-## The board
+USB-C provides power and access to the chip's factory USB bootloader. The
+planned firmware will negotiate 5, 9, 12, 15 or 20 V and switch that voltage to
+pin 40. Each voltage must be offered by the connected supply; 12 V is optional.
+Native USB serial is planned but not implemented yet.
 
-- CH32V003F4P6 target with 16 KB flash, 2 KB RAM and 16 GPIOs.
-- UART, I2C, SPI and ADC signals at useful Pico header positions.
-- USB-C for power, target programming and a minichlink debug console.
-- A second CH32V003 runs the open-source rv003usb programmer firmware.
-- 21 × 51 mm PCB with castellated edges for soldering onto a carrier board.
+**Pin 40 is PD OUT and can carry 20 V.** Check a Pico carrier's wiring before
+connecting it. The output uses a protected load switch, controlled by the MCU.
+The design targets a 5 A input contract, but the continuous output rating still
+needs thermal and connector testing.
 
-This is an untested hardware prototype. The saved layout passes electrical
-and routing checks; USB operation, power limits and physical fit still need
-assembled-board testing.
+All 26 Pico GPIO positions have CH32 GPIOs. UART, I2C, SPI and three ADC inputs
+occupy familiar positions, but this board cannot run Pico firmware or reproduce
+every Pico peripheral mapping. Pin 30 is reset, pin 36 is fixed 3.3 V, and pin 39
+accepts a 4.3–5.5 V input. Pins 35 and 37 are unconnected. Some X035 functions
+also lack free external connections, including OPA1 and the clock output.
+See the [complete pinout and peripheral limits](docs/revision-b.md#peripheral-access)
+and [silkscreen review](docs/markings.md).
 
-## Pico compatibility
+The estimated fitted BOM is **$3.91 per device** for a 20-device run, before
+PCB fabrication, assembly, attrition and shipping. Five four-up panels make
+20 devices. The saved JLC stock check found only two of the selected MCUs,
+leaving 18 short before attrition. Stock and prices need checking again before
+an order.
 
-The power and ground pins retain their Pico positions. GPIO labels describe
-the CH32 signals. Ten Pico GPIO positions and ADC_VREF are unconnected, and
-RP2040 programs need porting to the CH32's RISC-V architecture and smaller
-memory. There is no PIO, UF2 bootloader or native target USB.
+The board is generated from Python in `hardware/`. The [Rev B design notes](docs/revision-b.md)
+cover the circuit, sources, remaining work and
+[build and fabrication commands](docs/revision-b.md#generated-files).
+The front/back images come from the checked KiCad board via `make render`.
+Generation scripts remain in the repository for future revisions. Documents
+marked Rev A describe the previous two-MCU board.
 
-Power comes from USB 5 V or VSYS, with a provisional VSYS range of 4.3–5.5 V.
-The 3V3 pin is an output. The USB-C socket leaves the four mounting holes in
-place, but ordinary M2 screw heads do not fit beside the two upper holes.
-Check the [pinout](docs/compatibility.md), [power notes](docs/power.md) and
-[mechanical fit](docs/mechanical.md) before using a Pico carrier or enclosure.
-
-## Programming
-
-A blank board needs one external SWIO flash to install the onboard programmer.
-After that, plug in USB-C to upload target firmware with minichlink:
-
-```sh
-minichlink -C funprog -w application.bin flash -b
-minichlink -C funprog -T
-```
-
-The console carries debug printf over USB HID. It does not appear as a USB
-serial port; hardware UART is available on header pins 1 and 2.
-The [programming guide](docs/programming.md) covers first-time provisioning,
-recovery and the included printf example.
-
-## Working on the design
-
-The schematic, placement, routing checks and fabrication exports are driven
-by Python. Start with the [build guide](docs/build.md). The saved
-[KiCad board](hardware/review/ch32-pico.kicad_pcb) and its
-[validation report](hardware/review/validation.json) are in `hardware/review/`.
-
-Fabrication files, ordering instructions and pricing are documented in the
-[manufacturing guide](docs/manufacturing.md), [panelization notes](docs/panelization.md)
-and [order review](docs/order-review.md).
-
-## License
-
-Original software and firmware changes use [MIT](LICENSES/MIT.txt).
-The original board design uses [CERN-OHL-P-2.0](LICENSES/CERN-OHL-P-2.0.txt),
-the permissive CERN Open Hardware Licence. Both allow commercial reuse.
-See [licensing](docs/licensing.md) for the scope, attribution and third-party materials.
+Original software and firmware changes use [MIT](LICENSES/MIT.txt). The original
+board design uses [CERN-OHL-P-2.0](LICENSES/CERN-OHL-P-2.0.txt), the permissive
+CERN Open Hardware Licence. Both allow commercial reuse. The factory USB
+bootloader is WCH vendor code, not MIT project firmware. See
+[licensing](docs/licensing.md) for scope and third-party attribution.

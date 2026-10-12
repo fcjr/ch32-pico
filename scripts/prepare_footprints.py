@@ -13,8 +13,8 @@ from hardware.sexp import parse,children,one,dump
 ROOT=Path(__file__).resolve().parents[1]
 SOURCE=Path('/Applications/KiCad/KiCad.app/Contents/SharedSupport/footprints')
 DEST=ROOT/'hardware/lib/ch32-pico.pretty'
-PARTS={'TSSOP-20_4.4x6.5mm_P0.65mm':'Package_SO'}
-ALIASES={'C5187096':'TSSOP-20_4.4x6.5mm_P0.65mm'}
+PARTS={'SOT-23-6':'Package_TO_SOT_SMD', 'TSSOP-20_4.4x6.5mm_P0.65mm':'Package_SO', 'LQFP-48_7x7mm_P0.5mm':'Package_QFP'}
+ALIASES={'C7519':'SOT-23-6', 'C29779902':'LQFP-48_7x7mm_P0.5mm', 'C5187096':'TSSOP-20_4.4x6.5mm_P0.65mm'}
 
 
 def main():

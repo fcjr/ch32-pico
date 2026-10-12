@@ -92,12 +92,21 @@ def report(board):
                 if not any(contains(p,polygon) for polygon in polygons):
                     missing.append({'net':one(s,'net')[-1],'point_mm':[round(v,6) for v in p]})
     paths={}
-    for suffix,resistor,mcu,contacts in [('DP','R5','1',('A6','B6')),('DM','R6','20',('A7','B7'))]:
-        before=[s for s in tracks if one(s,'net')[-1]=='USB_'+suffix]
-        after=[s for s in tracks if one(s,'net')[-1]=='PROBE_'+suffix]
-        paths[suffix]={'connector_to_resistor_mm':{pin:round(path_length(before,pads['J2',pin],pads[resistor,'1']),4)
-                         for pin in contacts},
-                       'resistor_to_programmer_mm':round(path_length(after,pads[resistor,'2'],pads['U2',mcu]),4)}
+    native=('U1','48') in pads and ('U2','1') not in pads
+    if native:
+        for suffix,mcu,contacts in [('DP','33',('A6','B6')),('DM','32',('A7','B7'))]:
+            segments=[s for s in tracks if one(s,'net')[-1]=='USB_'+suffix]
+            paths[suffix]={'connector_to_mcu_mm':{pin:round(path_length(segments,pads['J2',pin],pads['U1',mcu]),4)
+                           for pin in contacts}}
+        paths['BOOT']={'resistor':'R12', 'series_resistance_ohm':4700,
+                       'note':'Only the short D+ to R12 branch is part of the USB signal net; button wire is isolated by R12.'}
+    else:
+        for suffix,resistor,mcu,contacts in [('DP','R5','1',('A6','B6')),('DM','R6','20',('A7','B7'))]:
+            before=[s for s in tracks if one(s,'net')[-1]=='USB_'+suffix]
+            after=[s for s in tracks if one(s,'net')[-1]=='PROBE_'+suffix]
+            paths[suffix]={'connector_to_resistor_mm':{pin:round(path_length(before,pads['J2',pin],pads[resistor,'1']),4)
+                             for pin in contacts},
+                           'resistor_to_programmer_mm':round(path_length(after,pads[resistor,'2'],pads['U2',mcu]),4)}
     return {'status':'geometry audit; impedance and USB performance not certified',
         'all_usb_tracks_on_F_Cu':not wrong_layers,'usb_vias':len(vias),'paths':paths,
         'ground_reference_sampling':{'layer':'In1.Cu','net':'GND','longitudinal_step_max_mm':.05,
@@ -105,7 +114,7 @@ def report(board):
             'uncovered_sample_count':len(missing),'uncovered_samples':missing},
         'limitations':['Sampling does not prove continuous copper coverage between samples or adequate lateral return width.',
             'Centerline lengths exclude package, pad spreading and resistor electrical length.',
-            'Connector, ESD and resistor fanouts are not uniform differential transmission lines.',
+            'Connector, ESD, BOOT branch and MCU fanouts are not uniform differential transmission lines.',
             'The JLC calculator describes a uniform pair only; assembled-board USB validation remains required.']}
 
 

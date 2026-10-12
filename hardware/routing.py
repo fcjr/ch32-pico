@@ -74,7 +74,14 @@ def grade(path):
     except ValueError as error:
         result['usb_geometry']={'error':str(error)}
         result['usb_geometry_passes']=False
-    result['passes_connectivity_and_drc']=not (result['violations'] or result['unconnected']
+    from .markings import audit as audit_markings
+    try:
+        result['silkscreen']=audit_markings(doc)
+        result['silkscreen_passes']=True
+    except ValueError as error:
+        result['silkscreen']={'error':str(error)}
+        result['silkscreen_passes']=False
+    result['passes_connectivity_and_drc']=not (not result['silkscreen_passes'] or result['violations'] or result['unconnected']
         or result['via_in_paste'] or result['foreign_tracks_on_ground_layer']
         or result['changed_critical_segments'] or result['changed_critical_vias']
         or not result['usb_geometry_passes'])
@@ -104,6 +111,20 @@ def main():
         'krt_commit':KRT_COMMIT,'krt_environment':KRT_ENV,'freerouting_version':'2.5.0',
         'signal_layers':a.signal_layers,'candidates':{},'fabrication_ready':False}
     def record(): (out/'comparison.json').write_text(json.dumps(manifest,indent=2)+'\n')
+    def repair_planes(raw,name):
+        # Signal routing can divide In2.Cu into disconnected 3V3 islands.
+        # Reconnect those against KiCad's exact fill before final grading.
+        repaired=out/(name+'-plane-repair.kicad_pcb')
+        run([python,a.krt/'py_router/route.py',raw,repaired,'--nets','GND','3V3_OUT',
+            '--layers','F.Cu','In1.Cu','In2.Cu','B.Cu','--layer-costs','1','-1','3','3',
+            '--track-width','.15','--power-nets','GND','3V3_OUT','--power-nets-widths','.15','.15',
+            '--clearance','.15','--via-size','.45','--via-drill','.2','--grid-step','.05',
+            '--no-stub-layer-swap','--same-net-pad-clearance','.1','--no-fix-drc-settings',
+            '--keep-input-copper','--fab-overrides',ROOT/'hardware/fab-limits.txt',
+            '--escalation','off','--max-iterations','300000','--max-ripup','3'],
+            out/(name+'-plane-repair.log'),env=KRT_ENV)
+        copy_rules(raw,repaired)
+        return repaired
     record()
     (out/'fp-lib-table').write_text((ROOT/'build/fp-lib-table').read_text().replace(
         '${KIPRJMOD}/../hardware','${KIPRJMOD}/../../hardware'))
@@ -127,7 +148,8 @@ def main():
     taps=out/'plane-taps.kicad_pcb'
     run([python,a.krt/'py_router/route.py',input_board,taps,'--nets','GND','3V3_OUT',
         '--layers','F.Cu','In1.Cu','In2.Cu','B.Cu','--layer-costs','1','-1','3','3',
-        '--track-width','.15','--clearance','.15','--via-size','.45','--via-drill','.2',
+        '--track-width','.15','--power-nets','GND','3V3_OUT','--power-nets-widths','.15','.15',
+        '--clearance','.15','--via-size','.45','--via-drill','.2',
         '--grid-step','.05','--no-stub-layer-swap','--same-net-pad-clearance','.1','--no-fix-drc-settings',
         '--keep-input-copper','--fab-overrides',ROOT/'hardware/fab-limits.txt',
         '--escalation','off','--max-iterations','300000','--max-ripup','3'],out/'plane-taps.log',env=KRT_ENV)
@@ -159,7 +181,7 @@ def main():
             '--escalation','off','--max-iterations','500000','--max-ripup','5',
             '--ripup-blocker-select','mincut'],out/'krt.log',env=KRT_ENV)
         copy_rules(input_board,raw)
-        manifest['candidates']['krt']={**finish(raw,board),'seconds':duration};record()
+        manifest['candidates']['krt']={**finish(repair_planes(raw,'krt'),board),'seconds':duration};record()
     if a.engine in ('both','freerouting'):
         jar=ROOT/'build/tools/freerouting-2.5.0.jar'
         if not jar.exists() or hashlib.sha256(jar.read_bytes()).hexdigest()!=JAR_SHA256:
@@ -176,7 +198,7 @@ def main():
             '-de',dsn,'-do',ses],out/'freerouting.log')
         run([a.kicad_python,'-m','hardware.exchange','import',input_board,ses,'--output',raw],out/'ses.log')
         copy_rules(input_board,raw)
-        manifest['candidates']['freerouting']={**finish(raw,board),'seconds':duration};record()
+        manifest['candidates']['freerouting']={**finish(repair_planes(raw,'freerouting'),board),'seconds':duration};record()
     passed=any(c['passes_connectivity_and_drc'] for c in manifest['candidates'].values())
     manifest['status']='passed' if passed else 'failed';record()
     print(json.dumps(manifest,indent=2))

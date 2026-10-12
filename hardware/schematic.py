@@ -117,7 +117,7 @@ def instance(c,part,x,y,path):
 
 
 def generate(*,components=COMPONENTS,sections=SECTIONS,out=OUT,
-             subtitle='CH32V003 + open CH32V003 programmer',source='hardware/circuit.py'):
+             subtitle='CH32X035 native USB + switched USB PD output',source='hardware/circuit.py'):
     COMPONENTS,SECTIONS,OUT=components,sections,out
     OUT.mkdir(exist_ok=True)
     library=load_library()
@@ -127,7 +127,7 @@ def generate(*,components=COMPONENTS,sections=SECTIONS,out=OUT,
           f'(title_block (title "ch32-pico development board") (rev "{BOARD_REVISION} - prototype"))',
           '(lib_symbols)',text(subtitle,25.4,22.86,2),
           text('Electrical draft. Not a fabrication release.',25.4,30.48),
-          text('USB-C -> USB probe -> SWIO -> CH32V003',25.4,38.1),
+          text('USB-C CC -> CH32X035; VBUS -> load switch -> header 40',25.4,38.1),
           text(f'Python source: {source}. See docs/compatibility.md.',25.4,45.72)]
     for index,(section,title) in enumerate(SECTIONS.items()):
         sheetid=uid('sheet/'+section)
@@ -146,7 +146,7 @@ def generate(*,components=COMPONENTS,sections=SECTIONS,out=OUT,
           f'(title_block (title {q(title)}) (rev "{BOARD_REVISION} - prototype"))',
           '(lib_symbols\n'+'\n'.join(symbol(code,library[code],True) for code in codes)+')',
           text(title,15.24,15.24,2),text('Explicit global-net connections. All NC pins are intentional.',15.24,22.86)]
-        # Column packing keeps the 20-pin MCUs and 40-pin header intact on one page.
+        # Column packing keeps the 48-pin MCU and 40-pin header intact on one page.
         bottoms=[35.56]*4
         for c in sorted(comps,key=lambda c: (-len(library[c.part].pins),c.ref)):
             col=min(range(4),key=lambda i:bottoms[i])

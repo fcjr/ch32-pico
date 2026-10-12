@@ -38,10 +38,18 @@ ROUTES = [
 ]
 VIAS = [('PD0',9.5,34.925),('PC0',9.5,36.225),('3V3_OUT',18.0,10.9),('GND',4.7,22.275),('GND',4.7,35.575),('GND',4.7,34.3),
         ('GND',10.6,13.25),('VBUS',10.6,11.06)]
-PROTECTED_NETS = {name for name, _, _ in ROUTES}
+from .design import BOARD_REVISION
+PROTECTED_NETS = ({'USB_DP','USB_DM','BUCK_SW','BUCK_BST','VBUS','PD_OUT','3V3_OUT','GND'}
+                  if BOARD_REVISION=='B' else {name for name, _, _ in ROUTES})
 
 
 def main():
+    from .design import BOARD_REVISION
+    if BOARD_REVISION == 'B':
+        from .critical_routes_b import main as rev_b
+        return rev_b()
+    if BOARD_REVISION != 'A':
+        raise SystemExit('No critical routing seed for this revision')
     import wx
     import pcbnew as k
     from .pcb import point

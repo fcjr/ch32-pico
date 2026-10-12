@@ -20,27 +20,43 @@ def verify_contract(components=COMPONENTS):
         for pin,net in pins.items():
             if c[ref].nets[str(pin)]!=net:
                 raise ValueError(f'Contract violation: {ref}.{pin} must be {net}')
-    require('D1',{1:'VSYS',2:'VBUS'})
-    from .lowcost import verify
-    verify(components)
-    require('R1',{1:'VSYS',2:'3V3_EN'})
-    require('Q1',{1:'VBUS',2:'GND',3:'VBUS_N'})
-    require('R3',{1:'CC1',2:'GND'})
-    require('R4',{1:'CC2',2:'GND'})
-    require('J2',{'A5':'CC1','B5':'CC2','A6':'USB_DP','B6':'USB_DP','A7':'USB_DM','B7':'USB_DM'})
+    from .design import INTERNAL_SIGNALS, MCU_PART, validate
+    validate()
+    if c['U1'].part != MCU_PART or any(x.part=='C5187096' for x in components):
+        raise ValueError('Rev B requires one X035 and no V003 programmer')
+    require('U1',{47:'GND',48:'3V3_OUT',7:'PA21',32:'USB_DM',33:'USB_DP',
+                  34:'SDIO',37:'SDCK',38:'CC1',39:'CC2'})
+    require('D1',{1:'VIN_SYS',2:'VBUS'})
+    require('D4',{1:'VIN_SYS',2:'VSYS'})
+    require('D2',{2:'GND',5:'3V3_OUT'})
+    require('U4',{1:'3V3_OUT',2:None,3:'VIN_SYS',4:'GND',5:'BUCK_SW',6:'BUCK_BST'})
+    require('L1',{1:'BUCK_SW',2:'3V3_OUT'})
+    require('U3',{1:'PD_ENABLE',2:'PD_OVLO',4:'PD_FAULT_N',5:'VBUS',6:'PD_OUT',8:'GND',9:'PD_ILM'})
+    if c['U3'].part!='C3662793':raise ValueError('Use the reviewed 470L load-switch variant')
+    require('R7',{1:'PD_ENABLE',2:'GND'})
+    require('R3',{1:'CC1',2:'GND'});require('R4',{1:'CC2',2:'GND'})
+    require('J2',{'A5':'CC1','B5':'CC2','A6':'USB_DP','B6':'USB_DP','A7':'USB_DM','B7':'USB_DM',
+                  'A4B9':'VBUS','B4A9':'VBUS'})
     for p in HEADER:
         require('J1',{p.number:None if p.proposed=='NC' else p.proposed})
-        if p.proposed in TARGET_PINS: require('U1',{TARGET_PINS[p.proposed]:p.proposed})
-    require('R15',{1:'PROBE_SWIO',2:'PD1'})
-    require('R16',{1:'PD1',2:'TARGET_3V3'})
-    require('R5',{1:'USB_DP',2:'PROBE_DP'})
-    require('R6',{1:'USB_DM',2:'PROBE_DM'})
-    # Removing an interface resistor must isolate the two nets. A hidden
-    # parallel jumper or copied short would defeat the documented controls.
-    for ref,pair in {'R15':{'PROBE_SWIO','PD1'}}.items():
-        for other in components:
-            if other.ref!=ref and pair.issubset(set(other.nets.values())):
-                raise ValueError(f'{other.ref} bypasses interface isolation {ref}')
+        if p.proposed in TARGET_PINS:require('U1',{TARGET_PINS[p.proposed]:p.proposed})
+    for port,net in INTERNAL_SIGNALS.items():require('U1',{TARGET_PINS[port]:net})
+    require('SW1',{1:'PA21',2:'GND'})
+    require('SW2',{1:'BOOT_PULLUP',2:'3V3_OUT'})
+    require('R12',{1:'USB_DP',2:'BOOT_PULLUP'})
+    for net in ('VBUS','PD_OUT','VIN_SYS','VSYS'):
+        if net in c['U1'].nets.values():raise ValueError('High-voltage net connected directly to MCU')
+    enable_nodes={(x.ref,p) for x in components for p,n in x.nets.items() if n=='PD_ENABLE'}
+    if enable_nodes!={('U1','22'),('U3','1'),('R7','1')}:
+        raise ValueError('PD_ENABLE must carry control only')
+    for ref in ('C1','C5','C8','C12'):
+        if c[ref].part not in {'C13585','C1525'}:raise ValueError('High-voltage capacitor rating changed')
+    # Reject accidental direct bypasses of the switch or VSYS isolation diode.
+    for x in components:
+        nets=set(x.nets.values())
+        if {'VBUS','PD_OUT'}<=nets and x.ref!='U3':raise ValueError('Bypassed PD load switch')
+        if 'VSYS' in nets and nets & {'VBUS','PD_OUT'} and x.ref!='J1':
+            raise ValueError('HV backfeed to VSYS')
 
 
 def verify_netlist(path,components=COMPONENTS):

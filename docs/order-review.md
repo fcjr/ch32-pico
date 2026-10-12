@@ -1,3 +1,5 @@
+> **Rev A reference.** The [Rev B migration](revision-b.md) supersedes the circuit, pinout, costs and manufacturing status below.
+
 # Prototype order review
 
 Five supplied panels contain four identical boards each: 20 complete boards,
@@ -131,7 +133,10 @@ It remains a planning combination, not a factory assembly quote.
 ## Artwork update, 2026-10-12
 
 The current local files include `ch32-pico`, `REV A` and the Left Shift Logical logo
-on the front silkscreen. Copper, board outline, holes and fitted parts are
+on the front silkscreen. Programmer/target pad labels and `RESET` now sit
+beside their front-side contacts. Back header labels use `NC`, `RST` and
+corner pin numbers; see the [marking review](markings.md).
+Copper, board outline, holes and fitted parts are
 unchanged. The earlier browser upload and quote observation predate this
 artwork update. Re-upload the regenerated Gerbers for the final factory
 preview; do not treat the earlier upload as the current file revision.

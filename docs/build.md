@@ -1,3 +1,10 @@
+Current Rev B checks: `make check`. Optional draft reports:
+`python3 scripts/revb_bom_review.py` and `python3 scripts/revb_preview.py`.
+The retained Rev A routing/firmware/fabrication entry points reject the new
+revision until their migration is complete.
+
+> **Rev A reference.** The [Rev B migration](revision-b.md) supersedes the circuit, pinout, costs and manufacturing status below.
+
 # Build and routing
 
 `hardware/circuit.py` defines all 174 physical terminals, including explicit
@@ -41,6 +48,12 @@ the silkscreen, schematic and manufacturing manifest share this value. Placement
 `make review` apply the same artwork. The latter rechecks the existing routed
 candidate with KiCad before saving it. Regenerate manufacturing and panel
 outputs after changing the saved board.
+
+`hardware/markings.py` generates the header and service-pad legends. Placement
+and routed-board checks compare them with actual pad nets, MCU endpoints,
+board side, mirroring and pad proximity. The panel check preserves each copy's
+text, font, position, orientation and logo geometry. See the
+[marking review](markings.md) for the current assignments.
 
 ## Rendering
 

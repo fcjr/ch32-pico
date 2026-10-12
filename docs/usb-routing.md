@@ -1,3 +1,6 @@
+> **Rev A reference.** This document describes the former CH32V003 board.
+> See [Revision B](revision-b.md) for the current X035/PD design.
+
 # USB routing review
 
 The programmer uses rv003usb low-speed USB HID, at 1.5 Mbit/s. D+ terminates

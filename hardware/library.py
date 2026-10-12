@@ -47,13 +47,19 @@ def load_library():
                 number=one(p,'number')[1]
                 name=one(p,'name')[1]
                 electrical='passive'
-                if code=='C5187096':
+                if code=='C29779902':
                     name=next(k for k,v in TARGET_PINS.items() if str(v)==number)
+                    electrical='power_in' if number in {'47','48'} else 'input' if number=='7' else 'bidirectional'
+                elif code=='C780769':
+                    electrical={'1':'input','2':'input','3':'power_in','4':'power_in','5':'power_out','6':'passive'}[number]
+                elif code=='C3662793':
+                    electrical={'1':'input','2':'input','3':'open_collector','4':'open_collector','5':'power_in','6':'power_out','7':'passive','8':'power_in','9':'passive','10':'passive'}[number]
+                elif code=='C5187096':
                     electrical='power_in' if number in {'7','9'} else 'input' if number=='4' else 'bidirectional'
                 elif code=='C82942':
                     electrical={'1':'power_in','2':'power_in','3':'input',
                                 '4':'passive','5':'power_out'}[number]
-                elif code=='C15999':
+                elif code in {'C15999','C7519'}:
                     name={'1':'IO1','2':'GND','3':'IO2','4':'IO2','5':'VBUS','6':'IO1'}[number]
                     electrical='power_in' if number in {'2','5'} else 'passive'
                 pins.append(Pin(number,name,electrical))

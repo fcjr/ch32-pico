@@ -14,6 +14,8 @@ from hardware.route_geometry import fingerprint
 
 
 def main():
+    from hardware.release import require_current_layout
+    require_current_layout()
     manifest = json.loads((ROOT/'docs/render-models.json').read_text())
     models = manifest['models']
     cache = ROOT/'build/render/parts.3dshapes'
@@ -45,7 +47,8 @@ def main():
             (offset (xyz 0 {m['offset_y']} 0)) (scale (xyz 1 1 1))
             (rotate (xyz 0 0 {m['rotate_z']})))'''))
         count += 1
-    assert count == 33 and fingerprint(doc) == copper
+    from hardware.circuit import COMPONENTS
+    assert count == sum(c.fitted for c in COMPONENTS) and fingerprint(doc) == copper
     board = ROOT/'build/render/ch32-pico.kicad_pcb'
     board.write_text(dump(doc)+'\n')
     out = ROOT/'docs/images'
@@ -56,12 +59,19 @@ def main():
             '--quality','high','--background','opaque','--floor','--side',side,
             '--rotate',rotation,'--zoom','0.8','--output',str(out/(name+'.png')),
             str(board)],check=True)
-    from PIL import Image
+    from PIL import Image, ImageDraw, ImageFont
     front = Image.open(out/'ch32-pico-front.png').convert('RGB')
     back = Image.open(out/'ch32-pico-back.png').convert('RGB')
-    combined = Image.new('RGB', (front.width + back.width, front.height))
-    combined.paste(front, (0, 0))
-    combined.paste(back, (front.width, 0))
+    caption_height = 80
+    combined = Image.new('RGB', (front.width + back.width, front.height + caption_height), '#f5f5f5')
+    combined.paste(front, (0, caption_height))
+    combined.paste(back, (front.width, caption_height))
+    draw = ImageDraw.Draw(combined)
+    font = ImageFont.load_default(size=30)
+    from hardware.design import BOARD_REVISION
+    for x, side in ((front.width//2, 'Front'), (front.width+back.width//2, 'Back')):
+        draw.text((x, caption_height//2), f'{side} | ch32-pico Rev {BOARD_REVISION}',
+                  fill='#242424', font=font, anchor='mm')
     combined.save(out/'ch32-pico.png', optimize=True)
     (out/'render.json').write_text(json.dumps({
         'source_board_sha256':source_hash, 'models_manifest':'../render-models.json',

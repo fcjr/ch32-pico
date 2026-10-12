@@ -12,7 +12,7 @@ import pcbnew as k
 from .circuit import COMPONENTS
 from .library import ROOT, LIBDIR, load_library, validate_library
 from .placement import PLACEMENT
-from .design import MECHANICAL, HEADER
+from .design import MECHANICAL
 from .schematic import uid
 from .sexp import parse, children, one, dump
 
@@ -65,23 +65,6 @@ def generate():
         edge=k.PCB_SHAPE(board); edge.SetShape(k.SHAPE_T_SEGMENT)
         edge.SetStart(point(*a)); edge.SetEnd(point(*b)); edge.SetLayer(k.Edge_Cuts)
         edge.SetWidth(k.FromMM(0.05)); board.Add(edge)
-    # Pin labels on the back leave the top-side component field clear.
-    for pin in HEADER:
-        x,y=MECHANICAL.position(pin.number)
-        t=k.PCB_TEXT(board)
-        t.SetText({'NC':'-','3V3_OUT':'3V3','3V3_EN':'EN'}.get(pin.proposed,pin.proposed))
-        tx=3.9 if pin.number<=20 else 17.1
-        if pin.number in (1,20): tx=7.0
-        if pin.number in (21,40): tx=13.3
-        t.SetPosition(point(tx,y))
-        t.SetLayer(k.B_SilkS); t.SetMirrored(True)
-        t.SetTextSize(point(0.8,0.8)); t.SetTextThickness(k.FromMM(0.1)); board.Add(t)
-    for text,x,y,layer in [('PROBE SWIO',7.0,25.6,k.B_SilkS),
-            ('PROBE',14.0,25.6,k.B_SilkS),('RESET',10.5,38.8,k.B_SilkS),
-            ('DBG',16.5,33.5,k.F_SilkS),('SWIO',14.5,37.2,k.F_SilkS)]:
-        t=k.PCB_TEXT(board);t.SetText(text);t.SetPosition(point(x,y));t.SetLayer(layer)
-        t.SetMirrored(layer==k.B_SilkS)
-        t.SetTextSize(point(.8,.8));t.SetTextThickness(k.FromMM(.1));board.Add(t)
     out=ROOT/'build/ch32-pico-placed.kicad_pcb'
     board.SetFileName(str(out))
     k.SaveBoard(str(out),board)
@@ -122,6 +105,8 @@ def generate():
         else: stable(node,'board/'+str(i))
     from .branding import apply as apply_branding
     apply_branding(doc)
+    from .markings import apply as apply_markings
+    apply_markings(doc)
     out.write_text(dump(doc)+'\n')
     project={'board':{'design_settings':{'rules':{
         'min_clearance':0.15,'min_track_width':0.15,'min_via_diameter':0.45,

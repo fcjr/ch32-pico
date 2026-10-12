@@ -2,67 +2,11 @@
   "importer": "easyeda2kicad 1.0.1",
   "retrieved": "2026-10-12",
   "models": {
-    "TSSOP-20_4.4x6.5mm_P0.65mm": {
-      "lcsc": "C5187096",
-      "source": "https://www.lcsc.com/product-detail/C5187096.html",
-      "file": "TSSOP-20_L6.5-W4.4-H1.0-LS6.4-P0.65.wrl",
-      "sha256": "78533b244071e94c304ab8cd40a109e9f8224b7e201dc7976fbe3a6e235f7def",
-      "rotate_z": 180,
-      "offset_y": 0
-    },
-    "USB_C_Receptacle_G-Switch_GT-USB-7010ASV": {
-      "lcsc": "C2988369",
-      "source": "https://www.lcsc.com/product-detail/C2988369.html",
-      "file": "USB-C-SMD_G-SWITCH_GT-USB-7010ASV.wrl",
-      "sha256": "84fb7576c0f553689df975d18a43c2cc8fe67c814771bcc66b37752f2a2fc202",
-      "rotate_z": 0,
-      "offset_y": 1.325
-    },
-    "ST_USBLC6-2P6_SOT666": {
-      "lcsc": "C15999",
-      "source": "https://www.lcsc.com/product-detail/C15999.html",
-      "file": "SOT-666-6P_L1.6-W1.2-H0.6-LS1.6-P0.50.wrl",
-      "sha256": "4ee81f61215b62e91b94cea183a25692ac367af9225a857088ad8052919985f4",
-      "rotate_z": 90,
-      "offset_y": 0
-    },
-    "SW-SMD_L3.9-W3.0-P4.45": {
-      "lcsc": "C720477",
-      "source": "https://www.lcsc.com/product-detail/C720477.html",
-      "file": "SW-SMD_L3.9-W2.9-H2.0-LS4.8.wrl",
-      "sha256": "a50e37006d74f9e6a8b7b8a4b8a230b7dd84019b09a90928d3d4b8bac93d79e5",
-      "rotate_z": 0,
-      "offset_y": 0
-    },
-    "SOT-23-5_L3.0-W1.7-P0.95-LS2.8-BL": {
-      "lcsc": "C82942",
-      "source": "https://www.lcsc.com/product-detail/C82942.html",
-      "file": "SOT-23-5_L2.9-W1.6-H1.1-LS2.8-P0.95.wrl",
-      "sha256": "a31f19311654f993ffb94fb7fcd835845aabb3e184ee28f9c23578d347cbf660",
-      "rotate_z": 270,
-      "offset_y": 0
-    },
     "SOD-123_L2.7-W1.6-LS3.7-RD-1": {
       "lcsc": "C8598",
       "source": "https://www.lcsc.com/product-detail/C8598.html",
       "file": "SOD-123_L2.7-W1.6-LS3.7-RD-1.wrl",
       "sha256": "d3ddc29be75150a01be47d76ac0311dc4713929842f4a2c3a8bd860de2578ea9",
-      "rotate_z": 0,
-      "offset_y": 0
-    },
-    "SOT-23-3_L2.9-W1.3-P1.90-LS2.4-BR": {
-      "lcsc": "C8545",
-      "source": "https://www.lcsc.com/product-detail/C8545.html",
-      "file": "SOT-23-3P_L2.9-W1.3-H1.0-LS2.4-P0.95.wrl",
-      "sha256": "6d0af3fdee819c602d1b3906e3031015573ebcb85f3a357833e5def01e2ebe32",
-      "rotate_z": 180,
-      "offset_y": 0
-    },
-    "LED-SMD_L1.6-W0.8-R-RD": {
-      "lcsc": "C2286",
-      "source": "https://www.lcsc.com/product-detail/C2286.html",
-      "file": "LED0603_L1.6-W0.8-H0.6.wrl",
-      "sha256": "a7a077fe5829637e95caf32a6a71f3cef4cf8d8c6955b651f9e70816ecbd53e4",
       "rotate_z": 0,
       "offset_y": 0
     },
@@ -81,6 +25,88 @@
       "sha256": "ced0a40a718711c2ae16482a4f46a9eb6a0a33ecf9f9d8c2e18c160fa951a420",
       "rotate_z": 0,
       "offset_y": 0
+    },
+    "LED-SMD_L1.6-W0.8-R-RD": {
+      "lcsc": "C2286",
+      "source": "https://www.lcsc.com/product-detail/C2286.html",
+      "file": "LED0603_L1.6-W0.8-H0.6.wrl",
+      "sha256": "a7a077fe5829637e95caf32a6a71f3cef4cf8d8c6955b651f9e70816ecbd53e4",
+      "rotate_z": 0,
+      "offset_y": 0
+    },
+    "SW-SMD_L3.9-W3.0-P4.45": {
+      "lcsc": "C720477",
+      "source": "https://www.lcsc.com/product-detail/C720477.html",
+      "file": "SW-SMD_L3.9-W2.9-H2.0-LS4.8.wrl",
+      "sha256": "a50e37006d74f9e6a8b7b8a4b8a230b7dd84019b09a90928d3d4b8bac93d79e5",
+      "rotate_z": 0,
+      "offset_y": 0
+    },
+    "LQFP-48_7x7mm_P0.5mm": {
+      "lcsc": "C29779902",
+      "source": "https://www.lcsc.com/product-detail/C29779902.html",
+      "file": "LQFP-48_L7.0-W7.0-H1.4-LS9.0-P0.50.wrl",
+      "sha256": "472d5f87675dc552c9a3c59a5addca63f695d402b6bbb1a55c3585d4f1811386",
+      "rotate_z": 90,
+      "offset_y": 0
+    },
+    "SOT-23-6": {
+      "lcsc": "C7519",
+      "source": "https://www.lcsc.com/product-detail/C7519.html",
+      "file": "SOT-23-6_L2.9-W1.6-H1.5-LS2.8-P0.95.wrl",
+      "sha256": "3da95a191588d286e5c8ef4e2d1f8ea807bca93fb0b1a235252b68e1511ec5cb",
+      "rotate_z": 0,
+      "offset_y": 0
+    },
+    "TI_RPW0010A_VQFN-HR-10_2x2mm": {
+      "lcsc": "C3662793",
+      "source": "https://www.lcsc.com/product-detail/C3662793.html",
+      "file": "VQFN-10_L2.0-W2.0-P0.45-TL.wrl",
+      "sha256": "091397b6220840b422eabf3ad483514adfc1dba0ca097d1b5114318c4b0e7f44",
+      "rotate_z": 0,
+      "offset_y": 0
+    },
+    "TSOT-26_L2.9-W1.6-P0.95-LS2.8-BL": {
+      "lcsc": "C780769",
+      "source": "https://www.lcsc.com/product-detail/C780769.html",
+      "file": "TSOT-26_L2.9-W1.6-P0.95-LS2.8-BL.wrl",
+      "sha256": "cea0f96767724d06e8c232affea97d8817d6fcf062d32513f25749da2068d3c9",
+      "rotate_z": 0,
+      "offset_y": 0
+    },
+    "IND-SMD_L5.0-W5.0-P3.60_SMNR5040": {
+      "lcsc": "C48496",
+      "source": "https://www.lcsc.com/product-detail/C48496.html",
+      "file": "IND-SMD_L5.0-W5.0-H4.0.wrl",
+      "sha256": "912940f3c4ecfb52f5dc8a51829f41c85e7d1351476b29f75fbdec86b7ff5b7d",
+      "rotate_z": 0,
+      "offset_y": 0
+    },
+    "C1206": {
+      "lcsc": "C13585",
+      "source": "https://www.lcsc.com/product-detail/C13585.html",
+      "file": "C1206_L3.2-W1.6-H1.3.wrl",
+      "sha256": "1641b0be48933142193f9b658497e2ca292dbe52afd2b1083770c3012d1d4d02",
+      "rotate_z": 0,
+      "offset_y": 0
+    },
+    "C0805": {
+      "lcsc": "C29277",
+      "source": "https://www.lcsc.com/product-detail/C29277.html",
+      "file": "C0805_L2.0-W1.3-H1.3.wrl",
+      "sha256": "31b2ac9a40994188ebd20202214e75f004b604b0068b3dea50d8cf7940cadb1a",
+      "rotate_z": 0,
+      "offset_y": 0
+    },
+    "USB_C_Receptacle_G-Switch_GT-USB-7010AW": {
+      "lcsc": "C963411",
+      "source": "https://www.lcsc.com/product-detail/C963411.html",
+      "file": "USB-SMD_GT-USB-7010AN.wrl",
+      "sha256": "39c70c5da93096d45abff1f4a0f1d6da5e22ee3965e2f57e908e18c176c8fcf6",
+      "rotate_z": 0,
+      "offset_y": 1.295,
+      "note": "Supplier returns a shared AN-family model for AW. Stake and peg Y origin aligned by 1.295 mm; illustration only, exact AW drawing controls manufacture."
     }
-  }
+  },
+  "board_revision": "B"
 }

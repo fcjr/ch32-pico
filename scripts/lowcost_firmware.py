@@ -28,6 +28,9 @@ def archive(source, destination):
 
 
 def main():
+    from hardware.design import BOARD_REVISION
+    if BOARD_REVISION != 'A':
+        raise SystemExit('This is the retained Rev A firmware generator. Rev B requires the X035 application/PD firmware.')
     source = ROOT / "build/references/rv003usb"
     if not source.exists():
         source.mkdir(parents=True)

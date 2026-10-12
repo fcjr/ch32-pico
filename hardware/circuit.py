@@ -1,14 +1,13 @@
 # SPDX-License-Identifier: MIT
 # Copyright (c) 2026 ch32-pico contributors
-"""Low-cost electrical source; every terminal has an explicit net or NC.
+"""Rev B electrical source. Every terminal has an explicit net or NC.
 
-Both MCUs are CH32V003F4P6. The programmer is factory-flashed externally;
-normal target programming and debug printf use the USB-C HID connection.
-Manufacturing release requires the documented prototype qualification.
+CH32X035 is the only MCU and PD controller. PD_OUT is switched VBUS;
+the fixed buck powers only the MCU and 3V3 header. Prototype, not released.
 """
 from __future__ import annotations
 from dataclasses import dataclass
-
+from .design import HEADER, TARGET_PINS, INTERNAL_SIGNALS, MCU_PART
 
 @dataclass(frozen=True)
 class Component:
@@ -21,60 +20,71 @@ class Component:
     fitted: bool = True
 
 
-COMPONENTS = (
-    # USB/5 V input and two 3.3 V LDOs
-    Component('#FLG01', 'POWER_FLAG', {'1': 'GND'}, 'power', value='GND', note='External/passive power source', fitted=False),
-    Component('#FLG02', 'POWER_FLAG', {'1': 'VBUS'}, 'power', value='VBUS', note='External/passive power source', fitted=False),
-    Component('#FLG03', 'POWER_FLAG', {'1': 'VSYS'}, 'power', value='VSYS', note='External/passive power source', fitted=False),
-    Component('C1', 'C52923', {'1': 'VSYS', '2': 'GND'}, 'power', value='1uF', note='At corresponding LDO input/output'),
-    Component('C2', 'C52923', {'1': '3V3_OUT', '2': 'GND'}, 'power', value='1uF', note='At corresponding LDO input/output'),
-    Component('C3', 'C52923', {'1': 'VSYS', '2': 'GND'}, 'power', value='1uF', note='At corresponding LDO input/output'),
-    Component('C4', 'C52923', {'1': 'TARGET_3V3', '2': 'GND'}, 'power', value='1uF', note='At corresponding LDO input/output'),
-    Component('D1', 'C8598', {'1': 'VSYS', '2': 'VBUS'}, 'power', value='B5819W', note='USB-to-VSYS only; cathode at VSYS'),
-    Component('R1', 'C25741', {'1': 'VSYS', '2': '3V3_EN'}, 'power', value='100k', note='Pico-compatible enable pull-up to VSYS'),
-    Component('R12', 'C11702', {'1': 'TARGET_3V3', '2': 'GND'}, 'power', value='1k', note='Target discharge; 3.3 mA when powered'),
-    Component('R2', 'C25741', {'1': 'TARGET_EN', '2': 'GND'}, 'power', value='100k', note='Target off while programmer is blank/reset'),
-    Component('U4', 'C82942', {'1': 'VSYS', '2': 'GND', '3': '3V3_EN', '4': None, '5': '3V3_OUT'}, 'power'),
-    Component('U5', 'C82942', {'1': 'VSYS', '2': 'GND', '3': 'TARGET_EN', '4': None, '5': 'TARGET_3V3'}, 'power'),
-    # USB-C low-speed HID, ESD and VBUS detection
-    Component('C5', 'C1525', {'1': 'VBUS', '2': 'GND'}, 'usb', value='100nF', note='Direct VBUS capacitance kept small'),
-    Component('D2', 'C15999', {'1': 'USB_DP', '2': 'GND', '3': 'USB_DM', '4': 'USB_DM', '5': 'VBUS', '6': 'USB_DP'}, 'usb'),
-    Component('J2', 'C2988369', {'A1B12': 'GND', 'B1A12': 'GND', '1': 'GND', '2': 'GND', '3': 'GND', '4': 'GND', 'A4B9': 'VBUS', 'B4A9': 'VBUS', 'A5': 'CC1', 'B5': 'CC2', 'A6': 'USB_DP', 'B6': 'USB_DP', 'A7': 'USB_DM', 'B7': 'USB_DM', 'A8': None, 'B8': None}, 'usb', value='', note='All Pico holes retained; prototype cable/underside fit pending'),
-    Component('Q1', 'C8545', {'1': 'VBUS', '2': 'GND', '3': 'VBUS_N'}, 'usb'),
-    Component('R3', 'C25905', {'1': 'CC1', '2': 'GND'}, 'usb', value='5.1k'),
-    Component('R4', 'C25905', {'1': 'CC2', '2': 'GND'}, 'usb', value='5.1k'),
-    Component('R5', 'C25118', {'1': 'USB_DP', '2': 'PROBE_DP'}, 'usb', value='47', note='At programmer PD4, USB D+'),
-    Component('R6', 'C25118', {'1': 'USB_DM', '2': 'PROBE_DM'}, 'usb', value='47', note='At programmer PD3, USB D-'),
-    Component('R7', 'C25741', {'1': '3V3_OUT', '2': 'VBUS_N'}, 'usb', value='100k'),
-    Component('R8', 'C25741', {'1': 'VBUS', '2': 'GND'}, 'usb', value='100k', note='Discharge VBUS/gate after disconnect'),
-    Component('R9', 'C25867', {'1': 'USB_DPU', '2': 'USB_DM'}, 'usb', value='1.5k', note='Low-speed USB pull-up'),
-    # Open-source CH32V003 SWIO programmer
-    Component('C6', 'C1525', {'1': '3V3_OUT', '2': 'GND'}, 'probe', value='100nF', note='At U2 VDD pin 9'),
-    Component('D3', 'C2286', {'1': 'LED_A', '2': 'GND'}, 'probe', value='RED / PROBE'),
-    Component('R10', 'C25744', {'1': 'PROBE_RUN', '2': '3V3_OUT'}, 'probe', value='10k'),
-    Component('R11', 'C11702', {'1': 'PROBE_LED', '2': 'LED_A'}, 'probe', value='1k'),
-    Component('U2', 'C5187096', {'1': 'PROBE_DP', '2': 'USB_DPU', '3': None, '4': 'PROBE_RUN', '5': None, '6': None, '7': 'GND', '8': None, '9': '3V3_OUT', '10': 'PROBE_LED', '11': 'PROBE_SWIO', '12': 'PROBE_SWIO', '13': None, '14': None, '15': None, '16': 'VBUS_N', '17': None, '18': 'PROBE_BOOT_SWIO', '19': 'TARGET_EN', '20': 'PROBE_DM'}, 'probe', value='', note='rv003usb; initial external SWIO provisioning'),
-    # CH32V003 target and switched supply
-    Component('C21', 'C1525', {'1': 'TARGET_3V3', '2': 'GND'}, 'target', value='100nF', note='At CH32 VDD pin 9'),
-    Component('C22', 'C52923', {'1': 'TARGET_3V3', '2': 'GND'}, 'target', value='1uF'),
-    Component('R14', 'C25744', {'1': 'PD7', '2': 'TARGET_3V3'}, 'target', value='10k', note='Keep PD7 option bytes in reset mode'),
-    Component('R15', 'C25076', {'1': 'PROBE_SWIO', '2': 'PD1'}, 'target', value='100', note='Remove to isolate onboard SWIO'),
-    Component('R16', 'C25905', {'1': 'PD1', '2': 'TARGET_3V3'}, 'target', value='5.1k', note='SWIO pull-up to switched target supply'),
-    Component('SW1', 'C720477', {'1': 'PD7', '2': 'GND'}, 'target', value='TARGET RESET'),
-    Component('U1', 'C5187096', {'1': 'PD4', '2': 'PD5', '3': 'PD6', '4': 'PD7', '5': 'PA1', '6': 'PA2', '7': 'GND', '8': 'PD0', '9': 'TARGET_3V3', '10': 'PC0', '11': 'PC1', '12': 'PC2', '13': 'PC3', '14': 'PC4', '15': 'PC5', '16': 'PC6', '17': 'PC7', '18': 'PD1', '19': 'PD2', '20': 'PD3'}, 'target'),
-    # Pico header positions and programming pads
-    Component('J1', 'PICO_HEADER', {'1': 'PD5', '2': 'PD6', '3': 'GND', '4': 'PD0', '5': 'PC3', '6': 'PC1', '7': 'PC2', '8': 'GND', '9': 'PD4', '10': 'PD3', '11': 'PD2', '12': None, '13': 'GND', '14': None, '15': None, '16': None, '17': None, '18': 'GND', '19': None, '20': None, '21': 'PC7', '22': 'PC0', '23': 'GND', '24': 'PC5', '25': 'PC6', '26': None, '27': None, '28': 'GND', '29': None, '30': 'PD7', '31': 'PA2', '32': 'PA1', '33': 'GND', '34': 'PC4', '35': None, '36': '3V3_OUT', '37': '3V3_EN', '38': 'GND', '39': 'VSYS', '40': 'VBUS'}, 'header', value='PICO 40-PIN', note='Bare PCB pads, not an assembled connector', fitted=False),
-    Component('TP1', 'TESTPAD', {'1': 'PROBE_BOOT_SWIO'}, 'header', value='PROBE_BOOT_SWIO', note='Bare copper test pad', fitted=False),
-    Component('TP2', 'TESTPAD', {'1': 'PROBE_RUN'}, 'header', value='PROBE_RUN', note='Bare copper test pad', fitted=False),
-    Component('TP3', 'TESTPAD', {'1': 'TARGET_3V3'}, 'header', value='TARGET_3V3', note='Bare copper test pad', fitted=False),
-    Component('TP4', 'TESTPAD', {'1': 'GND'}, 'header', value='GND', note='Bare copper test pad', fitted=False),
-    Component('TP5', 'TESTPAD', {'1': 'PD1'}, 'header', value='PD1', note='Bare copper test pad', fitted=False),
-    Component('TP6', 'TESTPAD', {'1': 'PD7'}, 'header', value='PD7', note='Bare copper test pad', fitted=False),
-    Component('TP7', 'TESTPAD', {'1': '3V3_OUT'}, 'header', value='3V3_OUT', note='Bare copper test pad', fitted=False),
-)
+def two(ref, part, a, b, section, value='', note=''):
+    return Component(ref,part,{'1':a,'2':b},section,value,note)
 
-SECTIONS = {'power': 'USB/5 V input and two 3.3 V LDOs',
- 'usb': 'USB-C low-speed HID, ESD and VBUS detection',
- 'probe': 'Open-source CH32V003 SWIO programmer',
- 'target': 'CH32V003 target and switched supply',
- 'header': 'Pico header positions and programming pads'}
+
+def mcu_nets():
+    nets={str(n):None for n in TARGET_PINS.values()}
+    for p in HEADER:
+        if p.proposed in TARGET_PINS:nets[str(TARGET_PINS[p.proposed])]=p.proposed
+    for port,net in INTERNAL_SIGNALS.items():nets[str(TARGET_PINS[port])]=net
+    nets['47']='GND';nets['48']='3V3_OUT'
+    return nets
+
+
+COMPONENTS = (
+    *(Component(f'#FLG{i:02}', 'POWER_FLAG', {'1':n}, 'power', n, fitted=False)
+      for i,n in enumerate(('GND','VBUS','VSYS','VIN_SYS','3V3_OUT'),1)),
+    # Diode OR feeds ONLY the control supply. Header VSYS never sees PD VBUS.
+    two('D1','C8598','VIN_SYS','VBUS','power','B5819W','Cathode pin 1; control-rail current only'),
+    two('D4','C8598','VIN_SYS','VSYS','power','B5819W','Cathode pin 1; blocks PD backfeed into header 39'),
+    Component('U4','C780769',{'1':'3V3_OUT','2':None,'3':'VIN_SYS','4':'GND','5':'BUCK_SW','6':'BUCK_BST'},'power',note='AP63203 fixed 3.3 V; EN open per datasheet for autostart'),
+    two('L1','C48496','BUCK_SW','3V3_OUT','power','4.7uH'),
+    two('C1','C13585','VIN_SYS','GND','power','10uF / 50V','Input capacitance/inrush requires bench qualification'),
+    two('C2','C29277','3V3_OUT','GND','power','22uF / 10V'),
+    two('C3','C29277','3V3_OUT','GND','power','22uF / 10V'),
+    two('C4','C1525','BUCK_BST','BUCK_SW','power','100nF / 50V'),
+    # Native USB. CC pins have independent external Rd, even while MCU is blank.
+    Component('J2','C963411',{'A1B12':'GND','B1A12':'GND',**{str(i):'GND' for i in range(13,17)},'A4B9':'VBUS','B4A9':'VBUS','A5':'CC1','B5':'CC2','A6':'USB_DP','B6':'USB_DP','A7':'USB_DM','B7':'USB_DM','A8':None,'B8':None},'usb',note='G-Switch AW drawing 2023-02-01: 5 A VBUS; qualify cable and assembly fit'),
+    two('R3','C25905','CC1','GND','usb','5.1k'),
+    two('R4','C25905','CC2','GND','usb','5.1k'),
+    two('C5','C1525','VBUS','GND','usb','100nF / 50V'),
+    Component('D2','C7519',{'1':'USB_DP','2':'GND','3':'USB_DM','4':'USB_DM','5':'3V3_OUT','6':'USB_DP'},'usb',note='ESD rail is 3.3 V, NEVER negotiated VBUS'),
+    two('C11','C1525','3V3_OUT','GND','usb','100nF / 50V'),
+    # Load switch: integrated back-to-back FETs, reverse blocking, current limit,
+    # OVLO, controlled slew, thermal shutdown and latch-off. No PD controller here.
+    Component('U3','C3662793',{'1':'PD_ENABLE','2':'PD_OVLO','3':None,'4':'PD_FAULT_N','5':'VBUS','6':'PD_OUT','7':'PD_DVDT','8':'GND','9':'PD_ILM','10':None},'pd',note='TPS259470L; 470 variant required for adjustable OVLO, not 472 clamp variant'),
+    two('R7','C25744','PD_ENABLE','GND','pd','10k','Default OFF while MCU blank, reset or bootloader'),
+    two('R8','C25744','PD_OUT','GND','pd','10k','Output bleed; external capacitance affects discharge time'),
+    two('R9','C25744','PD_FAULT_N','3V3_OUT','pd','10k'),
+    two('C8','C1525','PD_DVDT','GND','pd','100nF / 50V','Slew capacitor rated above VBUS + 5 V'),
+    two('C12','C1525','PD_OUT','GND','pd','100nF / 50V'),
+    two('R17','C11702','PD_ILM','GND','pd','1k','Parallel R18: 600 ohm, ~5.56 A nominal fault limit; not usable-load rating'),
+    two('R18','C25867','PD_ILM','GND','pd','1.5k'),
+    two('R20','C4142','VBUS','PD_OVLO','pd','82k'),
+    two('R21','C25900','PD_OVLO','GND','pd','4.7k','OVLO nominal 22.14 V; resistor and comparator tolerances reviewed'),
+    two('R1','C25741','VBUS','VBUS_SENSE','pd','100k'),
+    two('R2','C25744','VBUS_SENSE','GND','pd','10k'),
+    two('R5','C25741','PD_OUT','PDOUT_SENSE','pd','100k'),
+    two('R6','C25744','PDOUT_SENSE','GND','pd','10k'),
+    two('C9','C1525','VBUS_SENSE','GND','pd','100nF / 50V'),
+    two('C10','C1525','PDOUT_SENSE','GND','pd','100nF / 50V'),
+    two('R24','C11702','PD_ILM','CURRENT_SENSE','pd','1k','ADC filter isolates ILM programming node'),
+    two('C13','C1525','CURRENT_SENSE','GND','pd','100nF / 50V'),
+    Component('U1',MCU_PART,mcu_nets(),'target',note='Only MCU; native USB, CC1/CC2 PD PHY, SDI recovery'),
+    two('C6','C1525','3V3_OUT','GND','target','100nF / 50V','Adjacent to U1 pins 48/47'),
+    two('C7','C52923','3V3_OUT','GND','target','1uF'),
+    two('R10','C25744','PA21','3V3_OUT','target','10k','Keep PA21 configured as reset in option bytes'),
+    two('R11','C11702','STATUS_LED','LED_A','target','1k'),
+    two('D3','C2286','LED_A','GND','target','RED / STATUS'),
+    two('R12','C25900','USB_DP','BOOT_PULLUP','target','4.7k','WCH reference download-button pull-up'),
+    two('SW1','C720477','PA21','GND','target','RESET'),
+    two('SW2','C720477','BOOT_PULLUP','3V3_OUT','target','BOOT','Hold during power-up, release before USB ISP'),
+    Component('J1','PICO_HEADER',{str(p.number):None if p.proposed=='NC' else p.proposed for p in HEADER},'header','PICO 40-PIN','Pin 40 is switched 5-20 V; not fixed 5 V VBUS',False),
+    *(Component(f'TP{i}','TESTPAD',{'1':n},'header',n,'SDI recovery / measurement pad',False)
+      for i,n in enumerate(('SDIO','SDCK','3V3_OUT','GND','PA21'),1)),
+)
+SECTIONS={'power':'Fixed 3.3 V control supply','usb':'Native USB-C and PD CC interface',
+          'pd':'Switched negotiated VBUS output','target':'CH32X035 and USB boot entry',
+          'header':'Pico headers and SDI recovery'}

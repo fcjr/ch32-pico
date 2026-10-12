@@ -1,37 +1,35 @@
 # SPDX-License-Identifier: MIT
-# Copyright (c) 2026 ch32-pico contributors
-"""First-order LDO dissipation estimates; prototype limits remain unqualified."""
+"""Rev B first-order power estimates; no assigned prototype current rating."""
 import json
 from .library import ROOT
 
 
 def report():
-    examples=[]
-    for voltage in (4.3,5.0,5.5):
-        for current in (10,20,50,100):
-            examples.append({'vsys_v':voltage,'single_ldo_output_ma':current,
-                'pass_element_dissipation_mw':round((voltage-3.3)*current,1)})
-    return {'status':'calculation only; no validated board current rating',
-        'regulator':'ME6211C33M5G-N','topology':'separate main and target 3.3 V LDOs',
-        'provisional_vsys_range_v':[4.3,5.5], 'load_examples':examples,
-        'target_discharge_resistor_ohm':1000,'target_discharge_current_ma':3.3,
-        'target_discharge_time_constant_us_with_2p1uF':2100,
-        'usb_descriptor_max_ma':100,'external_header_current_test_goal_ma':50,
-        'external_header_current_budget_ma':None,
-        'exclusions':['LDO ground current, transient current and thermal derating',
-            'Dropout variation, input-diode drop and copper voltage drops',
-            'Target/probe firmware current and USB suspend requirements'],
-        'bringup_checks':['Measure both rails and regulator temperature at 5.5 V VSYS',
-            'Measure total USB current before assigning external header capacity',
-            'Verify target rail falls below reset threshold during 20 ms power cycle',
-            'Check USB/VSYS backfeed; do not power the board through pin 36',
-            'Confirm assembled 1 uF capacitor effective capacitance and stability']}
-
+    return {
+        'revision':'B','status':'calculation only; no qualified continuous current rating',
+        'topology':'VBUS -> protected load switch -> pin 40; separate fixed 3.3 V buck',
+        'input_pd_contract_goal_v':20,'input_pd_contract_goal_a':5,
+        'output_continuous_rating_a':None,'3v3_header_bringup_limit_ma':50,
+        'vsys_input_range_v':[4.3,5.5],
+        'ovlo_v':{'nominal':round(1.2*(1+82000/4700),4),
+                  'minimum_1percent_resistors':round(1.183*(1+82000*.99/(4700*1.01)),4),
+                  'maximum_1percent_resistors':round(1.223*(1+82000*1.01/(4700*.99)),4),
+                  'excludes':'pin leakage and dynamic overshoot; review on bench'},
+        'ilm_resistance_ohm':600,'fault_current_threshold_nominal_a':round(3335/600,3),
+        'fault_current_is_not_output_rating':True,
+        'switch_dissipation_at_5a_w':{'typical_28p3_milliohm':.7075,
+                                     'example_hot_45_milliohm':1.125},
+        'adc_divider':{'top_ohm':100000,'bottom_ohm':10000,'at_20v':20/11,'at_24v':24/11},
+        'bringup_checks':['Validate copper, plated holes, contact and switch temperatures at load',
+            'Measure board input current and subtract it from the negotiated output budget',
+            'Check 5/9/12/15/20 V attach, detach, hard reset and renegotiation with output disabled',
+            'Measure input inrush, 3.3 V ripple, short-circuit response and output discharge',
+            'Verify no PD VBUS backfeed into VSYS or USB from PD_OUT',
+            'Check OVLO tolerances/transients against 23 V switch operating limit',
+            'Qualify ILM current sensing on supported X035 silicon lots'],
+    }
 
 def main():
-    path=ROOT/'build/power-review.json'
-    path.write_text(json.dumps(report(),indent=2)+'\n')
-    print(f'Wrote {path}; current rating remains unassigned')
-
-
+    p=ROOT/'build/power-review.json';p.write_text(json.dumps(report(),indent=2)+'\n')
+    print(f'Wrote {p}; continuous output rating remains unassigned')
 if __name__=='__main__':main()

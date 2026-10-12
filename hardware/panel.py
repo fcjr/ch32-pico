@@ -40,6 +40,24 @@ def validate_copies(source,panel):
         return {(ref,str(p[1]),tuple(map(float,one(p,'at')[1:3]))):one(p,'net')[-1] if children(p,'net') else None
                 for ref,fp in fps.items() for p in children(fp,'pad') if p[1]}
     expected_nets=terminal_map(source_refs);results=[]
+    def artwork(node, dx=0, dy=0):
+        n=copy.deepcopy(node)
+        n[:]=[v for v in n if not (isinstance(v,list) and v and v[0]=='uuid')]
+        for key in ('at','start','end'):
+            for point in children(n,key):
+                point[1:3]=[Atom(str(round(float(point[1])-dx,5))),
+                            Atom(str(round(float(point[2])-dy,5)))]
+        def canonical(v):
+            if isinstance(v,list):return tuple(canonical(x) for x in v)
+            if isinstance(v,Atom):
+                try:return round(float(v),5)
+                except ValueError:pass
+            return v
+        return canonical(n)
+    source_art=[n for kind in ('gr_text','gr_line') for n in children(original,kind)
+                if one(n,'layer')[1] in ('F.SilkS','B.SilkS')]
+    panel_art=[n for kind in ('gr_text','gr_line') for n in children(doc,kind)
+               if one(n,'layer')[1] in ('F.SilkS','B.SilkS')]
     for i in range(COPIES):
         prefix=f'B{i}_';fps={ref[len(prefix):]:fp for ref,fp in refs.items() if ref.startswith(prefix)}
         if fps.keys()!=source_refs.keys():raise ValueError(f'Panel copy {i} has missing/extra footprints')
@@ -63,7 +81,12 @@ def validate_copies(source,panel):
                     point=one(n,key);point[1:3]=[Atom(f'{float(point[1])-dx:.6f}'),Atom(f'{float(point[2])-dy:.6f}')]
                 copper.append(n)
         if fingerprint(copper)!=fingerprint(original):raise ValueError(f'Panel copy {i} changed trace/via geometry')
-        results.append({'prefix':prefix,'translation_mm':[dx,dy],'physical_components':len(fps),'pad_and_copper_parity':True})
+        translated=[artwork(n,dx,dy) for n in panel_art]
+        if any(translated.count(artwork(n))!=1 for n in source_art):
+            raise ValueError(f'Panel copy {i} changed silkscreen text or logo')
+        results.append({'prefix':prefix,'translation_mm':[dx,dy],'physical_components':len(fps),
+                        'pad_and_copper_parity':True,'silkscreen_parity':True,
+                        'silkscreen_items':len(source_art)})
     return results
 
 
@@ -99,6 +122,8 @@ def assembly_files(board,out,copies):
 
 
 def main():
+    from .release import require_current_layout
+    require_current_layout()
     source=ROOT/'hardware/review/ch32-pico.kicad_pcb';out=ROOT/'build/panel-preview';out.mkdir(exist_ok=True)
     saved=json.loads((source.parent/'validation.json').read_text())
     if hashlib.sha256(source.read_bytes()).hexdigest()!=saved['board_sha256']:

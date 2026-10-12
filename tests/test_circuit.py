@@ -23,11 +23,11 @@ class CircuitContract(unittest.TestCase):
 
     def test_supply_pin_cannot_be_forgotten(self):
         with self.assertRaisesRegex(ValueError,'supply pin left NC'):
-            verify_contract(self.altered('U2',{'9':None}))
+            verify_contract(self.altered('U1',{'48':None}))
 
     def test_usb_pin_swap_rejected(self):
-        with self.assertRaisesRegex(ValueError,'U2.1'):
-            verify_contract(self.altered('U2',{'1':'PROBE_DM','20':'PROBE_DP'}))
+        with self.assertRaisesRegex(ValueError,'U1.32'):
+            verify_contract(self.altered('U1',{'32':'USB_DP','33':'USB_DM'}))
 
     def test_exported_netlist_corruption_rejected(self):
         path=Path('build/ch32-pico.net.xml')

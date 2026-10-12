@@ -10,7 +10,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-BOARD_REVISION = 'A'
+BOARD_REVISION = 'B'
 
 
 @dataclass(frozen=True)
@@ -48,76 +48,86 @@ class HeaderPin:
 
 MECHANICAL = Mechanical()
 
-# Requirements, not measured capabilities. Component selection and prototype
-# testing must establish startup, load capacity, and enable behavior.
+# Rev B separates the negotiated USB rail from Pico carrier power pins.
+MCU_PART = 'C29779902'
+MCU_MPN = 'CH32X035C8T6'
 POWER_REQUIREMENTS = {
-    "topology": "dual-LDO",
-    "vsys_min_v": 4.3,
-    "vsys_max_v": 5.5,
-    "output_v": 3.3,
-    "header_current_goal_ma": 50,
-    "usb_backfeed_allowed": False,
+    "topology": "fixed-3v3-buck-and-switched-pd-vbus",
+    "vsys_min_v": 4.3, "vsys_max_v": 5.5, "output_v": 3.3,
+    "header_current_goal_ma": 50, "usb_backfeed_allowed": False,
+    "pd_voltage_steps_v": (5, 9, 12, 15, 20),
+    "pd_output_current_goal_ma": 5000,
+    "pd_output_location": "Pico pin 40, replaces fixed 5 V VBUS",
 }
 
-# CH32V003F4P6 TSSOP-20 physical package pins, independent of header numbering.
-TARGET_PINS = {
-    "PD4": 1, "PD5": 2, "PD6": 3, "PD7": 4,
-    "PA1": 5, "PA2": 6, "VSS": 7, "PD0": 8, "VDD": 9,
-    "PC0": 10, "PC1": 11, "PC2": 12, "PC3": 13, "PC4": 14,
-    "PC5": 15, "PC6": 16, "PC7": 17, "PD1": 18, "PD2": 19, "PD3": 20,
+# WCH CH32X035 datasheet, LQFP48 pin diagram and table 2-1.
+TARGET_PINS = dict(zip(
+    ('PA15 PA16 PA17 PA18 PA19 PA20 PA21 PA22 PA23 PA0 PA1 PA2 '
+     'PA3 PA4 PA5 PA6 PA7 PC6 PC7 PB0 PB1 PB2 PB3 PB4 PB5 PB6 PB7 '
+     'PB8 PB9 PB10 PB11 PC16 PC17 PC18 PB12 PB13 PC19 PC14 PC15 '
+     'PA8 PA9 PA10 PA11 PA12 PA13 PA14 VSS VDD').split(),range(1,49)))
+
+# Pins reserved for USB, PD, recovery and board power control.
+INTERNAL_SIGNALS = {
+    'PC16':'USB_DM', 'PC17':'USB_DP', 'PC14':'CC1', 'PC15':'CC2',
+    'PC18':'SDIO', 'PC19':'SDCK', 'PB0':'VBUS_SENSE',
+    'PB1':'PDOUT_SENSE', 'PB2':'PD_ENABLE', 'PB3':'STATUS_LED',
+    'PB4':'PD_FAULT_N', 'PA3':'CURRENT_SENSE',
 }
 
 HEADER = tuple(HeaderPin(*row) for row in (
-    (1, "GP0", "PD5", "USART1 TX"),
-    (2, "GP1", "PD6", "USART1 RX; no onboard UART bridge"),
+    (1, "GP0", "PB10", "USART1 TX, default mapping"),
+    (2, "GP1", "PB11", "USART1 RX, default mapping"),
     (3, "GND", "GND", "Ground"),
-    (4, "GP2", "PD0", "GPIO"),
-    (5, "GP3", "PC3", "GPIO"),
-    (6, "GP4", "PC1", "I2C1 SDA"),
-    (7, "GP5", "PC2", "I2C1 SCL"),
+    (4, "GP2", "PA8", "GPIO"),
+    (5, "GP3", "PA9", "GPIO"),
+    (6, "GP4", "PA11", "I2C SDA, default mapping"),
+    (7, "GP5", "PA10", "I2C SCL, default mapping"),
     (8, "GND", "GND", "Ground"),
-    (9, "GP6", "PD4", "GPIO / TIM2 CH1 / ADC A7"),
-    (10, "GP7", "PD3", "GPIO / TIM2 CH2 / ADC A4"),
-    (11, "GP8", "PD2", "GPIO / TIM1 CH1 / ADC A3"),
-    (12, "GP9", "NC", "Unconnected"),
+    (9, "GP6", "PA12", "GPIO"),
+    (10, "GP7", "PA13", "GPIO"),
+    (11, "GP8", "PA14", "GPIO"),
+    (12, "GP9", "PA15", "GPIO; USART2 TX remap 2"),
     (13, "GND", "GND", "Ground"),
-    (14, "GP10", "NC", "Unconnected"),
-    (15, "GP11", "NC", "Unconnected"),
-    (16, "GP12", "NC", "Unconnected"),
-    (17, "GP13", "NC", "Unconnected"),
+    (14, "GP10", "PA16", "GPIO; USART2 RX remap 2"),
+    (15, "GP11", "PA17", "GPIO"),
+    (16, "GP12", "PA18", "GPIO"),
+    (17, "GP13", "PA19", "GPIO"),
     (18, "GND", "GND", "Ground"),
-    (19, "GP14", "NC", "Unconnected"),
-    (20, "GP15", "NC", "Unconnected"),
-    (21, "GP16", "PC7", "SPI1 MISO"),
-    (22, "GP17", "PC0", "Software-controlled SPI chip select"),
+    (19, "GP14", "PA20", "GPIO"),
+    (20, "GP15", "PA22", "GPIO"),
+    (21, "GP16", "PA6", "SPI MISO, default mapping"),
+    (22, "GP17", "PA4", "SPI NSS or software chip select"),
     (23, "GND", "GND", "Ground"),
-    (24, "GP18", "PC5", "SPI1 SCK"),
-    (25, "GP19", "PC6", "SPI1 MOSI"),
-    (26, "GP20", "NC", "Unconnected"),
-    (27, "GP21", "NC", "Unconnected"),
+    (24, "GP18", "PA5", "SPI SCK, default mapping"),
+    (25, "GP19", "PA7", "SPI MOSI, default mapping"),
+    (26, "GP20", "PB6", "GPIO"),
+    (27, "GP21", "PB7", "GPIO"),
     (28, "GND", "GND", "Ground"),
-    (29, "GP22", "NC", "Unconnected"),
-    (30, "RUN", "PD7", "Target reset; retain reset option-byte configuration"),
-    (31, "GP26 / ADC0", "PA2", "ADC A0; use internal target oscillator"),
-    (32, "GP27 / ADC1", "PA1", "ADC A1; use internal target oscillator"),
-    (33, "AGND", "GND", "Ground; continuous ground plane"),
-    (34, "GP28 / ADC2", "PC4", "ADC A2"),
-    (35, "ADC_VREF", "NC", "No external ADC reference input on CH32V003"),
-    (36, "3V3_OUT", "3V3_OUT", "3.3 V output; current budget pending regulator selection"),
-    (37, "3V3_EN", "3V3_EN", "Pull low to disable board supply, including onboard probe"),
+    (29, "GP22", "PA23", "GPIO"),
+    (30, "RUN", "PA21", "RST input; preserve reset option-byte configuration"),
+    (31, "GP26 / ADC0", "PA0", "ADC channel 0"),
+    (32, "GP27 / ADC1", "PA1", "ADC channel 1"),
+    (33, "AGND", "GND", "Continuous ground plane"),
+    (34, "GP28 / ADC2", "PA2", "ADC channel 2"),
+    (35, "ADC_VREF", "NC", "No independent external ADC reference input"),
+    (36, "3V3_OUT", "3V3_OUT", "Fixed 3.3 V output; prototype load rating pending"),
+    (37, "3V3_EN", "NC", "Reserved; isolated from high-voltage regulator control"),
     (38, "GND", "GND", "Ground"),
-    (39, "VSYS", "VSYS", "4.3-5.5 V provisional input range; qualify LDO dropout/thermal limits"),
-    (40, "VBUS", "VBUS", "USB 5 V; isolate VSYS from upstream USB"),
+    (39, "VSYS", "VSYS", "4.3-5.5 V input only; diode-isolated from PD VBUS"),
+    (40, "VBUS", "PD_OUT", "Switched negotiated 5-20 V output; incompatible with fixed-5V Pico carriers"),
 ))
 
 
 def validate() -> None:
-    if [p.number for p in HEADER] != list(range(1, 41)):
+    if [p.number for p in HEADER] != list(range(1,41)):
         raise ValueError("Header must contain pins 1 through 40 exactly once")
-    signals = [p.proposed for p in HEADER if p.proposed.startswith(("PA", "PC", "PD"))]
-    if len(set(signals)) != len(signals):
-        raise ValueError("Do not duplicate GPIOs to fill unused Pico positions")
-    if set(signals) != set(TARGET_PINS) - {"VSS", "VDD", "PD1"}:
-        raise ValueError("Every target GPIO except reserved SWIO must be accounted for")
-    if any(p.proposed != "GND" for p in HEADER if p.pico in {"GND", "AGND"}):
+    signals=[p.proposed for p in HEADER if p.proposed in TARGET_PINS]
+    if len(set(signals)) != len(signals) or len(signals)!=27:
+        raise ValueError("Require 26 distinct GPIOs and one reset input")
+    if set(signals) & set(INTERNAL_SIGNALS):
+        raise ValueError("Board controls, USB, PD and debug must not share header GPIO")
+    if any(p.proposed!='GND' for p in HEADER if p.pico in {'GND','AGND'}):
         raise ValueError("Pico ground positions must remain ground")
+    if {p.number for p in HEADER if p.proposed=='NC'}!={35,37}:
+        raise ValueError("Rev B reserves ADC_VREF and 3V3_EN header positions")

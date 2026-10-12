@@ -7,6 +7,8 @@ import shutil
 import tempfile
 import zipfile
 from .library import ROOT
+from .circuit import COMPONENTS
+from .design import BOARD_REVISION, MCU_PART
 from .order_review import report as order_report
 from .assembly_review import report as assembly_report, svg_guide
 
@@ -16,6 +18,8 @@ def sha(path):
 
 
 def main():
+    from .release import require_current_layout
+    require_current_layout()
     # These checks reject stale panel/source hashes, changed fabrication files,
     # missing fitted references and changed CPL coordinates or rotations.
     order = order_report()
@@ -45,7 +49,7 @@ def main():
         (out / 'assembly-orientation.svg').write_text(svg_guide(assembly, board))
         (out / 'order-review.json').write_text(json.dumps(order, indent=2) + '\n')
         (out / 'README.txt').write_text(
-            'ch32-pico: quote review package, NOT an order release\n\n'
+            f'ch32-pico Rev {BOARD_REVISION}: quote review package, NOT an order release\n\n'
             'Extract this package first. Upload gerbers.zip to the PCB form.\n'
             'Use bom.csv and cpl.csv at the assembly upload step. Do not upload\n'
             'this entire review package as a Gerber archive.\n\n'
@@ -59,18 +63,19 @@ def main():
             'Confirm standard multilayer via pricing for those actual sizes.\n'
             'No filled/capped via-in-pad; no controlled-impedance certification.\n'
             'Assembly: Standard PCBA, top side, all five panels.\n'
-            '132 fitted placements per panel, 660 across the batch.\n\n'
+            f'{assembly["panel_cpl_rows_checked"]} fitted placements per panel, '
+            f'{assembly["panel_cpl_rows_checked"] * order["panels"]} across the batch.\n\n'
             'Review pin 1, polarity, USB mouth and centroids in JLC models using\n'
             'assembly-orientation.svg and its JSON coordinates. CPL angles are\n'
             'KiCad angles; JLC model offsets remain unverified.\n'
-            'Forty C5187096 MCUs are fitted. Confirm allocation; public price\n'
-            'tiers favor requesting 50, but stock is unallocated.\n'
+            f'{order["total_boards"]} {MCU_PART} MCUs are fitted; stock is unallocated.\n'
             f'{supply_notice}'
             'Confirm all charged quantities and attrition in the factory quote.\n\n'
             'Confirm rail/tab handling, hybrid USB assembly, actual stackup,\n'
             'via pricing, castellations and the complete delivered price.\n'
             'The quote form may reset settings when other choices change.\n'
-            'Physical USB, power, cable-fit and programmer qualification remain.\n'
+            'Physical USB, PD power, cable fit and native USB firmware qualification remain.\n'
+            'The 5 A design goal is not a qualified continuous current rating.\n'
             'No purchase, stock reservation or upload is performed by this build.\n')
         from scripts.license_files import copy_notices
         copy_notices(out)

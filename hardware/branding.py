@@ -8,17 +8,18 @@ from .sexp import children, one, parse, dump
 
 def artwork():
     nodes = []
-    for label, x, y, size in [('ch32-pico', 10.5, 24.9, 1.0),
-                              ('LEFT SHIFT', 11.3, 27.0, .8),
-                              ('LOGICAL', 11.3, 28.2, .8),
-                              (f'REV {BOARD_REVISION}', 10.5, 48.2, .8)]:
+    for label, x, y, size in [('ch32-pico', 10.5, 28.5, .9),
+                              ('LEFT SHIFT', 10.5, 30.0, .8),
+                              ('LOGICAL', 10.5, 31.2, .8),
+                              (f'REV {BOARD_REVISION}', 10.5, 16.5, .8),
+                              ('PDOUT 5-20V',10.5,15.0,.8)]:
         nodes.append(parse(f'''(gr_text "{label}" (at {x} {y}) (layer "F.SilkS")
             (uuid "{uid('brand/text/' + label)}")
             (effects (font (size {size} {size}) (thickness 0.15))))'''))
     # Double left-chevron mark from Left Shift Logical's original SVG.
-    for index, x in enumerate((6.25, 7.2)):
-        for half, (a, b) in enumerate((((x, 26.7), (x-.8, 27.5)),
-                                       ((x-.8, 27.5), (x, 28.3)))):
+    for index, x in enumerate((5.5, 6.3)):
+        for half, (a, b) in enumerate((((x, 29.7), (x-.8, 30.5)),
+                                       ((x-.8, 30.5), (x, 31.3)))):
             nodes.append(parse(f'''(gr_line (start {a[0]} {a[1]}) (end {b[0]} {b[1]})
                 (stroke (width 0.22) (type solid)) (layer "F.SilkS")
                 (uuid "{uid(f'brand/chevron/{index}/{half}')}"))'''))
@@ -29,7 +30,7 @@ def apply(doc):
     """Replace only the managed artwork; repeated builds are idempotent."""
     marks = artwork()
     ids = {one(n, 'uuid')[1] for n in marks}
-    labels = {'CH32 PICO', 'ch32-pico', 'LEFT SHIFT', 'LOGICAL'}
+    labels = {'CH32 PICO', 'ch32-pico', 'LEFT SHIFT', 'LOGICAL', 'PDOUT 5-20V'}
     doc[:] = [n for n in doc if not (isinstance(n, list) and n and (
         (n[0] == 'gr_text' and (n[1] in labels or n[1].startswith('REV '))) or
         (n[0] == 'gr_line' and children(n, 'uuid') and one(n, 'uuid')[1] in ids)))]

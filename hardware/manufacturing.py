@@ -77,6 +77,8 @@ def assembly_files(positions, directory):
 
 
 def export(directory):
+    from .release import require_current_layout
+    require_current_layout()
     review=ROOT/'hardware/review'
     saved=json.loads((review/'validation.json').read_text())
     original=review/'ch32-pico.kicad_pcb'

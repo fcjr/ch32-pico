@@ -22,7 +22,9 @@ def main():
     # Regrade passing candidates against the current source, then prefer fewer
     # vias and shorter copper. All electrical gates take priority over cost.
     from .branding import update as update_branding
+    from .markings import update as update_markings
     for name in passing:
+        update_markings(run/(name+'.kicad_pcb'))
         update_branding(run/(name+'.kicad_pcb'))
     candidates={name:grade(run/(name+'.kicad_pcb')) for name in passing}
     passing=[name for name,result in candidates.items() if result['passes_connectivity_and_drc']]
@@ -45,12 +47,12 @@ def main():
         'engine':engine,'selection':'passing DRC/connectivity, then minimum vias and trace length',
         'checks':saved,'board_sha256':hashlib.sha256(board.read_bytes()).hexdigest(),
         'comparison':comparison,'usb_mechanical_fit':usb_fit(parse(board.read_text())), 'open_reviews':[
-            'Final PCB/assembly price, purchase minimums and 20-board allocation (docs/cost.md)',
+            'Rev B PCB/assembly quote, MCU stock and 20-device allocation (docs/revision-b.md)',
             'Measured USB performance; nonuniform connector/package fanouts (docs/usb-routing.md)',
             'Physical cable/locating-peg fit; upper holes exclude ordinary screw heads (docs/mechanical.md)',
-            'Decoupling, rail current/drop, inrush and USB suspend power budget',
-            'Factory programmer flashing, USB/SWIO timing, target flash/readback/recovery and stack margin',
-            'JLC placement rotations, order quantity/attrition and target pre-order allocation']}
+            '5 A power copper/contact temperature, eFuse faults, inrush, discharge, backfeed and fixed 3.3 V load budget',
+            'Native USB ISP/recovery, open PD/CDC firmware integration, reset/detach handling and watchdog',
+            'JLC IC/diode polarity and stencil review, 0.100 mm TI stencil example, order quantity/attrition']}
     (directory/'validation.json').write_text(json.dumps(report,indent=2)+'\n')
     for name,layers,extra in [('front','F.Cu,F.SilkS,Edge.Cuts',[]),
                               ('back','B.Cu,B.SilkS,Edge.Cuts',['--mirror']),
@@ -58,6 +60,8 @@ def main():
                               ('power','In2.Cu,Edge.Cuts',[])]:
         subprocess.run(['kicad-cli','pcb','export','svg','--mode-single','--layers',layers,
             '--fit-page-to-board','--exclude-drawing-sheet',*extra,'-o',str(directory/(name+'.svg')),str(board)],check=True)
+        svg=directory/(name+'.svg')
+        svg.write_text('\n'.join(line.rstrip() for line in svg.read_text().splitlines())+'\n')
     print(f'Saved review checkpoint to {directory}; no fabrication release created')
 
 

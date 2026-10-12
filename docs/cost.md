@@ -1,3 +1,6 @@
+> **Rev A reference.** This document describes the former CH32V003 board.
+> See [Revision B](revision-b.md) for the current X035/PD design.
+
 # Cost and sourcing
 
 The current circuit has 33 fitted components and 17 unique LCSC part numbers.

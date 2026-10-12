@@ -6,28 +6,29 @@ selects its LCSC C-number; `hardware/library.py` reads the associated metadata
 and assigns reviewed electrical pin types. The schematic generator draws its
 own typed symbols instead of using the importer's unspecified pin types.
 
-The active CH32V003 footprint is the KiCad 10.0.6 TSSOP-20 land pattern.
-The selected G-Switch GT-USB-7010ASV connector is derived from a pinned,
-unmodified KiCad footprint kept in `hardware/research/usb-c`.
-Run `python3 scripts/prepare_lowcost_usb.py` to reproduce the selected file.
-The result has been checked to regenerate byte-for-byte.
+Revision B uses the KiCad LQFP-48 7 × 7 mm land pattern for CH32X035C8T6
+and SOT-23-6 for USBLC6-2SC6. `scripts/prepare_footprints.py` vendors those
+patterns and moves imported legends to fabrication layers. Normal builds use
+the checked-in files and do not depend on the workstation's library.
 
-Common USB power/ground contacts are merged into single physical lands, and
-shell stake numbers match the source netlist. A 25 um tailward SMT-row shift
-retains the manufacturer's land-pattern tolerance while clearing the locating
-holes. The courtyard follows the shell/stakes with 0.10 mm allowance. This
-preserves the Pico mounting holes but does not provide ordinary screw-head
-clearance. See [mechanical fit](../../docs/mechanical.md).
+`scripts/prepare_pd_footprints.py` generates the selected GT-USB-7010AW
+connector and TI RPW0010A eFuse footprint. The AW drawing specifies 5 A on
+VBUS. Its SMT row has a 50 µm tailward adjustment within the manufacturer's
+land-pattern tolerance to clear the locating holes. See the
+[connector research](../research/usb-c/README.md) for the pinned source and
+mechanical limits. Pico mounting holes remain present; ordinary screw heads
+do not fit beside this connector.
 
-The imported ME6211 SOT-23-5 land pattern uses pin 1 VIN, 2 GND, 3 CE, 4 NC
-and 5 VOUT. Imported legends are on fabrication layers; board silkscreen is
-explicit in the generator. Unavailable 3D model references are removed.
-Normal builds use these local files rather than workstation-global libraries.
+The eFuse copper follows TI drawing 4225183/A. Overlapping rectangles share
+terminal numbers at the L-shaped corner lands. Separate paste-only apertures
+follow TI's 0.100 mm stencil example, including two windows per IN/OUT land.
+The nominal paste coverage is about 93% at corner terminals and 82% at IN/OUT.
+JLC must still review stencil thickness and assembly orientation.
 
-The library contains only the 17 exact fitted LCSC parts and their active
-footprints, plus generated Pico header and test-pad geometry. Duplicate import
-records have been removed. `scripts/prepare_footprints.py` reproduces the
-current MCU land pattern and normalizes the active local library.
+LCSC import metadata identifies every fitted part by its C-number. Rev A
+parts and preparation scripts remain available for maintaining the older
+generation workflow; the current fitted population comes from `circuit.py`.
+Rejected experimental Rev B package duplicates have been removed.
 
 KiCad library source: [kicad-footprints](https://gitlab.com/kicad/libraries/kicad-footprints).
 Its [CC BY-SA 4.0 license with library exception](https://www.kicad.org/libraries/license/)
@@ -40,7 +41,7 @@ holes. `TestPad_1mm` is a local PCB feature, not a purchased component. Review
 all exact manufacturer package drawings and JLC assembly orientation before
 releasing a manufacturing package.
 
-The ST USBLC6-2P6 ESD device, C15999, uses a locally generated SOT-666
+For the archived Rev A design, ST USBLC6-2P6, C15999, uses a locally generated SOT-666
 footprint from [ST DS4260 Rev 7, Figure 21](https://www.st.com/resource/en/datasheet/usblc6-2.pdf).
 Run `python3 scripts/prepare_esd_footprint.py` to reproduce it. The six lands
 are 0.30 x 0.99 mm with 0.50 mm pitch and a 0.62 mm gap between rows.

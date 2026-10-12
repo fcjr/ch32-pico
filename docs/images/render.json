@@ -1,7 +1,7 @@
 {
-  "source_board_sha256": "a17cb7df5bfba40c9c3ec2b4166ca5c04f9bea77905971b759898072db755837",
+  "source_board_sha256": "fda5084884e82e4d6a47ff247aa61ac8ef5d7558dbf2b9f779ec289d94008f49",
   "models_manifest": "../render-models.json",
-  "fitted_models": 33,
+  "fitted_models": 41,
   "tool": "10.0.6",
   "purpose": "CAD illustration, not proof of physical or assembly fit"
 }

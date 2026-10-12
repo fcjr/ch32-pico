@@ -1,3 +1,6 @@
+> **Rev A reference.** This document describes the former CH32V003 board.
+> See [Revision B](revision-b.md) for the current X035/PD design.
+
 # ch32-pico development plan
 
 The current implementation uses two CH32V003F4P6 devices, a G-Switch

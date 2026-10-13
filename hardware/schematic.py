@@ -63,7 +63,11 @@ def symbol(code,part, qualified=False):
     elif part.footprint.startswith('IND-'):
         drawing=''.join(f'(arc (start {px} 0) (mid {px+0.635} 0.635) (end {px+1.27} 0) {stroke} (fill (type none)))'
                         for px in (-2.54,-1.27,0,1.27))
-    elif code in ('POWER_FLAG','TESTPAD'):
+    elif code == 'SOLDER_JUMPER':
+        drawing=line([(-2.54,0),(-0.8,0)])+line([(0.8,0),(2.54,0)])
+        for px in (-0.8,0.8):
+            drawing+=f'(circle (center {px} 0) (radius 0.3) {stroke} (fill (type none)))'
+    elif code in ('POWER_FLAG','TESTPAD','USB_PROBE','SMALL_PROBE'):
         drawing=f'(circle (center 0 0) (radius 1) {stroke} (fill (type none)))'+line([(-2.54,0),(-1,0)])
     else:
         box_h=1.016 if small else h

@@ -1,12 +1,13 @@
 # SPDX-License-Identifier: MIT
 # Copyright (c) 2026 ch32-pico contributors
-"""Rev D electrical source. Every terminal has an explicit net or NC.
+"""Rev E electrical source. Every terminal has an explicit net or NC.
 
 CH32X035 is the only MCU and PD controller. PD_OUT is switched VBUS;
 the fixed buck powers only the MCU and 3V3 header. Prototype, not released.
 """
 from __future__ import annotations
 from dataclasses import dataclass
+from .diagnostics import DIAGNOSTICS
 from .design import HEADER, TARGET_PINS, INTERNAL_SIGNALS, MCU_PART, EXPANSION_SIGNALS
 
 @dataclass(frozen=True)
@@ -29,7 +30,9 @@ def mcu_nets():
     for p in HEADER:
         if p.proposed in TARGET_PINS:nets[str(TARGET_PINS[p.proposed])]=p.proposed
     for port,net in INTERNAL_SIGNALS.items():nets[str(TARGET_PINS[port])]=net
-    for port in EXPANSION_SIGNALS:nets[str(TARGET_PINS[port])]=port
+    for port in EXPANSION_SIGNALS:
+        if port in TARGET_PINS:nets[str(TARGET_PINS[port])]=port
+    nets[str(TARGET_PINS['PC7'])]='PC7'  # SJ1 optional header connection
     nets['47']='GND';nets['48']='3V3_OUT'
     return nets
 
@@ -83,10 +86,13 @@ COMPONENTS = (
     two('SW1','C720477','PA21','GND','target','RESET'),
     two('SW2','C720477','BOOT_PULLUP','3V3_OUT','target','BOOT','Hold during power-up, release before USB ISP'),
     Component('J1','PICO_HEADER',{str(p.number):None if p.proposed=='NC' else p.proposed for p in HEADER},'header','PICO 40-PIN','Pin 40 is switched 5-20 V; not fixed 5 V VBUS',False),
+    Component('SJ1','SOLDER_JUMPER',{'1':'GPIO35','2':'PC7'},'header','PC7 OPTION','Normally open; user solder bridge connects header 35 to PC7. No factory paste or assembly.',False),
     *(Component(f'TP{i}','TESTPAD',{'1':n},'header',n,'SDI recovery / measurement pad',False)
       for i,n in enumerate(('SDIO','SDCK','3V3_OUT','GND','PA21'),1)),
     *(Component(f'TP{i}','TESTPAD',{'1':n},'header',n,'Underside expansion solder pad',False)
       for i,n in enumerate((*EXPANSION_SIGNALS,'GND'),6)),
+    *(Component(d.ref,d.part,{'1':d.net},'header',d.net,
+                'Diagnostic probe contact; no paste or fitted component',False) for d in DIAGNOSTICS),
 )
 SECTIONS={'power':'Fixed 3.3 V control supply','usb':'Native USB-C and PD CC interface',
           'pd':'Switched negotiated VBUS output','target':'CH32X035 and USB boot entry',

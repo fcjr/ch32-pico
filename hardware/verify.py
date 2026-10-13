@@ -42,9 +42,28 @@ def verify_contract(components=COMPONENTS):
         if p.proposed in TARGET_PINS:require('U1',{TARGET_PINS[p.proposed]:p.proposed})
     for port,net in INTERNAL_SIGNALS.items():require('U1',{TARGET_PINS[port]:net})
     for i,port in enumerate(EXPANSION_SIGNALS,6):
-        require('U1',{TARGET_PINS[port]:port})
+        if port in TARGET_PINS:require('U1',{TARGET_PINS[port]:port})
         require(f'TP{i}',{1:port})
     require('TP13',{1:'GND'})
+    from .diagnostics import DIAGNOSTICS
+    for d in DIAGNOSTICS:
+        require(d.ref,{1:d.net})
+        if c[d.ref].fitted:raise ValueError('Diagnostic pads must be bare copper')
+    require('SJ1',{1:'GPIO35',2:'PC7'})
+    require('U1',{19:'PC7',24:'PD_FAULT_N'})
+    require('R9',{1:'PD_FAULT_N',2:'3V3_OUT'})
+    pc7_nodes={(x.ref,p) for x in components for p,n in x.nets.items() if n=='PC7'}
+    if pc7_nodes!={('U1','19'),('SJ1','2')}:
+        raise ValueError('PC7 must connect only MCU and SJ1; TP7 is FAULT')
+    if c['SJ1'].fitted:
+        raise ValueError('SJ1 must remain a bare, normally open copper jumper')
+    jumper_nodes={(x.ref,p) for x in components for p,n in x.nets.items() if n=='GPIO35'}
+    if jumper_nodes!={('J1','35'),('SJ1','1')}:
+        raise ValueError('Header 35 must be isolated from PC7 by SJ1')
+    exposed={net for item in components if item.ref=='J1' or item.ref=='SJ1' or item.ref.startswith('TP')
+             for net in item.nets.values() if net is not None}
+    if set(c['U1'].nets.values())-exposed:
+        raise ValueError('Every MCU net must have header, jumper or probe access')
     require('SW1',{1:'PA21',2:'GND'})
     require('SW2',{1:'BOOT_PULLUP',2:'3V3_OUT'})
     require('R12',{1:'USB_DP',2:'BOOT_PULLUP'})
@@ -54,7 +73,7 @@ def verify_contract(components=COMPONENTS):
     if shutdown_nodes!={('J1','37'),('U4','2')}:
         raise ValueError('3V3_EN must connect only header 37 and regulator EN, with no VIN pull-up')
     enable_nodes={(x.ref,p) for x in components for p,n in x.nets.items() if n=='PD_ENABLE'}
-    if enable_nodes!={('U1','22'),('U3','1'),('R7','1')}:
+    if enable_nodes!={('U1','22'),('U3','1'),('R7','1'),('TP21','1')}:
         raise ValueError('PD_ENABLE must carry control only')
     for ref in ('C1','C5','C8','C12'):
         if c[ref].part not in {'C13585','C1525'}:raise ValueError('High-voltage capacitor rating changed')

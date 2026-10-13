@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-"""Revs C/D locked USB, local buck loops and provisional high-current copper.
+"""Revs C/D/E locked USB, local buck loops and provisional high-current copper.
 
 Coordinates are reviewed against the generated placement with independent DRC.
 Passing DRC does not establish a 5 A thermal/contact rating.
@@ -210,6 +210,10 @@ def main():
         (keepout (tracks allowed) (vias allowed) (pads allowed) (copperpour not_allowed) (footprints allowed))
         (fill (thermal_gap 0.3) (thermal_bridge_width 0.3))
         (polygon (pts (xy 4.45 13.15) (xy 5.65 13.15) (xy 5.65 14.35) (xy 4.45 14.35))))'''))
+    from .design import BOARD_REVISION
+    if BOARD_REVISION=='E':
+        from .stitching import apply as stitch
+        stitch(doc)
     out.write_text(dump(doc)+'\n')
     copy_rules(source,out)
     from .design import BOARD_REVISION

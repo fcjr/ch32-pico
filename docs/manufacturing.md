@@ -1,31 +1,32 @@
-> **Rev A reference.** The [current Rev C design](revision-c.md) supersedes the circuit, pinout, costs and manufacturing status below.
-
-# JLC manufacturing preview
+# JLCPCB fabrication files
 
 ## Files for the five-panel prototype
+
+Run `just jlcpcb` from the repository root. It checks the current Rev E design,
+builds the panel and assembles the files below. See [build setup](build.md).
 
 Five panels contain four devices each, for twenty devices total.
 
 | File | Use |
 | --- | --- |
-| `build/ch32-pico-QUOTE-REVIEW.zip` | Complete review bundle; extract it first |
-| `build/quote-package/gerbers.zip` | Upload to the JLC PCB quote form |
-| `build/quote-package/bom.csv` | Panel assembly BOM |
-| `build/quote-package/cpl.csv` | Panel assembly placement file |
-| `build/quote-package/assembly-orientation.svg` | Visual guide for factory part-model checks |
+| `build/ch32-pico-jlcpcb.zip` | Complete fabrication bundle; extract it first |
+| `build/jlcpcb/gerbers.zip` | Upload to the JLC PCB quote form |
+| `build/jlcpcb/bom.csv` | Panel assembly BOM |
+| `build/jlcpcb/cpl.csv` | Panel assembly placement file |
+| `build/jlcpcb/assembly-orientation.svg` | Visual guide for factory part-model checks |
 | `hardware/review/ch32-pico.kicad_pcb` | Checked single-board KiCad source |
 | `build/panel-preview/ch32-pico-panel.kicad_pcb` | Generated four-copy KiKit panel |
 
-The fitted BOM estimate is $1.2345 per device at twenty devices, before
+The fitted BOM estimate is $3.9214 per device at twenty devices, before
 attrition, purchase minimums, PCB fabrication, assembly, shipping and tax.
 The latest dated breakdown and stock shortages are in [order review](order-review.md).
 No order has been submitted and no parts are reserved.
 
 ## Regeneration and single-board outputs
 
-After a routing change, run `make route`, then `make review`.
-After an artwork-only change, `make review` reuses the existing routed candidate.
-Then run `make manufacturing-preview`.
+After a routing change, run `just route`, then `just review`.
+After an artwork-only change, `just review` reuses the existing routed candidate.
+Then run `just manufacturing-preview`.
 The last command checks the source and schematic, regenerates the critical
 copper, independently checks the saved board, and exports into
 `build/manufacturing-preview/`. A failed export preserves the previous preview.
@@ -37,7 +38,7 @@ The folder contains:
   outline and separate PTH/NPTH Excellon drill files.
 - `gerbers/`: the individual files and SVG drill maps for inspection.
 - `bom.csv`: exact LCSC identifiers and MPNs, grouped from the electrical source.
-- `cpl.csv`: actual KiCad board placement, filtered to the same 33 fitted parts.
+- `cpl.csv`: actual KiCad board placement, filtered to the same 41 fitted parts.
 - `manifest.json`: board and file hashes, tool version, source hashes, checks
   and open engineering reviews.
 
@@ -69,9 +70,9 @@ with the 93 x 71 mm supplied panel and five-panel quantity. A single 21 x 51 mm
 board is below Standard's 70 x 70 mm minimum. Prototype quantity does not remove
 this restriction. The panel includes the required rails and fiducials.
 
-`make order-review` checks panel artifact hashes, computes a dated assembly-cost
+`just order-review` checks panel artifact hashes, computes a dated assembly-cost
 scenario and writes a physical pin/polarity guide under `build/order-review/`.
-The JSON guide checks all 132 panel CPL rows and gives anchor coordinates in
+The JSON guide checks all 164 panel CPL rows and gives anchor coordinates in
 both board and panel/CPL conventions. Its SVG is an assembly reference; it does
 not establish JLC model rotation offsets. See [order review](order-review.md).
 
@@ -81,7 +82,10 @@ quantity, inspect the Gerbers and drill maps, and review all assembly rotations.
 A zero-error board DRC does not prove USB signal quality, thermal limits or
 physical fit. Programming and power validation require assembled prototypes.
 
-For the requested five-panel batch, use `make panel-preview` and the files in
+For the requested five-panel batch, use `just panel-preview` and the files in
 `build/panel-preview`, described in [panelization](panelization.md). Each panel
-contains four boards. The current low-cost circuit is described in the
-[cost review](cost.md); no preview is released for ordering.
+contains four boards. The current circuit is described in [Rev E](revision-e.md); no preview is released for ordering.
+
+Generated upload files are Git-ignored under `build/`. The checked PCB, design
+sources and locked tools are committed. Keep a copy of the exact bundle used
+for a fabrication run with its source commit and manifest hashes.

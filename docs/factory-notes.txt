@@ -1,4 +1,4 @@
-ch32-pico Rev D: fabrication and assembly review notes
+ch32-pico Rev E: fabrication and assembly review notes
 Not a purchase authorization or production release.
 
 QUANTITY AND FABRICATION
@@ -29,9 +29,11 @@ Leave rails attached for shipping; protect components during depaneling and
 trim tab remnants flush. No tabs or burrs may remain on castellated sides.
 
 REVISION IDENTIFICATION
-Rev D is marked on the front; header pin 37 is labeled EN on the back.
-It connects to regulator U4 pin 2. Only pin 35 remains NC.
-Use the Rev D files together; the earlier Rev C Gerber upload is superseded.
+Rev E is marked on the front; header pin 37 is labeled EN on the back.
+It connects to regulator U4 pin 2. Header pin 35 is labeled PC7*; its SJ1
+jumper must remain OPEN. TP7 is now FAULT, not PC7. SJ1 has no paste
+apertures and is excluded from BOM/CPL; do not bridge it during assembly.
+Use the Rev E files together; the earlier Rev C Gerber upload is superseded.
 
 ASSEMBLY
 41 fitted parts per device, 164 per panel, 820 across the batch.
@@ -68,3 +70,8 @@ including X-ray, handling, fixtures, PCB, assembly, shipping and tax.
 The 20 V / 5 A input contract is a design goal; assembled prototype tests must
 establish the continuous current rating. No functional production-test program
 or released PD/CDC application firmware exists yet.
+
+Rev E diagnostic contacts TP14-TP24 are bare copper, with NO paste or parts.
+Keep SJ1 open. TP23/TP24 are narrow inline USB contacts on the front.
+TP15 VBUS is an unswitched 5-20 V measurement pad, not a load-current output.
+The two added USB-region ground stitches are tented ordinary 0.45/0.20 mm vias.

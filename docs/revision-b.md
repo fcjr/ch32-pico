@@ -181,7 +181,7 @@ channels, but that does not remove the current-sense/I2C lot requirement.
 
 ## Current checks and cost
 
-`make check` passes: zero schematic ERC violations, exported-netlist parity,
+`just check` passes: zero schematic ERC violations, exported-netlist parity,
 zero placement DRC violations, the marking audit, and 48 unit/fault tests.
 The saved routed board also passes independent KiCad DRC with zero violations
 and zero unconnected nets. Freerouting produced the passing candidate with
@@ -199,7 +199,7 @@ parts), excluding assembly, PCB, setup, attrition, MOQ rounding, shipping and
 tax. This is above the original low-cost target once manufacturing is added.
 The protected 5 A switch and wide-input 3.3 V buck account for about $2.25 of
 that total. This BOM is provisional, not a claim of minimum achievable cost.
-Reproduce it with `python3 scripts/revb_bom_review.py` from the dated inventory
+Reproduce it with `uv run python scripts/revb_bom_review.py` from the dated inventory
 snapshot. Cost optimization remains part of the revision work.
 
 The selected 5 A USB-C socket is about $0.2445 each at the observed tier.
@@ -237,12 +237,12 @@ programmer build remains preserved and refuses to build as Rev B.
 - `docs/images/ch32-pico.png`: front/back CAD render.
 - `build/manufacturing-preview/`: single-board Gerber/BOM/CPL preview.
 - `build/panel-preview/`: four-up KiKit PCB, Gerbers, BOM and CPL.
-- `build/quote-package/`: factory-review inputs, with stock-shortfall notices.
+- `build/jlcpcb/`: factory-review inputs, with stock-shortfall notices.
 - `firmware/pd/`: tested policy source and the remaining transport-integration requirements.
 
-Rebuild with `make check`, `make route`, `make review`, `make render`,
-`make manufacturing-preview`, `make panel-preview`, `make order-review` and
-`make quote-package`, in that order. No command purchases parts or submits an
+Rebuild with `just check`, `just route`, `just review`, `just render`,
+`just manufacturing-preview`, `just panel-preview`, `just order-review` and
+`just jlcpcb`, in that order. No command purchases parts or submits an
 order. The preview manifests remain explicitly unreleased.
 
 The BOOT resistor is next to D+ and isolates the longer button wire. The PD

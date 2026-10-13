@@ -70,6 +70,10 @@ def load_library():
     library['PICO_HEADER']=Part('','Pico header pads','','Pico_Header',
         tuple(Pin(str(p.number),p.pico.split(' / ')[0]) for p in HEADER))
     library['TESTPAD']=Part('','Test pad','','TestPad_1mm',(Pin('1','TP'),))
+    library['SMALL_PROBE']=Part('','Small probe pad','','TestPad_0.6mm',(Pin('1','TP'),))
+    library['USB_PROBE']=Part('','Inline USB probe contact','','USB_Probe_Inline',(Pin('1','TP'),))
+    library['SOLDER_JUMPER']=Part('','Normally open solder jumper','','SolderJumper_Open',
+        (Pin('1','HEADER35'),Pin('2','PC7')))
     library['POWER_FLAG']=Part('','PWR_FLAG','','',(Pin('1','pwr','power_out'),))
     return library
 

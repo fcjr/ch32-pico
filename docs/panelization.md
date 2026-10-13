@@ -1,5 +1,3 @@
-> **Rev A reference.** The [current Rev C design](revision-c.md) supersedes the circuit, pinout, costs and manufacturing status below.
-
 # Five prototype panels
 
 The requested batch is five panels with four identical boards each, for 20
@@ -9,9 +7,7 @@ establish eligibility for a promotional price. JLC must quote the four-layer,
 1 mm, ENIG, castellated design and panelized assembly.
 
 ```sh
-make panel-dependencies
-make panel-preview
-make cost-review
+just jlcpcb
 ```
 
 The configuration is code in `hardware/panel.py`. Four boards sit in one row
@@ -27,7 +23,7 @@ exclude castellated holes from Economic PCBA. This board therefore requires
 **Standard PCBA**, regardless of the small prototype quantity. The panel has
 rails and fiducials and exceeds Standard's 70 x 70 mm minimum by 1 mm in its
 short dimension; the original nominal 70 mm panel was too close to that limit.
-Individual boards keep their original dimensions and all four mounting holes.
+Individual boards keep their original dimensions and no mounting holes.
 Milled slots and mousebites preserve the castellated sides.
 Enter one design repeated four times per customer-supplied panel,
 with an order quantity of five panels. Use the panel BOM/CPL with panel Gerbers;
@@ -35,12 +31,12 @@ do not ask JLC to repeat them four times again. The five-panel batch contains
 20 copies of every single-board BOM item, plus assembly attrition.
 
 The generated `build/panel-preview/` includes the KiCad panel, front SVG,
-Gerber ZIP, drills, 17-row BOM, 132-row CPL and a hash manifest. DRC has zero
+Gerber ZIP, drills, 20-row BOM, 164-row CPL and a hash manifest. DRC has zero
 violations and zero open connections. Each copy's pads, net assignments,
 component rotations and trace/via geometry are checked against the source
 board before and after zone fill. JLC's assembly model rotations remain pending.
 
-Dependencies are pinned in `scripts/kikit-requirements.txt`. The local virtual
+Dependencies are hash-locked in `scripts/kikit-requirements.txt`. The local virtual
 environment uses KiCad's Python without altering or re-signing the installed
 app. The wrapper keeps a wx application alive and rejects null native board
 loads. Absolute file paths avoid a KiCad project-load working-directory issue

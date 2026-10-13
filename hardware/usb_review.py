@@ -66,12 +66,39 @@ def path_length(segments,start,end):
     raise ValueError(f'No continuous USB centerline from {start} to {end}')
 
 
+def probe_contacts(doc,tracks,pads):
+    # Probe contacts must stay entirely inside a straight USB trace. This also
+    # rejects a later pad enlargement that silently adds a capacitive branch.
+    from .diagnostics import DIAGNOSTICS
+    probes=[]
+    for d in DIAGNOSTICS:
+        if d.part!='USB_PROBE':continue
+        fp=next(f for f in children(doc,'footprint') if any(
+            p[1:3]==['Reference',d.ref] for p in children(f,'property')))
+        pad=one(fp,'pad');cx,cy=pads[d.ref,'1']
+        width,height=map(float,one(pad,'size')[1:3])
+        if (one(fp,'layer')[1]!='F.Cu' or one(pad,'net')[-1]!=d.net
+            or set(one(pad,'layers')[1:])!={'F.Cu','F.Mask'}
+            or len(one(fp,'at'))>3 and float(one(fp,'at')[3])%360):
+            raise ValueError('USB probe must be an unrotated, paste-free front contact')
+        fitting=[t for t in tracks if one(t,'net')[-1]==d.net
+                 and abs(xy(t,'start')[1]-cy)<1e-6 and abs(xy(t,'end')[1]-cy)<1e-6
+                 and min(xy(t,'start')[0],xy(t,'end')[0])<=cx-width/2
+                 and max(xy(t,'start')[0],xy(t,'end')[0])>=cx+width/2
+                 and height<=float(one(t,'width')[1])+1e-6]
+        if not fitting:raise ValueError(f'USB probe adds copper outside existing trace: {d.ref}')
+        probes.append({'ref':d.ref,'net':d.net,'size_mm':[width,height],
+                       'inline_without_branch_or_via':True})
+    return probes
+
+
 def report(board):
     doc=parse(Path(board).read_text());pads=pad_centers(doc)
     tracks=[s for s in children(doc,'segment') if one(s,'net')[-1] in USB_NETS]
     wrong_layers=[one(s,'layer')[1] for s in tracks if one(s,'layer')[1]!='F.Cu']
     vias=[xy(v,'at') for v in children(doc,'via') if one(v,'net')[-1] in USB_NETS]
     if wrong_layers or vias:raise ValueError('USB must remain on F.Cu without vias')
+    probes=probe_contacts(doc,tracks,pads)
     polygons=[]
     for zone in children(doc,'zone'):
         if children(zone,'keepout') or one(zone,'net')[-1]!='GND':continue
@@ -108,7 +135,7 @@ def report(board):
                              for pin in contacts},
                            'resistor_to_programmer_mm':round(path_length(after,pads[resistor,'2'],pads['U2',mcu]),4)}
     return {'status':'geometry audit; impedance and USB performance not certified',
-        'all_usb_tracks_on_F_Cu':not wrong_layers,'usb_vias':len(vias),'paths':paths,
+        'probe_contacts':probes,'all_usb_tracks_on_F_Cu':not wrong_layers,'usb_vias':len(vias),'paths':paths,
         'ground_reference_sampling':{'layer':'In1.Cu','net':'GND','longitudinal_step_max_mm':.05,
             'transverse_samples':'trace center and both edges','sample_count':samples,
             'uncovered_sample_count':len(missing),'uncovered_samples':missing},

@@ -22,7 +22,7 @@ class DesignContract(unittest.TestCase):
         pins = {p.number: p.proposed for p in HEADER}
         self.assertEqual({n for n, net in pins.items() if net == "GND"}, {3, 8, 13, 18, 23, 28, 33, 38})
         self.assertEqual({n: pins[n] for n in (35, 36, 37, 39, 40)},
-                         {35: "NC", 36: "3V3_OUT", 37: "3V3_EN", 39: "VSYS", 40: "PD_OUT"})
+                         {35: "GPIO35", 36: "3V3_OUT", 37: "3V3_EN", 39: "VSYS", 40: "PD_OUT"})
 
     def test_gpio_budget_and_debug_reservation(self):
         validate()

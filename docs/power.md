@@ -1,4 +1,4 @@
-> **Rev A reference.** The [current Rev C design](revision-c.md) supersedes the circuit, pinout, costs and manufacturing status below.
+> **Rev A reference.** The [current Rev E design](revision-e.md) supersedes the circuit, pinout, costs and manufacturing status below.
 
 # Power review
 
@@ -20,7 +20,7 @@ the target rail through 1k, consuming 3.3 mA when powered. The nominal 2.1 uF
 rail gives a 2.1 ms RC time constant. Firmware waits 20 ms while off and 2 ms
 after re-enabling. Measure the actual rail waveform during bring-up.
 
-`make power-review` writes first-order LDO heat estimates. At 5.5 V input,
+`just power-review` writes first-order LDO heat estimates. At 5.5 V input,
 50 mA output dissipates about 110 mW in one regulator's pass element;
 100 mA dissipates 220 mW. These exclude ground current and thermal derating.
 The regulator's headline current specification is not a safe board rating.

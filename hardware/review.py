@@ -47,9 +47,9 @@ def main():
         'engine':engine,'selection':'passing DRC/connectivity, then minimum vias and trace length',
         'checks':saved,'board_sha256':hashlib.sha256(board.read_bytes()).hexdigest(),
         'comparison':comparison,'usb_mechanical_fit':usb_fit(parse(board.read_text())), 'open_reviews':[
-            'Current PCB/assembly quote, MCU stock and 20-device allocation (docs/revision-d.md)',
+            'Current PCB/assembly quote, MCU stock and 20-device allocation (docs/revision-e.md)',
             'Measured USB performance; nonuniform connector/package fanouts (docs/usb-routing.md)',
-            'Physical USB cable, overhang and locating-peg fit (docs/revision-d.md)',
+            'Physical USB cable, overhang and locating-peg fit (docs/revision-e.md)',
             'Pin 37 shutdown/restart, released EN voltage, back-power and loaded PD shutdown timing',
             '5 A power copper/contact temperature, eFuse faults, inrush, discharge, backfeed and fixed 3.3 V load budget',
             'Native USB ISP/recovery, open PD/CDC firmware integration, reset/detach handling and watchdog',

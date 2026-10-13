@@ -82,7 +82,7 @@ def export(directory):
     review=ROOT/'hardware/review'
     saved=json.loads((review/'validation.json').read_text())
     original=review/'ch32-pico.kicad_pcb'
-    if sha(original)!=saved['board_sha256']:raise ValueError('Saved board hash changed; run make review')
+    if sha(original)!=saved['board_sha256']:raise ValueError('Saved board hash changed; run just review')
     verify_contract();verify_netlist(ROOT/'build/ch32-pico.net.xml')
     erc=json.loads((ROOT/'build/electrical-erc.json').read_text())
     if any(s['violations'] for s in erc['sheets']):raise ValueError('Schematic ERC failed')
@@ -126,6 +126,7 @@ def export(directory):
     copy_notices(directory)
     inputs=[p for folder in ('hardware','scripts','firmware') for p in (ROOT/folder).rglob('*')
         if p.is_file() and '__pycache__' not in p.parts and 'review' not in p.parts]
+    inputs += [ROOT/name for name in ('justfile','pyproject.toml','uv.lock','.python-version')]
     inputs += [ROOT/'LICENSE', ROOT/'docs/licensing.md', *[p for p in (ROOT/'LICENSES').rglob('*') if p.is_file()]]
     manifest={'status':'manufacturing preview; not released for ordering','fabrication_ready':False,'board_revision':BOARD_REVISION,
         'created_at':datetime.now(timezone.utc).isoformat(),

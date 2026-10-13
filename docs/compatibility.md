@@ -76,7 +76,7 @@ include physical pin numbers 1, 20, 21 and 40. See the [marking review](markings
 ## Source of truth and references
 
 `hardware/design.py` owns the pin allocation and power requirements. Run
-`make generate` to produce the full 40-pin comparison in
+`just generate` to produce the full 40-pin comparison in
 `build/proposed-pinout.md` and `build/proposed-pinout.csv`.
 
 - [Raspberry Pi Pico specifications](https://www.raspberrypi.com/products/raspberry-pi-pico/)

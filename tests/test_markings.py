@@ -22,8 +22,13 @@ class MarkingAudit(unittest.TestCase):
         self.assertEqual(len(result['expansion_labels']),8)
 
     def test_expansion_pad_label_on_wrong_side_is_rejected(self):
-        one(self.label('PC7'),'layer')[1]='F.SilkS'
+        one(self.label('FAULT'),'layer')[1]='F.SilkS'
         with self.assertRaisesRegex(ValueError,'Back must contain'):audit(self.doc)
+
+    def test_stale_pc7_pad_label_is_rejected(self):
+        self.label('FAULT')[1]='PC7'
+        with self.assertRaisesRegex(ValueError,'Incorrect back expansion label/pad: TP7'):
+            audit(self.doc)
 
     def test_top_only_testpad_label_on_back_is_rejected(self):
         one(self.label('SDIO'),'layer')[1]='B.SilkS'
@@ -62,3 +67,21 @@ class MarkingAudit(unittest.TestCase):
                if n[1]=='GND' and one(n,'layer')[1]=='F.SilkS')
         self.doc.remove(n)
         with self.assertRaisesRegex(ValueError,'front label for TP4'):audit(self.doc)
+
+    def test_diagnostic_pads_cannot_receive_paste(self):
+        fp=next(fp for fp in children(self.doc,'footprint')
+                if any(p[1:3]==['Reference','TP15'] for p in children(fp,'property')))
+        one(one(fp,'pad'),'layers').append('B.Paste')
+        with self.assertRaisesRegex(ValueError,'Diagnostic pad must have no paste'):
+            audit(self.doc)
+
+    def test_diagnostic_label_cannot_swap_voltage_and_current(self):
+        self.label('ISNS')[1]='VSNS'
+        with self.assertRaisesRegex(ValueError,'Incorrect diagnostic label'):
+            audit(self.doc)
+
+    def test_jumper_cannot_receive_factory_paste(self):
+        fp=next(fp for fp in children(self.doc,'footprint')
+                if any(p[1:3]==['Reference','SJ1'] for p in children(fp,'property')))
+        one(children(fp,'pad')[0],'layers').append('B.Paste')
+        with self.assertRaisesRegex(ValueError,'no paste'):audit(self.doc)

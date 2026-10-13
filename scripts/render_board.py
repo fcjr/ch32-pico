@@ -31,14 +31,14 @@ def main():
     checked = json.loads((source.parent/'validation.json').read_text())
     source_hash = hashlib.sha256(source.read_bytes()).hexdigest()
     if source_hash != checked['board_sha256']:
-        raise ValueError('Board changed since validation; run make review')
+        raise ValueError('Board changed since validation; run just review')
     doc = parse(source.read_text())
     copper = fingerprint(doc)
     count = 0
     for fp in children(doc, 'footprint'):
         name = fp[1].split(':')[-1]
         if name not in models:
-            if name not in ('Pico_Header', 'TestPad_1mm'):
+            if name not in ('Pico_Header', 'TestPad_1mm', 'TestPad_0.6mm', 'SolderJumper_Open', 'USB_Probe_Inline'):
                 raise ValueError(f'Missing model mapping: {name}')
             continue
         m = models[name]
@@ -49,6 +49,9 @@ def main():
         count += 1
     from hardware.circuit import COMPONENTS
     assert count == sum(c.fitted for c in COMPONENTS) and fingerprint(doc) == copper
+    from scripts.render_silkscreen import apply as plot_silkscreen
+    silk_strokes=plot_silkscreen(doc,source,ROOT/'build/render')
+    assert fingerprint(doc)==copper
     board = ROOT/'build/render/ch32-pico.kicad_pcb'
     board.write_text(dump(doc)+'\n')
     out = ROOT/'docs/images'
@@ -77,6 +80,7 @@ def main():
         'source_board_sha256':source_hash, 'models_manifest':'../render-models.json',
         'fitted_models':count, 'tool':subprocess.check_output(['kicad-cli','version'],text=True).strip(),
         'purpose':'CAD illustration, not proof of physical or assembly fit',
+        'silkscreen':'KiCad SVG strokes in disposable render copy', 'silkscreen_strokes':silk_strokes,
     },indent=2)+'\n')
 
 

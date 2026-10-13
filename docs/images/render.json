@@ -1,7 +1,9 @@
 {
-  "source_board_sha256": "27489e68613338e101c4d50829765f8548391e422342914963f9be58d9745e6a",
+  "source_board_sha256": "d066d847328c33f6ea2b10fbbf5716ba73c27f35d09fc564bb1d4c6d7571fcd2",
   "models_manifest": "../render-models.json",
   "fitted_models": 41,
   "tool": "10.0.6",
-  "purpose": "CAD illustration, not proof of physical or assembly fit"
+  "purpose": "CAD illustration, not proof of physical or assembly fit",
+  "silkscreen": "KiCad SVG strokes in disposable render copy",
+  "silkscreen_strokes": 2728
 }

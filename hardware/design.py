@@ -10,7 +10,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-BOARD_REVISION = 'D'
+BOARD_REVISION = 'E'
 
 
 @dataclass(frozen=True)
@@ -67,8 +67,8 @@ TARGET_PINS = dict(zip(
      'PB8 PB9 PB10 PB11 PC16 PC17 PC18 PB12 PB13 PC19 PC14 PC15 '
      'PA8 PA9 PA10 PA11 PA12 PA13 PA14 VSS VDD').split(),range(1,49)))
 
-# Unpopulated underside expansion pads, in addition to the Pico headers.
-EXPANSION_SIGNALS = ('PC6', 'PC7', 'PB5', 'PB8', 'PB9', 'PB12', 'PB13')
+# Unpopulated underside expansion pads: six free GPIOs and the PD fault signal.
+EXPANSION_SIGNALS = ('PC6', 'PD_FAULT_N', 'PB5', 'PB8', 'PB9', 'PB12', 'PB13')
 
 # Pins reserved for USB, PD, recovery and board power control.
 INTERNAL_SIGNALS = {
@@ -113,7 +113,7 @@ HEADER = tuple(HeaderPin(*row) for row in (
     (32, "GP27 / ADC1", "PA1", "ADC channel 1"),
     (33, "AGND", "GND", "Continuous ground plane"),
     (34, "GP28 / ADC2", "PA2", "ADC channel 2"),
-    (35, "ADC_VREF", "NC", "No independent external ADC reference input"),
+    (35, "ADC_VREF", "GPIO35", "Isolated by open SJ1; bridge SJ1 for PC7 GPIO / one-wire PIOC"),
     (36, "3V3_OUT", "3V3_OUT", "Fixed 3.3 V output; prototype load rating pending"),
     (37, "3V3_EN", "3V3_EN", "Pull low to shut down 3.3 V; release for automatic startup"),
     (38, "GND", "GND", "Ground"),
@@ -132,5 +132,5 @@ def validate() -> None:
         raise ValueError("Board controls, USB, PD and debug must not share header GPIO")
     if any(p.proposed!='GND' for p in HEADER if p.pico in {'GND','AGND'}):
         raise ValueError("Pico ground positions must remain ground")
-    if {p.number for p in HEADER if p.proposed=='NC'}!={35}:
-        raise ValueError("Only ADC_VREF is unconnected")
+    if HEADER[34].proposed != 'GPIO35':
+        raise ValueError('Pin 35 must remain on the isolated jumper-side net')

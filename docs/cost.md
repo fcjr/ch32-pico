@@ -19,8 +19,8 @@ shipping and tax. It is not an assembled-board quote.
 
 ESD protection remains fitted. The programmer binary is compiled from source.
 
-`make procurement` records public JLC inventory, exact MPN matches, price tiers
-and response hashes. `make cost-review` prices each part at the total build
+`just procurement` records public JLC inventory, exact MPN matches, price tiers
+and response hashes. `just cost-review` prices each part at the total build
 quantity. Two MCUs per board means 40 MCUs for this batch. Observations do not
 reserve inventory or establish lead time. The reported pre-purchase minimum
 is distinct from the quantity available for ordinary assembly allocation.

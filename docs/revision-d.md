@@ -1,5 +1,8 @@
 # Revision D: CH32X035 + USB PD
 
+Historical revision: the current board is [Rev E](revision-e.md), which adds
+the pin 35 PC7 jumper and replaces the underside PC7 pad with FAULT.
+
 Rev D adds pin 37 regulator shutdown to the Rev C design.
 
 This revision has a checked schematic, routed board, front/back CAD render and
@@ -294,7 +297,7 @@ parts), excluding assembly, PCB, setup, attrition, MOQ rounding, shipping and
 tax. This is above the original low-cost target once manufacturing is added.
 The protected 5 A switch and wide-input 3.3 V buck account for about $2.25 of
 that total. This BOM is provisional, not a claim of minimum achievable cost.
-Reproduce it with `python3 scripts/revb_bom_review.py` from the dated inventory
+Reproduce it with `uv run python scripts/revb_bom_review.py` from the dated inventory
 snapshot. Cost optimization remains part of the revision work.
 
 The selected 5 A USB-C socket is about $0.2445 each at the observed tier.
@@ -324,10 +327,10 @@ panel corrections and outstanding factory confirmations.
 
 The Rev A source, generation scripts and all then-current outputs were archived
 before changing the circuit. Rev B is preserved in Git commit `479ceb9`.
-Rev C is preserved in Git commit `bc6a81c`. `make route-enable` retrieves that
+Rev C is preserved in Git commit `bc6a81c`. `just route-enable` retrieves that
 exact, hash-checked checkpoint and compares Freerouting with a KiCadRoutingTools fallback for the enable
 route while preserving all existing copper. A full reroute remains available through
-`make route`.
+`just route`.
 The routing and manufacturing-preview workflow now handles Rev D; revision and source checks reject stale layouts. The Rev A
 programmer build remains preserved and refuses to build as Rev D.
 
@@ -339,12 +342,12 @@ programmer build remains preserved and refuses to build as Rev D.
 - `docs/images/ch32-pico.png`: front/back CAD render.
 - `build/manufacturing-preview/`: single-board Gerber/BOM/CPL preview.
 - `build/panel-preview/`: four-up KiKit PCB, Gerbers, BOM and CPL.
-- `build/quote-package/`: factory-review inputs, with stock-shortfall notices.
+- `build/jlcpcb/`: factory-review inputs, with stock-shortfall notices.
 - `firmware/pd/`: tested policy source and the remaining transport-integration requirements.
 
-Rebuild with `make route-enable`, `make review`, `make render`,
-`make manufacturing-preview`, `make panel-preview`, `make order-review` and
-`make quote-package`, in that order. No command purchases parts or submits an
+Rebuild with `just route-enable`, `just review`, `just render`,
+`just manufacturing-preview`, `just panel-preview`, `just order-review` and
+`just jlcpcb`, in that order. No command purchases parts or submits an
 order. The preview manifests remain explicitly unreleased.
 
 The BOOT resistor is next to D+ and isolates the longer button wire. The PD

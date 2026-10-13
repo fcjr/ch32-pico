@@ -1,4 +1,4 @@
-> **Rev A reference.** The [current Rev C design](revision-c.md) supersedes the circuit, pinout, costs and manufacturing status below.
+> **Rev A reference.** The [current Rev E design](revision-e.md) supersedes the circuit, pinout, costs and manufacturing status below.
 
 # Programming and USB debug console
 
@@ -31,7 +31,7 @@ The back labels describe the through-hole/castellated header, not these pads.
 
 ## First flash of each assembled board
 
-Build U2's source firmware with `make lowcost-firmware`. The outputs are
+Build U2's source firmware with `just lowcost-firmware`. The outputs are
 `build/lowcost-probe/probe.bin` and `probe.elf`. A blank U2 cannot enumerate
 over USB, so use an external **CH32V003 SWIO** programmer for this step.
 An ordinary Arm SWD-only probe is not sufficient.
@@ -48,7 +48,7 @@ a common ground, and the external programmer's specified SWIO pull-up.
 
 For a fully open-source external fixture, a Raspberry Pi Pico running
 [PicoRVD](https://github.com/aappleby/picorvd) supports this target.
-`python3 scripts/dependencies.py` fetches its pinned source and Pico SDK for
+`uv run python scripts/dependencies.py` fetches its pinned source and Pico SDK for
 an optional external factory probe. These are separate from the onboard firmware. Its default
 SWIO is GP28 with a 1k pull-up to 3.3 V. Use its GDB interface to load
 `probe.elf`, following the pinned external probe's instructions. PicoRVD and
@@ -81,7 +81,7 @@ connected. These commands are documented, not automatically executed by builds.
 
 Application code must enable ch32fun's `FUNCONF_USE_DEBUGPRINTF` and use
 `printf`. `firmware/target-demo` contains a minimal example that prints a
-counter without driving any header GPIO. Run `make target-demo` after fetching
+counter without driving any header GPIO. Run `just target-demo` after fetching
 the pinned programmer sources and compiler. It writes the binary and ELF to
 `build/target-demo`, without flashing any hardware. It uses a finite debug-print timeout
 so a disconnected console does not block forever. Its text travels over PD1

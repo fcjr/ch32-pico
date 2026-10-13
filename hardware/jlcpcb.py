@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: MIT
 # Copyright (c) 2026 ch32-pico contributors
-"""Bundle verified quote inputs, without submitting an order or reserving parts."""
+"""Bundle checked JLCPCB fabrication files, without submitting an order or reserving parts."""
 import hashlib
 import json
 import shutil
@@ -36,24 +36,24 @@ def main():
     source = ROOT / 'build/panel-preview'
     panel = json.loads((source / 'manifest.json').read_text())
     parent = ROOT / 'build'
-    destination = parent / 'quote-package'
-    with tempfile.TemporaryDirectory(prefix='quote-package-', dir=parent) as temporary:
+    destination = parent / 'jlcpcb'
+    with tempfile.TemporaryDirectory(prefix='jlcpcb-', dir=parent) as temporary:
         out = ROOT / temporary
         files = {'gerbers.zip': 'ch32-pico-panel-gerbers-PREVIEW.zip',
                  'bom.csv': 'bom.csv', 'cpl.csv': 'cpl.csv'}
         for name, original in files.items():
             shutil.copyfile(source / original, out / name)
             if sha(out / name) != panel['file_sha256'][original]:
-                raise ValueError(f'Quote file differs from checked panel: {name}')
+                raise ValueError(f'Fabrication file differs from checked panel: {name}')
         (out / 'assembly-orientation.json').write_text(json.dumps(assembly, indent=2) + '\n')
         (out / 'assembly-orientation.svg').write_text(svg_guide(assembly, board))
         (out / 'order-review.json').write_text(json.dumps(order, indent=2) + '\n')
         shutil.copyfile(ROOT / 'docs/factory-notes.txt', out / 'factory-notes.txt')
         (out / 'README.txt').write_text(
-            f'ch32-pico Rev {BOARD_REVISION}: quote review package, NOT an order release\n\n'
+            f'ch32-pico Rev {BOARD_REVISION}: JLCPCB fabrication files; prototype, NOT an order release\n\n'
             'Extract this package first. Upload gerbers.zip to the PCB form.\n'
             'Use bom.csv and cpl.csv at the assembly upload step. Do not upload\n'
-            'this entire review package as a Gerber archive.\n\n'
+            'this entire fabrication bundle as a Gerber archive.\n\n'
             'Quantity: FIVE customer-supplied panels, each FOUR identical boards.\n'
             'Panel: 93 x 71 mm; one design; four columns, one row.\n'
             'Do not request an additional panelization.\n'
@@ -84,8 +84,11 @@ def main():
         from scripts.license_files import copy_notices
         copy_notices(out)
         manifest = {
-            'status': 'quote inputs checked locally; factory review and order release pending',
+            'status': 'fabrication files checked locally; factory review and order release pending',
             'board_revision': BOARD_REVISION,
+            'build_tool_sha256': {name:sha(ROOT/name) for name in
+                ('justfile','pyproject.toml','uv.lock','.python-version',
+                 'scripts/kikit-requirements.in','scripts/kikit-requirements.txt')},
             'source_board_sha256': order['source_board_sha256'],
             'panel_sha256': order['panel_sha256'],
             'panels': order['panels'], 'boards_per_panel': order['boards_per_panel'],
@@ -98,7 +101,7 @@ def main():
         if destination.exists():
             shutil.rmtree(destination)
         shutil.copytree(out, destination)
-    archive_path = parent / 'ch32-pico-QUOTE-REVIEW.zip'
+    archive_path = parent / 'ch32-pico-jlcpcb.zip'
     with zipfile.ZipFile(archive_path, 'w', zipfile.ZIP_DEFLATED) as archive:
         for path in sorted(destination.rglob('*')):
             if not path.is_file():
@@ -106,7 +109,7 @@ def main():
             info = zipfile.ZipInfo(str(path.relative_to(destination)), date_time=(1980, 1, 1, 0, 0, 0))
             info.compress_type = zipfile.ZIP_DEFLATED
             archive.writestr(info, path.read_bytes())
-    print(f'Quote review package: {archive_path}; no upload or purchase')
+    print(f'JLCPCB fabrication files: {archive_path}; no upload or purchase')
 
 
 if __name__ == '__main__':

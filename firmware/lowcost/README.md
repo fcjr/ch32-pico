@@ -10,7 +10,7 @@ source, with the small board patch in this directory. The dependency includes
 the license and copyright notices. The bitbang files also offer the NewBSD
 license. No WCH-Link firmware binary is used.
 
-Run `make firmware` or `make lowcost-firmware`. This fetches immutable source revisions, checks
+Run `just firmware` or `just lowcost-firmware`. This fetches immutable source revisions, checks
 tracked files for changes, copies their Git archives to a generated staging
 directory, applies the patch and builds only the `.bin` target. Upstream's
 default Make target flashes a device, so the script never invokes it.

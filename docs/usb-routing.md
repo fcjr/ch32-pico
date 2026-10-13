@@ -19,7 +19,7 @@ GND reference. The 0.1537 mm trace width comes from the JLC stackup
 calculation; that calculation does not establish impedance for these fanouts.
 The four-layer stackup remains JLC04101H-3313.
 
-`make usb-review` measures actual copper centerline paths and samples filled
+`just usb-review` measures actual copper centerline paths and samples filled
 reference copper at trace centers and edges at no more than 0.05 mm intervals.
 The selected route has GND under all 1,716 samples. Native via keepouts
 protect the reference below the USB traces. Router output

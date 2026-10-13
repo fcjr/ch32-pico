@@ -1,12 +1,23 @@
 # Parts and factory review
 
+## Rev E update
+
+Rev E exposes PC7 on header 35 only through normally open SJ1 and changes TP7
+from PC7 to FAULT. TP14–TP24 add eleven diagnostic contacts; two tented
+ground vias stitch the USB-end pour to L2. Silkscreen identifies every new
+contact and reads PC7*, SJ1, FAULT and REV E. The fitted BOM,
+assembly placement and panel process are unchanged; SJ1 receives no paste or
+factory solder bridge. `just jlcpcb` creates the current Rev E fabrication files in `build/jlcpcb/`. No Rev E
+factory upload, allocation or approval has been performed. See the
+[Rev E design and usage notes](revision-e.md).
+
 ## Rev D update
 
 Rev D adds pin 37 regulator shutdown and updates its back label to `EN` and
 the front revision to `REV D`. The BOM, placement, panel process and part
 requirements remain unchanged. See [Rev D shutdown control](revision-d.md#shutdown-control)
 for operation, external-driver requirements and remaining bench tests.
-The current generated upload bundle contains Rev D. The Rev C upload observation
+The Rev D upload bundle has since been superseded by Rev E. The Rev C upload observation
 below does not validate the new files. No Rev D factory upload or approval has
 been performed.
 
@@ -153,22 +164,18 @@ model rotations/centroids, stencil, USB assembly, panel handling/tolerances,
 and the complete delivered quote. Firmware and assembled-board USB/PD,
 thermal, current and fault testing remain separate prototype work.
 
-## Reproduce and inspect
+## Generate the current fabrication files
 
 ```sh
-make procurement
-make check
-make review
-make render
-make manufacturing-preview
-make panel-preview
-make order-review
-make quote-package
+just jlcpcb
+just render
 ```
 
-The review package is `build/ch32-pico-QUOTE-REVIEW.zip`. Extract it first;
+The fabrication bundle is `build/ch32-pico-jlcpcb.zip`. Extract it first;
 only its inner `gerbers.zip` goes into JLC's PCB upload. Use its panel BOM and
 CPL together at the assembly step. The orientation guide is generated in
 `build/order-review/`; panel geometry, DRC and tooling results are in
-`build/panel-preview/manifest.json`. File hashes tie the package to the saved
-Rev C board. No generation command places an order.
+`build/panel-preview/manifest.json`. File hashes tie the bundle to the checked
+Rev E board. See [build instructions](build.md) for source changes and routing.
+`just procurement` separately refreshes the dated public inventory. No generation
+command places an order.

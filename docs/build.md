@@ -1,146 +1,138 @@
-Current Rev C checks: `make check`. Optional draft reports:
-`python3 scripts/revb_bom_review.py` and `python3 scripts/revb_preview.py`.
-See the [Rev C build sequence](revision-c.md#generated-files) for routing,
-rendering and fabrication previews. The retained Rev A programmer and demo
-firmware entry points reject the current revision.
-
-> **Rev A reference.** The [Rev C design](revision-c.md) supersedes the circuit, pinout, costs and manufacturing status below.
-
 # Build and routing
 
-`hardware/circuit.py` defines all 174 physical terminals, including explicit
-NCs. `hardware/design.py` owns the Pico geometry and header mapping.
-`hardware/placement.py` owns component positions. Local library files contain
-exact LCSC identifiers and reviewed package geometry.
+The project uses `uv` for Python environments and `just` for commands.
+`just jlcpcb` generates the current Rev E fabrication bundle from the checked
+board. It does not reroute the design, submit an order or reserve parts.
 
-`make check` generates the six-sheet schematic, runs ERC, compares KiCad's
-exported netlist to the circuit, and runs fault/regression checks.
-`make placement-check` generates the four-layer PCB and verifies pad nets,
-component positions, all Pico header/castellation/mounting-hole geometry and DRC.
-Placement may have open connections. A saved route must have none.
+## Tools and environments
 
-## Commands and tools
+Install `uv`, `just` and KiCad 10.0.6 with `kicad-cli` on your PATH. The general
+Python tools use Python 3.13, selected by `.python-version`, and the dependencies
+in `uv.lock`. `uv run --locked` creates and synchronizes `.venv` automatically.
 
-Use Python 3.12+, KiCad CLI 10.0.6 and KiCad's bundled Python for PCB API
-operations. The validated firmware toolchain is xPack RISC-V GCC 14.2.0-3.
-Routing uses the pinned KiCadRoutingTools checkout and Freerouting 2.5.0
-with Java 25. The Makefile exposes `PYTHON`, `KICAD_CLI` and `KICAD_PYTHON`
-overrides for local installations.
+KiCad's native `pcbnew` and `wx` modules must use KiCad's own Python interpreter.
+The default macOS path is:
 
-```sh
-make check                   # schematic ERC, netlist parity, regression checks
-make placement-check         # source/PCB parity and placement DRC
-make firmware target-demo    # build firmware, never flash attached devices
-make route                   # run both routers and independent checks
-make review                  # save a passing route and current silkscreen
-make manufacturing-preview   # checked single-board Gerbers, BOM and CPL
-make panel-dependencies      # pinned local KiKit environment
-make panel-preview           # four-board panel and verified assembly files
-make procurement cost-review # refresh public inventory and dated estimate
-make order-review            # quantity/attrition scenario and orientation guide
-make quote-package           # bundle verified inputs for factory review
-make render                  # front/back README render of the checked PCB
+```text
+/Applications/KiCad/KiCad.app/Contents/Frameworks/Python.framework/Versions/Current/bin/python3
 ```
 
-Do not reroute merely to change artwork. `hardware/branding.py` owns the
-project name, revision and Left Shift Logical silkscreen. Change
-`BOARD_REVISION` in `hardware/design.py` when releasing a board revision;
-the silkscreen, schematic and manufacturing manifest share this value. Placement generation and
-`make review` apply the same artwork. The latter rechecks the existing routed
-candidate with KiCad before saving it. Regenerate manufacturing and panel
-outputs after changing the saved board.
+Set `KICAD_PYTHON` to the appropriate interpreter on another installation.
+KiKit runs in `build/kikit-venv`, which inherits those native modules and installs
+hash-locked packages through `uv pip sync`. It does not modify or re-sign KiCad.
+This separate Python 3.9 environment is intentional for the validated macOS
+KiCad bundle; the main project's Python version does not replace it.
 
-`hardware/markings.py` generates the header and service-pad legends. Placement
-and routed-board checks compare them with actual pad nets, MCU endpoints,
-board side, mirroring and pad proximity. The panel check preserves each copy's
-text, font, position, orientation and logo geometry. See the
-[marking review](markings.md) for the current assignments.
+```sh
+just setup     # optional upfront installation; jlcpcb also prepares its tools
+just --list    # all available commands
+just check     # schematic ERC, netlist parity, placement and regression checks
+just jlcpcb    # checked board, four-up panel, assembly review and upload bundle
+just render    # front/back README image from the checked PCB
+```
+
+The panel environment pins are in `scripts/kikit-requirements.in` and its
+hash-locked `scripts/kikit-requirements.txt`. To deliberately update the lock:
+
+```sh
+uv pip compile --python-version 3.9 --generate-hashes scripts/kikit-requirements.in -o scripts/kikit-requirements.txt
+```
+
+## Design sources
+
+`hardware/circuit.py` defines every component terminal, including explicit NCs.
+`hardware/design.py` owns the Pico outline and header allocation.
+`hardware/placement.py` owns component positions; `hardware/diagnostics.py`
+defines the diagnostic pad nets, locations and labels. The local library holds
+reviewed package geometry and exact LCSC identifiers.
+
+`hardware/branding.py` owns the name, revision and Left Shift Logical logo.
+`hardware/markings.py` checks legends against actual pad nets and MCU pins,
+board side, text orientation and placement. `BOARD_REVISION` sets the schematic,
+silkscreen and manufacturing revision. See [markings](markings.md).
+
+There are 40 header holes and 40 castellations, and no mounting holes.
+Placement checks may report open connections. Routed-board and panel checks
+require zero open connections and zero DRC violations.
+
+## Routing a revision
+
+For the current Rev E incremental change:
+
+```sh
+just route-jumper
+just review
+just render
+just jlcpcb
+```
+
+`route-jumper` retrieves the hash-pinned Rev D PCB from Git history, adds the
+open PC7 jumper, FAULT and diagnostic contacts, and the local ground stitching.
+A full clone containing commit `23297c1` is required. The pinned native router
+routes the header/jumper first, then the diagnostic branches. Existing copper
+is preserved and independently checked after routing.
+
+For a new placement or a broader routing change, `just route` compares the
+pinned KiCadRoutingTools and Freerouting engines from the generated seed.
+KiCadRoutingTools must be checked out at
+`ad7f24deb8fbffa6c498a09a6ebda46e012c37ff` in `~/git/KiCadRoutingTools`, with its
+Rust extension built in that checkout's `.venv`. Follow the
+[upstream build instructions](https://github.com/drandyhaas/KiCadRoutingTools).
+For the full-board router, `uv run python -m hardware.routing --krt PATH` selects
+another checkout; it rejects changed revisions or tracked modifications.
+
+The full comparison downloads checksum-pinned Freerouting 2.5.0 and uses Java
+25. Analytics are disabled. Python routing processes finish normally, with no
+forced termination or routing deadline.
+
+`just review` saves a passing candidate to `hardware/review/`, including the
+PCB, DRC report, validation JSON and layer SVGs. Artwork-only edits can reuse
+an existing routed candidate. Regenerate the panel and fabrication files after
+saving a changed board. A fresh clone can run `just jlcpcb` from the committed
+checked board without router installation or a reroute.
+
+The four-layer stack is F.Cu signals, In1.Cu ground, In2.Cu 3.3 V and signals,
+and B.Cu signals. The USB pair stays entirely on F.Cu. Its two probe contacts
+expose existing trace copper without adding branches or vias. Independent gates
+check source/PCB parity, critical geometry, USB ground reference, paste
+clearance and the power layout. The two new ground stitches use ordinary
+tented 0.45/0.20 mm vias. These checks do not establish USB or thermal compliance.
 
 ## Rendering
 
-Install `easyeda2kicad==1.0.1` and Pillow in the Python environment used for
-rendering. `make render` downloads any missing supplier models into ignored
-`build/render/`, checks them against [the pinned hashes](render-models.json),
-and attaches them to a disposable copy of the checked board. It does not
-change the source PCB or routing. The capacitor and resistor models represent
-the common package sizes; markings and colors are illustrative.
+`just render` uses locked Pillow and easyeda2kicad dependencies. Missing supplier
+models download into ignored `build/render/`, then must match the committed
+[model hashes](render-models.json). Models attach only to a disposable render
+copy of the PCB. The render copy uses KiCad SVG plot strokes for silkscreen
+to avoid intermittent missing glyphs in the macOS 3D text renderer. The checked
+PCB keeps editable text, and fabrication exports use it directly. KiCad renders both sides, and Pillow combines them into
+`docs/images/ch32-pico.png`. `render.json` records the checked board hash.
+The front and back PNGs are also saved separately. The connector mouth is at
+the board edge in the current placement. A CAD render does not qualify cable
+fit, assembly orientation or printed legibility.
 
-KiCad renders the front and back separately. The script places those views
-side by side in `docs/images/ch32-pico.png`, embedded by the README, and writes
-the source PCB hash in `docs/images/render.json`. `ch32-pico-front.png` and
-`ch32-pico-back.png` are also available separately.
+## Fabrication outputs
 
-The USB model uses a +1.325 mm model-Y offset because its supplier origin
-is different from the reviewed KiCad footprint. At J2's 180-degree board
-rotation its mouth is at board Y = 4.825 - 5.000 + 1.325 = 1.150 mm.
-Its 8.94 mm width is centered on X = 10.5 mm. The render therefore shows
-the intentional recess, not a flush socket. The two IC package models
-also have explicit rotations to align with the reviewed pin-one locations.
-A CAD illustration does not establish cable fit or factory model rotations.
+`just jlcpcb` runs the source/regression checks, rechecks the saved board,
+exports single-board manufacturing files, prepares KiKit, builds the four-up
+panel, checks its DRC and assembly-file parity, and creates the final bundle.
+It fails on stale or mismatched inputs.
 
-## Firmware
+Upload `build/jlcpcb/gerbers.zip`, `bom.csv` and `cpl.csv` together. The full
+`build/ch32-pico-jlcpcb.zip` also contains factory notes, orientation guides,
+stock/cost review, licenses and a hash manifest. Read
+[manufacturing](manufacturing.md) and [panelization](panelization.md) before
+using those files. All `build/` files are ignored by Git. Commit sources, tool
+locks and the checked board; attach an exact bundle to a tagged release when
+preparing a fabrication release.
 
-`make firmware target-demo` builds the programmer and a printf example from
-pinned open-source inputs. It never flashes a connected device. Install the
-RISC-V compiler described in [firmware notes](../firmware/lowcost/README.md).
-The compiler prefix is configurable with `RISCV_PREFIX`.
+## Retained firmware generation
 
-## Routing
+The Rev A programmer and target-demo generators remain available through
+`just lowcost-firmware` and `just target-demo`, but reject the current X035
+revision. Their archived CH32FUN integration still invokes its upstream Make
+rules internally. The root Makefile has been replaced by `justfile`; existing
+generation code and historical revision tools remain in the repo.
 
-KiCadRoutingTools is pinned to `ad7f24deb8fbffa6c498a09a6ebda46e012c37ff`.
-The workstation checkout is `~/git/KiCadRoutingTools`, with its Rust extension
-installed in `.venv`. On another workstation, clone
-[the upstream repository](https://github.com/drandyhaas/KiCadRoutingTools),
-check out that revision and follow its `build_router.py` instructions.
-`python3 -m hardware.routing --krt PATH` selects another checkout and rejects
-wrong revisions or tracked changes.
-
-`scripts/router_dependencies.py` fetches and checksum-verifies Freerouting
-2.5.0. Java 25 is used, with a project-local profile and analytics disabled.
-The Java build avoids the native macOS distribution's serialization failure.
-
-Both engines get the same board after explicit USB, supply and MCU pin-exit
-routes and completed ground/main-supply plane connections. The layout uses
-JLC04101H-3313: F.Cu and B.Cu signals, In1.Cu GND, In2.Cu main 3.3 V and
-signals. This is a four-layer board even with two signal layers selected.
-
-Trace/space floors are 0.15 mm. All vias are 0.45/0.20 mm. The two USB traces
-spread outward by 0.10 mm beneath the ESD package, allowing its VBUS via to
-use the same size without cutting the sampled ground return. JLC's quote-form
-note allows this size at standard multilayer via pricing; confirm it at checkout.
-Via/NPTH drill-to-copper clearance is 0.20 mm. Plated-pad hole-to-copper and
-hole-to-hole constraints are 0.30 mm and 0.45 mm. The native and DSN adapters
-use the same fabrication rules. No DRC categories are suppressed.
-
-Every delivered route is independently refilled and checked by KiCad.
-Additional gates check source pad nets, component positions, vias outside
-paste, preserved critical trace/via geometry, no foreign ground-layer tracks,
-and sampled GND reference beneath every USB signal trace. A successful
-router process exit does not establish connectivity or DRC success.
-
-The adapter disables stub-layer swapping and sets `KICAD_RIP_PREEXISTING=0`
-to preserve established copper during plane repair. Cleanup may remove unused
-vias and short dead stubs only when per-net connectivity is preserved and
-no new DRC issues appear. Required seed copper must still survive grading.
-
-Python routing processes finish normally. There is no kill or subprocess
-routing deadline. Logs record commands and environment. The current comparison
-is `build/routing/comparison.json`; `make review` saves a passing candidate,
-source checks, remaining engineering reviews and layer SVGs in `hardware/review`.
-
-Two complete KiCadRoutingTools runs produced identical trace/via geometry:
-`7f151ddb4ce39bf99e24f3bada5c8eec08711009666fdaa43e54e01be54f4993`.
-The selected board has zero DRC violations, zero open connections, 97 vias
-and about 880 mm of trace. Freerouting leaves two connections open.
-The reproduction record is `hardware/routing-reproducibility.json`.
-
-## Manufacturing previews
-
-Run `make manufacturing-preview` after saving a route, then `make panel-preview`
-for the four-board KiKit panel. BOM and CPL coverage, placement coordinates,
-rotations, translated pad nets and copper geometry are checked independently.
-See [manufacturing](manufacturing.md) and [panelization](panelization.md).
-
-These checks do not establish physical cable fit, assembly model rotations,
-USB performance, current ratings or component allocation. The prototype
-qualification items remain explicit in each manifest.
+The X035 PD/USB application and assembled-board qualification remain pending.
+See [Rev E](revision-e.md) for current behavior and limitations.

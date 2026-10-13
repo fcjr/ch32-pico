@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: MIT
-"""Revs C/D placement in mm, top view. TP6–TP13 are on the back."""
-PLACEMENT = {'J1': (0, 0, 0),
+"""Revs C/D/E placement in mm, top view. TP6–TP13 are on the back."""
+PLACEMENT = {'SJ1': (10.5, 16, 0),
+ 'J1': (0, 0, 0),
  'J2': (10.5, 3.375, 180),
  'U1': (10.5, 28, 90),
  'U3': (17.05, 2.5, 0),
@@ -56,4 +57,8 @@ PLACEMENT = {'J1': (0, 0, 0),
  'TP12': (13, 40),
  'TP13': (13, 43)}
 
-BACK_REFS = {f'TP{i}' for i in range(6,14)}
+BACK_REFS = {f'TP{i}' for i in range(6,14)} | {'SJ1'}
+
+from .diagnostics import DIAGNOSTICS
+PLACEMENT.update({d.ref:d.position for d in DIAGNOSTICS})
+BACK_REFS.update(d.ref for d in DIAGNOSTICS if d.side=='B')

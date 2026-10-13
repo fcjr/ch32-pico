@@ -43,7 +43,7 @@ releasing a manufacturing package.
 
 For the archived Rev A design, ST USBLC6-2P6, C15999, uses a locally generated SOT-666
 footprint from [ST DS4260 Rev 7, Figure 21](https://www.st.com/resource/en/datasheet/usblc6-2.pdf).
-Run `python3 scripts/prepare_esd_footprint.py` to reproduce it. The six lands
+Run `uv run python scripts/prepare_esd_footprint.py` to reproduce it. The six lands
 are 0.30 x 0.99 mm with 0.50 mm pitch and a 0.62 mm gap between rows.
 Pin 1 is bottom left in this footprint's zero-degree orientation. Pins 1/6
 carry D+, pins 3/4 carry D-, pin 2 is ground and pin 5 is VBUS. The symbol uses the manufacturer's pin assignments.
@@ -58,3 +58,11 @@ KiCad library contributors retain copyright in the upstream footprints.
 Local changes made on 2026-10-11 and 2026-10-12 remove unavailable models,
 move imported silk to fabrication layers, and adapt the connector pad aliases,
 SMT row and courtyard as documented above.
+
+`SolderJumper_Open.kicad_mod` is an original Rev E PCB feature. Two 1 × 1.5 mm
+pads have a 0.30 mm gap, mask openings and no paste. SJ1 is excluded from
+BOM and placement files and must remain open during assembly.
+
+`USB_Probe_Inline` is an original paste-free 1 x 0.1537 mm contact that stays
+inside the existing USB trace. `TestPad_0.6mm` is an original bare probe pad
+for PB3 where a 1 mm pad would crowd nearby markings. Neither is assembled.

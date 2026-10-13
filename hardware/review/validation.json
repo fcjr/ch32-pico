@@ -1,17 +1,17 @@
 {
   "status": "routing checked; not released for ordering",
-  "saved_at": "2026-10-12T23:09:36.449129+00:00",
+  "saved_at": "2026-10-13T00:16:11.093328+00:00",
   "engine": "freerouting",
   "selection": "passing DRC/connectivity, then minimum vias and trace length",
   "checks": {
-    "physical_components": 47,
+    "physical_components": 55,
     "source_pad_net_parity": true,
     "violations": 0,
     "unconnected": 0,
     "violation_types": {},
-    "via_count": 95,
-    "trace_length_mm": 1066.682,
-    "trace_via_geometry_sha256": "4a25c009c82b157ff211d850122324e3a58ab443e7d21cca3890966717999191",
+    "via_count": 137,
+    "trace_length_mm": 1350.217,
+    "trace_via_geometry_sha256": "3b4594e0a5f1c8a0361cfbf89f122cdc32a421feba514db9f8f9c4b35743ae25",
     "via_in_paste": [],
     "changed_critical_segments": [],
     "changed_critical_vias": [],
@@ -23,14 +23,14 @@
       "paths": {
         "DP": {
           "connector_to_mcu_mm": {
-            "A6": 13.0846,
-            "B6": 10.0046
+            "A6": 34.5739,
+            "B6": 31.4939
           }
         },
         "DM": {
           "connector_to_mcu_mm": {
-            "A7": 11.6643,
-            "B7": 10.6643
+            "A7": 30.9088,
+            "B7": 29.9088
           }
         },
         "BOOT": {
@@ -44,7 +44,7 @@
         "net": "GND",
         "longitudinal_step_max_mm": 0.05,
         "transverse_samples": "trace center and both edges",
-        "sample_count": 1695,
+        "sample_count": 4119,
         "uncovered_sample_count": 0,
         "uncovered_samples": []
       },
@@ -513,11 +513,11 @@
           "side": "front",
           "pad_xy_mm": [
             17.0,
-            44.0
+            46.0
           ],
           "text_xy_mm": [
             17.0,
-            45.4
+            47.4
           ]
         },
         {
@@ -528,11 +528,11 @@
           "side": "front",
           "pad_xy_mm": [
             4.3,
-            45.5
+            46.0
           ],
           "text_xy_mm": [
             4.3,
-            46.9
+            47.4
           ]
         },
         {
@@ -543,11 +543,11 @@
           "side": "front",
           "pad_xy_mm": [
             4.32,
-            34.0
+            41.0
           ],
           "text_xy_mm": [
             6.5,
-            35.9
+            42.9
           ]
         },
         {
@@ -558,11 +558,11 @@
           "side": "front",
           "pad_xy_mm": [
             11.82,
-            34.0
+            41.0
           ],
           "text_xy_mm": [
             14.0,
-            35.9
+            42.9
           ]
         },
         {
@@ -573,11 +573,85 @@
           "side": "front",
           "pad_xy_mm": [
             17.25,
-            30.0
+            35.5
           ],
           "text_xy_mm": [
             16.5,
-            31.2
+            36.7
+          ]
+        }
+      ],
+      "expansion_labels": [
+        {
+          "ref": "TP6",
+          "net": "PC6",
+          "side": "back",
+          "pad_xy_mm": [
+            8.0,
+            34.0
+          ]
+        },
+        {
+          "ref": "TP7",
+          "net": "PC7",
+          "side": "back",
+          "pad_xy_mm": [
+            8.0,
+            37.0
+          ]
+        },
+        {
+          "ref": "TP8",
+          "net": "PB5",
+          "side": "back",
+          "pad_xy_mm": [
+            8.0,
+            40.0
+          ]
+        },
+        {
+          "ref": "TP9",
+          "net": "PB8",
+          "side": "back",
+          "pad_xy_mm": [
+            8.0,
+            43.0
+          ]
+        },
+        {
+          "ref": "TP10",
+          "net": "PB9",
+          "side": "back",
+          "pad_xy_mm": [
+            13.0,
+            34.0
+          ]
+        },
+        {
+          "ref": "TP11",
+          "net": "PB12",
+          "side": "back",
+          "pad_xy_mm": [
+            13.0,
+            37.0
+          ]
+        },
+        {
+          "ref": "TP12",
+          "net": "PB13",
+          "side": "back",
+          "pad_xy_mm": [
+            13.0,
+            40.0
+          ]
+        },
+        {
+          "ref": "TP13",
+          "net": "GND",
+          "side": "back",
+          "pad_xy_mm": [
+            13.0,
+            43.0
           ]
         }
       ],
@@ -587,12 +661,28 @@
       "coordinate_convention": "PCB coordinates, X right/Y down in front view; back text mirrored"
     },
     "silkscreen_passes": true,
+    "power_layout_passes": true,
+    "power_layout": {
+      "input_capacitor_connections_mm": {
+        "VIN_SYS": 1.5615,
+        "GND": 1.5615
+      },
+      "switch_copper_total_mm": 5.918,
+      "load_switch_timing_connection_mm": 4.269,
+      "supply_trace_totals_mm": {
+        "VSYS": 6.108,
+        "VIN_SYS": 26.896
+      },
+      "feedback_via_isolated_from_shared_plane": true,
+      "passes": true,
+      "limitations": "Geometry only; current, temperature, ripple and EMC require hardware testing"
+    },
     "passes_connectivity_and_drc": true
   },
-  "board_sha256": "fda5084884e82e4d6a47ff247aa61ac8ef5d7558dbf2b9f779ec289d94008f49",
+  "board_sha256": "8a48de59734e4cb1ae95fbd2bf7107f615404c002b55d4ec7d394a4781eae2dd",
   "comparison": {
     "status": "passed",
-    "started_at": "2026-10-12T22:54:39.935717+00:00",
+    "started_at": "2026-10-13T00:13:53.907560+00:00",
     "krt_commit": "ad7f24deb8fbffa6c498a09a6ebda46e012c37ff",
     "krt_environment": {
       "KICAD_RIP_PREEXISTING": "0"
@@ -605,19 +695,31 @@
     ],
     "candidates": {
       "krt": {
-        "physical_components": 47,
+        "physical_components": 55,
         "source_pad_net_parity": true,
-        "violations": 8,
+        "violations": 0,
         "unconnected": 3,
-        "violation_types": {
-          "hole_clearance": 8
-        },
-        "via_count": 105,
-        "trace_length_mm": 1098.027,
-        "trace_via_geometry_sha256": "93548a32fbba4e2f613bff1b55de3fa7b17c2e784d49e5cf05fade96e3f090a7",
+        "violation_types": {},
+        "via_count": 184,
+        "trace_length_mm": 1377.655,
+        "trace_via_geometry_sha256": "f083a3c725689f6edce7018a47d5914b9c4dc879bf27f14f22786ca4bd7faa86",
         "via_in_paste": [],
         "changed_critical_segments": [],
-        "changed_critical_vias": [],
+        "changed_critical_vias": [
+          {
+            "net": "PD_OUT",
+            "at_mm": [
+              17.55,
+              8.28
+            ],
+            "diameter_mm": 0.45,
+            "drill_mm": 0.2,
+            "layers": [
+              "F.Cu",
+              "B.Cu"
+            ]
+          }
+        ],
         "foreign_tracks_on_ground_layer": 0,
         "usb_geometry": {
           "status": "geometry audit; impedance and USB performance not certified",
@@ -626,14 +728,14 @@
           "paths": {
             "DP": {
               "connector_to_mcu_mm": {
-                "A6": 13.0846,
-                "B6": 10.0046
+                "A6": 34.5739,
+                "B6": 31.4939
               }
             },
             "DM": {
               "connector_to_mcu_mm": {
-                "A7": 11.6643,
-                "B7": 10.6643
+                "A7": 30.9088,
+                "B7": 29.9088
               }
             },
             "BOOT": {
@@ -647,7 +749,7 @@
             "net": "GND",
             "longitudinal_step_max_mm": 0.05,
             "transverse_samples": "trace center and both edges",
-            "sample_count": 1695,
+            "sample_count": 4119,
             "uncovered_sample_count": 0,
             "uncovered_samples": []
           },
@@ -1116,11 +1218,11 @@
               "side": "front",
               "pad_xy_mm": [
                 17.0,
-                44.0
+                46.0
               ],
               "text_xy_mm": [
                 17.0,
-                45.4
+                47.4
               ]
             },
             {
@@ -1131,11 +1233,11 @@
               "side": "front",
               "pad_xy_mm": [
                 4.3,
-                45.5
+                46.0
               ],
               "text_xy_mm": [
                 4.3,
-                46.9
+                47.4
               ]
             },
             {
@@ -1146,11 +1248,11 @@
               "side": "front",
               "pad_xy_mm": [
                 4.32,
-                34.0
+                41.0
               ],
               "text_xy_mm": [
                 6.5,
-                35.9
+                42.9
               ]
             },
             {
@@ -1161,11 +1263,11 @@
               "side": "front",
               "pad_xy_mm": [
                 11.82,
-                34.0
+                41.0
               ],
               "text_xy_mm": [
                 14.0,
-                35.9
+                42.9
               ]
             },
             {
@@ -1176,11 +1278,85 @@
               "side": "front",
               "pad_xy_mm": [
                 17.25,
-                30.0
+                35.5
               ],
               "text_xy_mm": [
                 16.5,
-                31.2
+                36.7
+              ]
+            }
+          ],
+          "expansion_labels": [
+            {
+              "ref": "TP6",
+              "net": "PC6",
+              "side": "back",
+              "pad_xy_mm": [
+                8.0,
+                34.0
+              ]
+            },
+            {
+              "ref": "TP7",
+              "net": "PC7",
+              "side": "back",
+              "pad_xy_mm": [
+                8.0,
+                37.0
+              ]
+            },
+            {
+              "ref": "TP8",
+              "net": "PB5",
+              "side": "back",
+              "pad_xy_mm": [
+                8.0,
+                40.0
+              ]
+            },
+            {
+              "ref": "TP9",
+              "net": "PB8",
+              "side": "back",
+              "pad_xy_mm": [
+                8.0,
+                43.0
+              ]
+            },
+            {
+              "ref": "TP10",
+              "net": "PB9",
+              "side": "back",
+              "pad_xy_mm": [
+                13.0,
+                34.0
+              ]
+            },
+            {
+              "ref": "TP11",
+              "net": "PB12",
+              "side": "back",
+              "pad_xy_mm": [
+                13.0,
+                37.0
+              ]
+            },
+            {
+              "ref": "TP12",
+              "net": "PB13",
+              "side": "back",
+              "pad_xy_mm": [
+                13.0,
+                40.0
+              ]
+            },
+            {
+              "ref": "TP13",
+              "net": "GND",
+              "side": "back",
+              "pad_xy_mm": [
+                13.0,
+                43.0
               ]
             }
           ],
@@ -1190,18 +1366,34 @@
           "coordinate_convention": "PCB coordinates, X right/Y down in front view; back text mirrored"
         },
         "silkscreen_passes": true,
+        "power_layout_passes": true,
+        "power_layout": {
+          "input_capacitor_connections_mm": {
+            "VIN_SYS": 1.5615,
+            "GND": 1.5615
+          },
+          "switch_copper_total_mm": 5.718,
+          "load_switch_timing_connection_mm": 4.269,
+          "supply_trace_totals_mm": {
+            "VSYS": 6.108,
+            "VIN_SYS": 26.896
+          },
+          "feedback_via_isolated_from_shared_plane": true,
+          "passes": true,
+          "limitations": "Geometry only; current, temperature, ripple and EMC require hardware testing"
+        },
         "passes_connectivity_and_drc": false,
-        "seconds": 14.54
+        "seconds": 20.09
       },
       "freerouting": {
-        "physical_components": 47,
+        "physical_components": 55,
         "source_pad_net_parity": true,
         "violations": 0,
         "unconnected": 0,
         "violation_types": {},
-        "via_count": 95,
-        "trace_length_mm": 1066.682,
-        "trace_via_geometry_sha256": "4a25c009c82b157ff211d850122324e3a58ab443e7d21cca3890966717999191",
+        "via_count": 137,
+        "trace_length_mm": 1350.217,
+        "trace_via_geometry_sha256": "3b4594e0a5f1c8a0361cfbf89f122cdc32a421feba514db9f8f9c4b35743ae25",
         "via_in_paste": [],
         "changed_critical_segments": [],
         "changed_critical_vias": [],
@@ -1213,14 +1405,14 @@
           "paths": {
             "DP": {
               "connector_to_mcu_mm": {
-                "A6": 13.0846,
-                "B6": 10.0046
+                "A6": 34.5739,
+                "B6": 31.4939
               }
             },
             "DM": {
               "connector_to_mcu_mm": {
-                "A7": 11.6643,
-                "B7": 10.6643
+                "A7": 30.9088,
+                "B7": 29.9088
               }
             },
             "BOOT": {
@@ -1234,7 +1426,7 @@
             "net": "GND",
             "longitudinal_step_max_mm": 0.05,
             "transverse_samples": "trace center and both edges",
-            "sample_count": 1695,
+            "sample_count": 4119,
             "uncovered_sample_count": 0,
             "uncovered_samples": []
           },
@@ -1703,11 +1895,11 @@
               "side": "front",
               "pad_xy_mm": [
                 17.0,
-                44.0
+                46.0
               ],
               "text_xy_mm": [
                 17.0,
-                45.4
+                47.4
               ]
             },
             {
@@ -1718,11 +1910,11 @@
               "side": "front",
               "pad_xy_mm": [
                 4.3,
-                45.5
+                46.0
               ],
               "text_xy_mm": [
                 4.3,
-                46.9
+                47.4
               ]
             },
             {
@@ -1733,11 +1925,11 @@
               "side": "front",
               "pad_xy_mm": [
                 4.32,
-                34.0
+                41.0
               ],
               "text_xy_mm": [
                 6.5,
-                35.9
+                42.9
               ]
             },
             {
@@ -1748,11 +1940,11 @@
               "side": "front",
               "pad_xy_mm": [
                 11.82,
-                34.0
+                41.0
               ],
               "text_xy_mm": [
                 14.0,
-                35.9
+                42.9
               ]
             },
             {
@@ -1763,11 +1955,85 @@
               "side": "front",
               "pad_xy_mm": [
                 17.25,
-                30.0
+                35.5
               ],
               "text_xy_mm": [
                 16.5,
-                31.2
+                36.7
+              ]
+            }
+          ],
+          "expansion_labels": [
+            {
+              "ref": "TP6",
+              "net": "PC6",
+              "side": "back",
+              "pad_xy_mm": [
+                8.0,
+                34.0
+              ]
+            },
+            {
+              "ref": "TP7",
+              "net": "PC7",
+              "side": "back",
+              "pad_xy_mm": [
+                8.0,
+                37.0
+              ]
+            },
+            {
+              "ref": "TP8",
+              "net": "PB5",
+              "side": "back",
+              "pad_xy_mm": [
+                8.0,
+                40.0
+              ]
+            },
+            {
+              "ref": "TP9",
+              "net": "PB8",
+              "side": "back",
+              "pad_xy_mm": [
+                8.0,
+                43.0
+              ]
+            },
+            {
+              "ref": "TP10",
+              "net": "PB9",
+              "side": "back",
+              "pad_xy_mm": [
+                13.0,
+                34.0
+              ]
+            },
+            {
+              "ref": "TP11",
+              "net": "PB12",
+              "side": "back",
+              "pad_xy_mm": [
+                13.0,
+                37.0
+              ]
+            },
+            {
+              "ref": "TP12",
+              "net": "PB13",
+              "side": "back",
+              "pad_xy_mm": [
+                13.0,
+                40.0
+              ]
+            },
+            {
+              "ref": "TP13",
+              "net": "GND",
+              "side": "back",
+              "pad_xy_mm": [
+                13.0,
+                43.0
               ]
             }
           ],
@@ -1777,22 +2043,38 @@
           "coordinate_convention": "PCB coordinates, X right/Y down in front view; back text mirrored"
         },
         "silkscreen_passes": true,
+        "power_layout_passes": true,
+        "power_layout": {
+          "input_capacitor_connections_mm": {
+            "VIN_SYS": 1.5615,
+            "GND": 1.5615
+          },
+          "switch_copper_total_mm": 5.918,
+          "load_switch_timing_connection_mm": 4.269,
+          "supply_trace_totals_mm": {
+            "VSYS": 6.108,
+            "VIN_SYS": 26.896
+          },
+          "feedback_via_isolated_from_shared_plane": true,
+          "passes": true,
+          "limitations": "Geometry only; current, temperature, ripple and EMC require hardware testing"
+        },
         "passes_connectivity_and_drc": true,
-        "seconds": 11.79
+        "seconds": 24.15
       }
     },
     "fabrication_ready": false,
     "seed": {
-      "physical_components": 47,
+      "physical_components": 55,
       "source_pad_net_parity": true,
-      "violations": 5,
-      "unconnected": 88,
+      "violations": 4,
+      "unconnected": 90,
       "violation_types": {
-        "via_dangling": 5
+        "via_dangling": 4
       },
-      "via_count": 35,
-      "trace_length_mm": 176.019,
-      "trace_via_geometry_sha256": "301b16809db1099a3769f8a932a4b4f723b53ff3ccfb91bb4a5bf978eed8ece4",
+      "via_count": 43,
+      "trace_length_mm": 264.587,
+      "trace_via_geometry_sha256": "a2f9fe204255168f5859da69efa25e2cc97d6a6f4309f8dde56d593e3fbea705",
       "via_in_paste": [],
       "changed_critical_segments": [],
       "changed_critical_vias": [],
@@ -1804,14 +2086,14 @@
         "paths": {
           "DP": {
             "connector_to_mcu_mm": {
-              "A6": 13.0846,
-              "B6": 10.0046
+              "A6": 34.5739,
+              "B6": 31.4939
             }
           },
           "DM": {
             "connector_to_mcu_mm": {
-              "A7": 11.6643,
-              "B7": 10.6643
+              "A7": 30.9088,
+              "B7": 29.9088
             }
           },
           "BOOT": {
@@ -1825,7 +2107,7 @@
           "net": "GND",
           "longitudinal_step_max_mm": 0.05,
           "transverse_samples": "trace center and both edges",
-          "sample_count": 1695,
+          "sample_count": 4119,
           "uncovered_sample_count": 0,
           "uncovered_samples": []
         },
@@ -2294,11 +2576,11 @@
             "side": "front",
             "pad_xy_mm": [
               17.0,
-              44.0
+              46.0
             ],
             "text_xy_mm": [
               17.0,
-              45.4
+              47.4
             ]
           },
           {
@@ -2309,11 +2591,11 @@
             "side": "front",
             "pad_xy_mm": [
               4.3,
-              45.5
+              46.0
             ],
             "text_xy_mm": [
               4.3,
-              46.9
+              47.4
             ]
           },
           {
@@ -2324,11 +2606,11 @@
             "side": "front",
             "pad_xy_mm": [
               4.32,
-              34.0
+              41.0
             ],
             "text_xy_mm": [
               6.5,
-              35.9
+              42.9
             ]
           },
           {
@@ -2339,11 +2621,11 @@
             "side": "front",
             "pad_xy_mm": [
               11.82,
-              34.0
+              41.0
             ],
             "text_xy_mm": [
               14.0,
-              35.9
+              42.9
             ]
           },
           {
@@ -2354,11 +2636,85 @@
             "side": "front",
             "pad_xy_mm": [
               17.25,
-              30.0
+              35.5
             ],
             "text_xy_mm": [
               16.5,
-              31.2
+              36.7
+            ]
+          }
+        ],
+        "expansion_labels": [
+          {
+            "ref": "TP6",
+            "net": "PC6",
+            "side": "back",
+            "pad_xy_mm": [
+              8.0,
+              34.0
+            ]
+          },
+          {
+            "ref": "TP7",
+            "net": "PC7",
+            "side": "back",
+            "pad_xy_mm": [
+              8.0,
+              37.0
+            ]
+          },
+          {
+            "ref": "TP8",
+            "net": "PB5",
+            "side": "back",
+            "pad_xy_mm": [
+              8.0,
+              40.0
+            ]
+          },
+          {
+            "ref": "TP9",
+            "net": "PB8",
+            "side": "back",
+            "pad_xy_mm": [
+              8.0,
+              43.0
+            ]
+          },
+          {
+            "ref": "TP10",
+            "net": "PB9",
+            "side": "back",
+            "pad_xy_mm": [
+              13.0,
+              34.0
+            ]
+          },
+          {
+            "ref": "TP11",
+            "net": "PB12",
+            "side": "back",
+            "pad_xy_mm": [
+              13.0,
+              37.0
+            ]
+          },
+          {
+            "ref": "TP12",
+            "net": "PB13",
+            "side": "back",
+            "pad_xy_mm": [
+              13.0,
+              40.0
+            ]
+          },
+          {
+            "ref": "TP13",
+            "net": "GND",
+            "side": "back",
+            "pad_xy_mm": [
+              13.0,
+              43.0
             ]
           }
         ],
@@ -2368,20 +2724,36 @@
         "coordinate_convention": "PCB coordinates, X right/Y down in front view; back text mirrored"
       },
       "silkscreen_passes": true,
+      "power_layout_passes": true,
+      "power_layout": {
+        "input_capacitor_connections_mm": {
+          "VIN_SYS": 1.5615,
+          "GND": 1.5615
+        },
+        "switch_copper_total_mm": 5.718,
+        "load_switch_timing_connection_mm": 4.269,
+        "supply_trace_totals_mm": {
+          "VSYS": 6.108,
+          "VIN_SYS": 26.896
+        },
+        "feedback_via_isolated_from_shared_plane": true,
+        "passes": true,
+        "limitations": "Geometry only; current, temperature, ripple and EMC require hardware testing"
+      },
       "passes_connectivity_and_drc": false
     },
-    "input_sha256": "ecafa5feac42044e1a8fad46e6e6f95be046390ffc42c7d2ad42c370596e0634",
+    "input_sha256": "5f95cc48cce39902c3a3000011c6466f5eb45f6bb5e0fa78e8e52df87dd61ee2",
     "prepared": {
-      "physical_components": 47,
+      "physical_components": 55,
       "source_pad_net_parity": true,
-      "violations": 5,
-      "unconnected": 60,
+      "violations": 4,
+      "unconnected": 62,
       "violation_types": {
-        "via_dangling": 5
+        "via_dangling": 4
       },
-      "via_count": 38,
-      "trace_length_mm": 245.831,
-      "trace_via_geometry_sha256": "1ad06870c163d715a13ed8be2c5bceca0d37d3bfe337d605ecce40dcca702ac9",
+      "via_count": 44,
+      "trace_length_mm": 382.925,
+      "trace_via_geometry_sha256": "22f7354385d0e4ef0ee8537abea60d612fb65854c727037eddce16569a2bb5be",
       "via_in_paste": [],
       "changed_critical_segments": [],
       "changed_critical_vias": [],
@@ -2393,14 +2765,14 @@
         "paths": {
           "DP": {
             "connector_to_mcu_mm": {
-              "A6": 13.0846,
-              "B6": 10.0046
+              "A6": 34.5739,
+              "B6": 31.4939
             }
           },
           "DM": {
             "connector_to_mcu_mm": {
-              "A7": 11.6643,
-              "B7": 10.6643
+              "A7": 30.9088,
+              "B7": 29.9088
             }
           },
           "BOOT": {
@@ -2414,7 +2786,7 @@
           "net": "GND",
           "longitudinal_step_max_mm": 0.05,
           "transverse_samples": "trace center and both edges",
-          "sample_count": 1695,
+          "sample_count": 4119,
           "uncovered_sample_count": 0,
           "uncovered_samples": []
         },
@@ -2883,11 +3255,11 @@
             "side": "front",
             "pad_xy_mm": [
               17.0,
-              44.0
+              46.0
             ],
             "text_xy_mm": [
               17.0,
-              45.4
+              47.4
             ]
           },
           {
@@ -2898,11 +3270,11 @@
             "side": "front",
             "pad_xy_mm": [
               4.3,
-              45.5
+              46.0
             ],
             "text_xy_mm": [
               4.3,
-              46.9
+              47.4
             ]
           },
           {
@@ -2913,11 +3285,11 @@
             "side": "front",
             "pad_xy_mm": [
               4.32,
-              34.0
+              41.0
             ],
             "text_xy_mm": [
               6.5,
-              35.9
+              42.9
             ]
           },
           {
@@ -2928,11 +3300,11 @@
             "side": "front",
             "pad_xy_mm": [
               11.82,
-              34.0
+              41.0
             ],
             "text_xy_mm": [
               14.0,
-              35.9
+              42.9
             ]
           },
           {
@@ -2943,11 +3315,85 @@
             "side": "front",
             "pad_xy_mm": [
               17.25,
-              30.0
+              35.5
             ],
             "text_xy_mm": [
               16.5,
-              31.2
+              36.7
+            ]
+          }
+        ],
+        "expansion_labels": [
+          {
+            "ref": "TP6",
+            "net": "PC6",
+            "side": "back",
+            "pad_xy_mm": [
+              8.0,
+              34.0
+            ]
+          },
+          {
+            "ref": "TP7",
+            "net": "PC7",
+            "side": "back",
+            "pad_xy_mm": [
+              8.0,
+              37.0
+            ]
+          },
+          {
+            "ref": "TP8",
+            "net": "PB5",
+            "side": "back",
+            "pad_xy_mm": [
+              8.0,
+              40.0
+            ]
+          },
+          {
+            "ref": "TP9",
+            "net": "PB8",
+            "side": "back",
+            "pad_xy_mm": [
+              8.0,
+              43.0
+            ]
+          },
+          {
+            "ref": "TP10",
+            "net": "PB9",
+            "side": "back",
+            "pad_xy_mm": [
+              13.0,
+              34.0
+            ]
+          },
+          {
+            "ref": "TP11",
+            "net": "PB12",
+            "side": "back",
+            "pad_xy_mm": [
+              13.0,
+              37.0
+            ]
+          },
+          {
+            "ref": "TP12",
+            "net": "PB13",
+            "side": "back",
+            "pad_xy_mm": [
+              13.0,
+              40.0
+            ]
+          },
+          {
+            "ref": "TP13",
+            "net": "GND",
+            "side": "back",
+            "pad_xy_mm": [
+              13.0,
+              43.0
             ]
           }
         ],
@@ -2957,6 +3403,22 @@
         "coordinate_convention": "PCB coordinates, X right/Y down in front view; back text mirrored"
       },
       "silkscreen_passes": true,
+      "power_layout_passes": true,
+      "power_layout": {
+        "input_capacitor_connections_mm": {
+          "VIN_SYS": 1.5615,
+          "GND": 1.5615
+        },
+        "switch_copper_total_mm": 5.718,
+        "load_switch_timing_connection_mm": 4.269,
+        "supply_trace_totals_mm": {
+          "VSYS": 6.108,
+          "VIN_SYS": 26.896
+        },
+        "feedback_via_isolated_from_shared_plane": true,
+        "passes": true,
+        "limitations": "Geometry only; current, temperature, ripple and EMC require hardware testing"
+      },
       "passes_connectivity_and_drc": false
     }
   },
@@ -2964,57 +3426,24 @@
     "part": "GT-USB-7010AW",
     "lcsc": "C963411",
     "drawing": "https://www.lcsc.com/datasheet/C963411.pdf",
-    "mouth_recess_mm": 1.15,
+    "mouth_recess_mm": -0.3,
     "minimum_mated_gap_mm": null,
     "reference_mated_gap_mm": 1.85,
-    "nominal_cable_margin_mm": 0.6999999999999997,
+    "nominal_cable_margin_mm": 2.15,
     "remaining_cable_margin_mm": null,
     "allowances_mm": {
       "board_edge": 0.2,
       "assembly_position": 0.1,
       "mouth_position": 0.15
     },
-    "mounting_holes": [
-      {
-        "center_mm": [
-          4.8,
-          2.0
-        ],
-        "nominal_shell_clearance_mm": 0.18,
-        "head_diameter_at_shell_contact_mm": 2.46
-      },
-      {
-        "center_mm": [
-          4.8,
-          49.0
-        ],
-        "nominal_shell_clearance_mm": 39.4687,
-        "head_diameter_at_shell_contact_mm": 81.0373
-      },
-      {
-        "center_mm": [
-          16.2,
-          2.0
-        ],
-        "nominal_shell_clearance_mm": 0.18,
-        "head_diameter_at_shell_contact_mm": 2.46
-      },
-      {
-        "center_mm": [
-          16.2,
-          49.0
-        ],
-        "nominal_shell_clearance_mm": 39.4687,
-        "head_diameter_at_shell_contact_mm": 81.0373
-      }
-    ],
-    "upper_screw_heads_compatible": false,
+    "mounting_holes": [],
+    "upper_screw_heads_compatible": null,
     "physical_fit_tested": false
   },
   "open_reviews": [
-    "Rev B PCB/assembly quote, MCU stock and 20-device allocation (docs/revision-b.md)",
+    "Rev C PCB/assembly quote, MCU stock and 20-device allocation (docs/revision-c.md)",
     "Measured USB performance; nonuniform connector/package fanouts (docs/usb-routing.md)",
-    "Physical cable/locating-peg fit; upper holes exclude ordinary screw heads (docs/mechanical.md)",
+    "Physical USB cable, overhang and locating-peg fit (docs/revision-c.md)",
     "5 A power copper/contact temperature, eFuse faults, inrush, discharge, backfeed and fixed 3.3 V load budget",
     "Native USB ISP/recovery, open PD/CDC firmware integration, reset/detach handling and watchdog",
     "JLC IC/diode polarity and stencil review, 0.100 mm TI stencil example, order quantity/attrition"

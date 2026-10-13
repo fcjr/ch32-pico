@@ -1,3 +1,5 @@
+> **Historical Rev B reference.** [Rev C](revision-c.md) supersedes this layout. The Rev B board and renders are preserved in [commit 479ceb9](https://github.com/fcjr/ch32-pico/tree/479ceb9).
+
 # Revision B: CH32X035 + USB PD
 
 This revision has a checked schematic, routed board, front/back CAD render and

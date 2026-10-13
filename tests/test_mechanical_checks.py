@@ -14,7 +14,7 @@ class CableClearance(unittest.TestCase):
         for prop in children(usb,'property'):
             if prop[1]=='Reference':prop[2]='J2'
             if prop[1]=='Value':prop[2]='GT-USB-7010AW'
-        usb.append(parse('(at 10.5 4.825 180)'))
+        usb.append(parse('(at 10.5 3.375 180)'))
         doc.append(usb)
         return doc,usb
 
@@ -24,7 +24,8 @@ class CableClearance(unittest.TestCase):
         self.assertIsNone(result['minimum_mated_gap_mm'])
         self.assertIsNone(result['remaining_cable_margin_mm'])
         self.assertFalse(result['physical_fit_tested'])
-        self.assertEqual(len(result['mounting_holes']),4)
+        self.assertEqual(len(result['mounting_holes']),0)
+        self.assertEqual(result['mouth_recess_mm'],-.3)
 
     def test_unreviewed_lowcost_recess_fails(self):
         doc,usb=self.lowcost_fixture()
@@ -46,6 +47,8 @@ class CableClearance(unittest.TestCase):
 
     def test_shell_over_mounting_hole_is_rejected(self):
         doc,usb=self.lowcost_fixture()
+        header=next(f for f in children(doc,'footprint') if f is not usb)
+        header.append(parse('(pad "" np_thru_hole circle (at 5.2 2) (size 2.1 2.1) (drill 2.1) (layers "*.Cu" "*.Mask"))'))
         one(usb,'at')[1]='10.0'
         with self.assertRaisesRegex(ValueError,'overlaps a Pico mounting hole'):
             usb_fit(doc)

@@ -2,12 +2,12 @@
 
 A RISC-V development board from Left Shift Logical, built around one
 CH32X035C8T6 with native USB and USB Power Delivery. It keeps the Raspberry Pi
-Pico's 21 × 51 mm outline, 40 header positions, castellated edges and four
-mounting holes.
+Pico's 21 × 51 mm outline, 40 header positions and castellated edges. Rev C
+omits the Pico mounting holes so USB-C can sit at the board edge.
 
-![ch32-pico Rev B, front and back](docs/images/ch32-pico.png)
+![ch32-pico Rev C, front and back](docs/images/ch32-pico.png)
 
-**Rev B is a routed prototype, not ready to order.** The schematic, board and
+**Rev C is a routed prototype, not ready to order.** The schematic, board and
 four-up KiKit panel pass the local electrical and layout checks. Application
 firmware and physical power testing are still unfinished.
 
@@ -24,9 +24,11 @@ needs thermal and connector testing.
 All 26 Pico GPIO positions have CH32 GPIOs. UART, I2C, SPI and three ADC inputs
 occupy familiar positions, but this board cannot run Pico firmware or reproduce
 every Pico peripheral mapping. Pin 30 is reset, pin 36 is fixed 3.3 V, and pin 39
-accepts a 4.3–5.5 V input. Pins 35 and 37 are unconnected. Some X035 functions
-also lack free external connections, including OPA1 and the clock output.
-See the [complete pinout and peripheral limits](docs/revision-b.md#peripheral-access)
+accepts a 4.3–5.5 V input. Pins 35 and 37 are unconnected. Seven additional
+underside pads expose the remaining free GPIOs, including
+OPA1 input/output, one-wire PIOC and the clock output. A ground pad sits
+beside them. These pads add no fitted parts.
+See the [complete pinout and peripheral limits](docs/revision-c.md#peripheral-access)
 and [silkscreen review](docs/markings.md).
 
 The estimated fitted BOM is **$3.91 per device** for a 20-device run, before
@@ -35,12 +37,14 @@ PCB fabrication, assembly, attrition and shipping. Five four-up panels make
 leaving 18 short before attrition. Stock and prices need checking again before
 an order.
 
-The board is generated from Python in `hardware/`. The [Rev B design notes](docs/revision-b.md)
+The board is generated from Python in `hardware/`. The [Rev C design notes](docs/revision-c.md)
 cover the circuit, sources, remaining work and
-[build and fabrication commands](docs/revision-b.md#generated-files).
+[build and fabrication commands](docs/revision-c.md#generated-files).
 The front/back images come from the checked KiCad board via `make render`.
-Generation scripts remain in the repository for future revisions. Documents
-marked Rev A describe the previous two-MCU board.
+The buck converter now sits in the upper power section, with short input
+capacitor connections and a dedicated feedback trace. Generation scripts
+remain in the repository for future revisions. Documents marked Rev A or
+Rev B describe earlier boards.
 
 Original software and firmware changes use [MIT](LICENSES/MIT.txt). The original
 board design uses [CERN-OHL-P-2.0](LICENSES/CERN-OHL-P-2.0.txt), the permissive

@@ -118,7 +118,7 @@ def export(directory):
         'Standard PCBA required: Economic PCBA does not support castellated holes.\n'
         'For assembly use the 93 x 71 mm four-copy panel, quantity five panels.\n'
         f'No filled/capped via-in-pad. Top-side assembly, {assembly["fitted_parts"]} fitted components.\n'
-        'Retain upper mounting holes, but ordinary screw heads do not fit beside USB.\n'
+        'No Pico mounting holes; USB-C mouth overhangs the top edge by 0.30 mm.\n'
         'CPL uses KiCad angles; verify every polarized part and IC in JLC preview.\n'
         'BOM/CPL reference coverage is checked. Stock and attrition are not reserved.\n'
         'Open engineering reviews are recorded in manifest.json. No order was uploaded.\n')

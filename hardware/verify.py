@@ -20,10 +20,10 @@ def verify_contract(components=COMPONENTS):
         for pin,net in pins.items():
             if c[ref].nets[str(pin)]!=net:
                 raise ValueError(f'Contract violation: {ref}.{pin} must be {net}')
-    from .design import INTERNAL_SIGNALS, MCU_PART, validate
+    from .design import INTERNAL_SIGNALS, MCU_PART, EXPANSION_SIGNALS, validate
     validate()
     if c['U1'].part != MCU_PART or any(x.part=='C5187096' for x in components):
-        raise ValueError('Rev B requires one X035 and no V003 programmer')
+        raise ValueError('The X035 design requires one X035 and no V003 programmer')
     require('U1',{47:'GND',48:'3V3_OUT',7:'PA21',32:'USB_DM',33:'USB_DP',
                   34:'SDIO',37:'SDCK',38:'CC1',39:'CC2'})
     require('D1',{1:'VIN_SYS',2:'VBUS'})
@@ -41,6 +41,10 @@ def verify_contract(components=COMPONENTS):
         require('J1',{p.number:None if p.proposed=='NC' else p.proposed})
         if p.proposed in TARGET_PINS:require('U1',{TARGET_PINS[p.proposed]:p.proposed})
     for port,net in INTERNAL_SIGNALS.items():require('U1',{TARGET_PINS[port]:net})
+    for i,port in enumerate(EXPANSION_SIGNALS,6):
+        require('U1',{TARGET_PINS[port]:port})
+        require(f'TP{i}',{1:port})
+    require('TP13',{1:'GND'})
     require('SW1',{1:'PA21',2:'GND'})
     require('SW2',{1:'BOOT_PULLUP',2:'3V3_OUT'})
     require('R12',{1:'USB_DP',2:'BOOT_PULLUP'})

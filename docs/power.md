@@ -1,4 +1,4 @@
-> **Rev A reference.** The [Rev B migration](revision-b.md) supersedes the circuit, pinout, costs and manufacturing status below.
+> **Rev A reference.** The [current Rev C design](revision-c.md) supersedes the circuit, pinout, costs and manufacturing status below.
 
 # Power review
 

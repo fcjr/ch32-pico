@@ -12,7 +12,7 @@ ROOT=Path(__file__).resolve().parents[1]
 def main():
     from hardware.design import BOARD_REVISION
     if BOARD_REVISION != 'A':
-        raise SystemExit('This is the retained Rev A firmware generator. Rev B requires the X035 application/PD firmware.')
+        raise SystemExit('This is the retained Rev A firmware generator. The X035 design requires the X035 application/PD firmware.')
     out=ROOT/'build/target-demo';out.mkdir(parents=True,exist_ok=True)
     for name in ('Makefile','main.c','funconfig.h'):
         shutil.copy2(ROOT/'firmware/target-demo'/name,out/name)

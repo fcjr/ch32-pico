@@ -22,7 +22,7 @@ COPIES=4
 KIKIT_VERSION='1.8.1'
 OPTIONS={
     'layout':'grid; rows: 1; cols: 4; space: 3mm; renameref: B{n}_{orig}; renamenet: B{n}_{orig}',
-    'tabs':'fixed; hcount: 0; vcount: 1; hwidth: 3mm; vwidth: 3mm',
+    'tabs':f'plugin; code: {ROOT / "scripts/panel_tabs.py"}.EdgeTabs',
     'cuts':'mousebites; drill: 0.5mm; spacing: 1mm; offset: -0.2mm; prolong: 0.5mm',
     'framing':'railstb; width: 7mm; space: 3mm',
     'tooling':'3hole; hoffset: 2.5mm; voffset: 3.5mm; size: 1.152mm',
@@ -147,6 +147,8 @@ def main():
     drc=out/'drc.json'
     subprocess.run(['kicad-cli','pcb','drc','--refill-zones','--save-board','--format','json','-o',str(drc),str(board)],check=True)
     copies=validate_copies(source,board)
+    fit=out/'usb-fit.json'
+    subprocess.run([str(python),str(ROOT/'scripts/panel_fit.py'),str(board),str(fit)],check=True)
     doc=parse(board.read_text());points=[]
     for kind in ('gr_line','gr_arc'):
         for node in children(doc,kind):
@@ -161,6 +163,7 @@ def main():
         'panels':PANELS,'boards_per_panel':COPIES,'total_boards':PANELS*COPIES,
         'nominal_size_mm':[93,71],'measured_outline_mm':dimensions,'source_board_sha256':hashlib.sha256(source.read_bytes()).hexdigest(),
         'panel_sha256':hashlib.sha256(board.read_bytes()).hexdigest(),'copies':copies,
+        'usb_overhang_fit':json.loads(fit.read_text()),
         'drc_violations':len(data['violations']),'unconnected':len(data['unconnected_items']),'passes':passed,
         'assembly_service':'Standard','economic_eligible':False,
         'economic_exclusion':'Castellated holes are unsupported by Economic PCBA.',
@@ -168,6 +171,7 @@ def main():
         'prototype_price_tier_confirmed':False,'assembly_rotations_verified':False,
         'notes':['Five panels means twenty complete boards and twenty BOMs before attrition.',
                  'Tabs only at short ends; castellated sides remain fully milled.',
+                 'Top tab is offset left of USB-C; the final milled outline is checked against all four overhangs.',
                  'Mousebite break edges require flush trimming to restore the Pico envelope.',
                  'JLC must confirm tab strength, panel handling, castellations and final quote.']}
     if passed:

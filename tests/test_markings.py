@@ -19,6 +19,11 @@ class MarkingAudit(unittest.TestCase):
         result=audit(self.doc)
         self.assertEqual(result['header_count'],40)
         self.assertEqual(result['front_service_count'],8)
+        self.assertEqual(len(result['expansion_labels']),8)
+
+    def test_expansion_pad_label_on_wrong_side_is_rejected(self):
+        one(self.label('PC7'),'layer')[1]='F.SilkS'
+        with self.assertRaisesRegex(ValueError,'Back must contain'):audit(self.doc)
 
     def test_top_only_testpad_label_on_back_is_rejected(self):
         one(self.label('SDIO'),'layer')[1]='B.SilkS'

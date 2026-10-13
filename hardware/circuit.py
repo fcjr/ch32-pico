@@ -1,13 +1,13 @@
 # SPDX-License-Identifier: MIT
 # Copyright (c) 2026 ch32-pico contributors
-"""Rev B electrical source. Every terminal has an explicit net or NC.
+"""Rev C electrical source. Every terminal has an explicit net or NC.
 
 CH32X035 is the only MCU and PD controller. PD_OUT is switched VBUS;
 the fixed buck powers only the MCU and 3V3 header. Prototype, not released.
 """
 from __future__ import annotations
 from dataclasses import dataclass
-from .design import HEADER, TARGET_PINS, INTERNAL_SIGNALS, MCU_PART
+from .design import HEADER, TARGET_PINS, INTERNAL_SIGNALS, MCU_PART, EXPANSION_SIGNALS
 
 @dataclass(frozen=True)
 class Component:
@@ -29,6 +29,7 @@ def mcu_nets():
     for p in HEADER:
         if p.proposed in TARGET_PINS:nets[str(TARGET_PINS[p.proposed])]=p.proposed
     for port,net in INTERNAL_SIGNALS.items():nets[str(TARGET_PINS[port])]=net
+    for port in EXPANSION_SIGNALS:nets[str(TARGET_PINS[port])]=port
     nets['47']='GND';nets['48']='3V3_OUT'
     return nets
 
@@ -84,6 +85,8 @@ COMPONENTS = (
     Component('J1','PICO_HEADER',{str(p.number):None if p.proposed=='NC' else p.proposed for p in HEADER},'header','PICO 40-PIN','Pin 40 is switched 5-20 V; not fixed 5 V VBUS',False),
     *(Component(f'TP{i}','TESTPAD',{'1':n},'header',n,'SDI recovery / measurement pad',False)
       for i,n in enumerate(('SDIO','SDCK','3V3_OUT','GND','PA21'),1)),
+    *(Component(f'TP{i}','TESTPAD',{'1':n},'header',n,'Underside expansion solder pad',False)
+      for i,n in enumerate((*EXPANSION_SIGNALS,'GND'),6)),
 )
 SECTIONS={'power':'Fixed 3.3 V control supply','usb':'Native USB-C and PD CC interface',
           'pd':'Switched negotiated VBUS output','target':'CH32X035 and USB boot entry',

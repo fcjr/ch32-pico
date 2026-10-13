@@ -26,7 +26,7 @@ def footprint(castellations=False) -> str:
     lines = [
         '(footprint "Pico_Header_Mechanical" (version 20241229) (generator "ch32_pico")',
         '  (layer "F.Cu")',
-        '  (descr "Pico 40-pin header and mounting holes. Mechanical template only.")',
+        '  (descr "Pico 40-pin header; no mounting holes. Mechanical template only.")',
         '  (attr through_hole exclude_from_pos_files exclude_from_bom)',
         '  (property "Reference" "J1" (at 10.5 22) (layer "F.Fab")',
         '    (effects (font (size 1 1))))',
@@ -105,7 +105,7 @@ def generate() -> None:
         "header_positions": {str(p.number): MECHANICAL.position(p.number) for p in HEADER},
         "mounting_holes_mm": MECHANICAL.mounting_holes,
         "castellations": "40 generated in Pico_Header; mechanical-only template omits them",
-        "programmer": "CH32V003 / open rv003usb; external SWIO factory flash",
+        "programmer": "CH32X035 native USB factory ISP",
         "power_requirements_unverified": POWER_REQUIREMENTS,
     }
     (out / "design-manifest.json").write_text(json.dumps(manifest, indent=2) + "\n")

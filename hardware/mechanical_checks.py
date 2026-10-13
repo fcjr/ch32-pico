@@ -38,7 +38,7 @@ def usb_fit(doc):
     if not expected_edges.issubset(edges):
         raise ValueError('USB shell outline differs from reviewed drawing')
     left, right, front, rear = x-4.47, x+4.47, y-3.675, y+3.675
-    if not math.isclose(front,1.15,abs_tol=1e-6):
+    if not math.isclose(front,-.3,abs_tol=1e-6):
         raise ValueError('Unreviewed USB recess')
     holes = []
     for p in children(footprints['J1'], 'pad'):
@@ -59,5 +59,5 @@ def usb_fit(doc):
             'remaining_cable_margin_mm': None,
             'allowances_mm': {'board_edge': EDGE_ALLOWANCE, 'assembly_position': PLACEMENT_ALLOWANCE,
                               'mouth_position': MOUTH_ALLOWANCE},
-            'mounting_holes': holes, 'upper_screw_heads_compatible': False,
+            'mounting_holes': holes, 'upper_screw_heads_compatible': None,
             'physical_fit_tested': False}

@@ -11,7 +11,7 @@ import wx
 import pcbnew as k
 from .circuit import COMPONENTS
 from .library import ROOT, LIBDIR, load_library, validate_library
-from .placement import PLACEMENT
+from .placement import PLACEMENT, BACK_REFS
 from .design import MECHANICAL
 from .schematic import uid
 from .sexp import parse, children, one, dump
@@ -101,6 +101,12 @@ def generate():
         if not isinstance(node,list): continue
         if node[0]=='footprint':
             ref=next(p[2] for p in children(node,'property') if p[1]=='Reference')
+            if ref in BACK_REFS:
+                def flip_layers(n):
+                    for i,v in enumerate(n):
+                        if isinstance(v,list):flip_layers(v)
+                        elif v in ('F.Cu','F.Mask','F.Fab','F.SilkS','F.CrtYd','F.Paste'):n[i]='B.'+v[2:]
+                flip_layers(node)
             stable(node,'component/'+ref)
         else: stable(node,'board/'+str(i))
     from .branding import apply as apply_branding

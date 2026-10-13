@@ -8,18 +8,18 @@ from .sexp import children, one, parse, dump
 
 def artwork():
     nodes = []
-    for label, x, y, size in [('ch32-pico', 10.5, 28.5, .9),
-                              ('LEFT SHIFT', 10.5, 30.0, .8),
-                              ('LOGICAL', 10.5, 31.2, .8),
-                              (f'REV {BOARD_REVISION}', 10.5, 16.5, .8),
-                              ('PDOUT 5-20V',10.5,15.0,.8)]:
+    for label, x, y, size in [('ch32-pico', 10.5, 34.7, .9),
+                              ('LEFT SHIFT', 10.5, 36.2, .8),
+                              ('LOGICAL', 10.5, 37.4, .8),
+                              (f'REV {BOARD_REVISION}', 10.5, 21.8, .8),
+                              ('PDOUT 5-20V',10.5,45.2,.8)]:
         nodes.append(parse(f'''(gr_text "{label}" (at {x} {y}) (layer "F.SilkS")
             (uuid "{uid('brand/text/' + label)}")
             (effects (font (size {size} {size}) (thickness 0.15))))'''))
     # Double left-chevron mark from Left Shift Logical's original SVG.
     for index, x in enumerate((5.5, 6.3)):
-        for half, (a, b) in enumerate((((x, 29.7), (x-.8, 30.5)),
-                                       ((x-.8, 30.5), (x, 31.3)))):
+        for half, (a, b) in enumerate((((x, 35.9), (x-.8, 36.7)),
+                                       ((x-.8, 36.7), (x, 37.5)))):
             nodes.append(parse(f'''(gr_line (start {a[0]} {a[1]}) (end {b[0]} {b[1]})
                 (stroke (width 0.22) (type solid)) (layer "F.SilkS")
                 (uuid "{uid(f'brand/chevron/{index}/{half}')}"))'''))

@@ -43,6 +43,7 @@ electrical-check: schematic
 	$(PYTHON) -m hardware.verify
 
 check: electrical-check placement-check
+	"$(KICAD_PYTHON)" -m hardware.critical_routes
 	$(PYTHON) -m unittest discover -s tests -v
 	$(KICAD_CLI) pcb drc --exit-code-violations --severity-all --format json -o build/mechanical-drc.json build/ch32-pico-mechanical.kicad_pcb
 

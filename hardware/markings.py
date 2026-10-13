@@ -4,7 +4,7 @@
 import json
 import math
 from .circuit import COMPONENTS
-from .design import HEADER, MECHANICAL, BOARD_REVISION, TARGET_PINS
+from .design import HEADER, MECHANICAL, BOARD_REVISION, TARGET_PINS, EXPANSION_SIGNALS
 from .placement import PLACEMENT
 from .schematic import uid
 from .sexp import parse, children, one, dump
@@ -25,6 +25,7 @@ SERVICES = (
 
 ALIASES = {'NC':'NC', '3V3_OUT':'3V3', '3V3_EN':'EN', 'PA21':'RST', 'PD_OUT':'PDOUT'}
 LEGACY = {'PROBE SWIO', 'PROBE', 'RESET', 'DBG', 'SWIO'}
+EXPANSIONS = tuple((f'TP{i}', n) for i,n in enumerate((*EXPANSION_SIGNALS,'GND'),6))
 
 
 def header_legend(pin):
@@ -42,17 +43,20 @@ def text(label, x, y, side, identity):
 def apply(doc):
     header_labels = {p.proposed for p in HEADER} | set(ALIASES.values()) | {'-', '3V3', 'EN'} | {f'{p.number} {ALIASES.get(p.proposed,p.proposed)}' for p in HEADER if p.number in (1,20,21,40)}
     header_labels |= {header_legend(p) for p in HEADER}
-    service_labels = LEGACY | {s[1] for s in SERVICES}
+    service_labels = LEGACY | {s[1] for s in SERVICES} | set(EXPANSION_SIGNALS)
     doc[:] = [n for n in doc if not (isinstance(n,list) and n and n[0]=='gr_text' and
         (n[1] in service_labels or (one(n,'layer')[1]=='B.SilkS' and n[1] in header_labels)))]
     for pin in HEADER:
         _, y = MECHANICAL.position(pin.number)
         x = 3.9 if pin.number<=20 else 17.1
-        x = {1:7.7,20:7.7,21:13.1,40:13.1}.get(pin.number,x)
+        x = {1:8.2,20:7.7,21:13.1,40:12.3}.get(pin.number,x)
         doc.append(text(header_legend(pin),x,y,'B.SilkS',f'header/{pin.number}'))
     for ref,label,net,(dx,dy),purpose in SERVICES:
         x,y,*_ = PLACEMENT[ref]
         doc.append(text(label,round(x+dx,4),round(y+dy,4),'F.SilkS',ref))
+    for ref,net in EXPANSIONS:
+        x,y,*_ = PLACEMENT[ref]
+        doc.append(text(net,x,y+1.15,'B.SilkS',ref))
 
 
 def update(path):
@@ -72,7 +76,7 @@ def audit(doc):
     texts = children(doc,'gr_text')
     front = [n for n in texts if one(n,'layer')[1]=='F.SilkS']
     back = [n for n in texts if one(n,'layer')[1]=='B.SilkS']
-    if len(back)!=40: raise ValueError('Back must contain exactly 40 header labels; services belong on front')
+    if len(back)!=40+len(EXPANSIONS): raise ValueError('Back must contain 40 header and 8 expansion labels; services belong on front')
     for n in front+back:
         effects=one(n,'effects'); font=one(effects,'font')
         mirrored=any('mirror' in j[1:] for j in children(effects,'justify'))
@@ -135,6 +139,18 @@ def audit(doc):
         raise ValueError('Reset/LED function changed')
     if any(n[1] in {'PROBE SWIO','PROBE','DBG','SWIO'} for n in texts):
         raise ValueError('Ambiguous legacy service legend remains')
-    return {'header_labels':header,'service_labels':service,'header_count':len(header),
+    expansion=[]
+    for ref,net in EXPANSIONS:
+        fp=fps[ref];pad=one(fp,'pad');x,y=pads[ref,'1']
+        labels=[n for n in back if n[1]==net and
+                math.dist(tuple(map(float,one(n,'at')[1:3])),(x,y+1.15))<.01]
+        if len(labels)!=1 or one(fp,'layer')[1]!='B.Cu' or 'B.Mask' not in one(pad,'layers')[1:]:
+            raise ValueError(f'Incorrect back expansion label/pad: {ref}')
+        if one(pad,'net')[-1]!=net:raise ValueError(f'Expansion net mismatch: {ref}')
+        if net in TARGET_PINS:
+            mp=next(p for p in children(fps['U1'],'pad') if p[1]==str(TARGET_PINS[net]))
+            if one(mp,'net')[-1]!=net:raise ValueError(f'Expansion MCU mismatch: {ref}')
+        expansion.append({'ref':ref,'net':net,'side':'back','pad_xy_mm':[x,y]})
+    return {'header_labels':header,'service_labels':service,'expansion_labels':expansion,'header_count':len(header),
             'front_service_count':len(service),'all_markings_verified':True,
             'coordinate_convention':'PCB coordinates, X right/Y down in front view; back text mirrored'}

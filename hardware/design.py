@@ -10,7 +10,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-BOARD_REVISION = 'B'
+BOARD_REVISION = 'C'
 
 
 @dataclass(frozen=True)
@@ -35,7 +35,7 @@ class Mechanical:
 
     @property
     def mounting_holes(self) -> tuple[tuple[float, float], ...]:
-        return ((4.8, 2.0), (16.2, 2.0), (4.8, 49.0), (16.2, 49.0))
+        return ()
 
 
 @dataclass(frozen=True)
@@ -66,6 +66,9 @@ TARGET_PINS = dict(zip(
      'PA3 PA4 PA5 PA6 PA7 PC6 PC7 PB0 PB1 PB2 PB3 PB4 PB5 PB6 PB7 '
      'PB8 PB9 PB10 PB11 PC16 PC17 PC18 PB12 PB13 PC19 PC14 PC15 '
      'PA8 PA9 PA10 PA11 PA12 PA13 PA14 VSS VDD').split(),range(1,49)))
+
+# Unpopulated underside expansion pads, in addition to the Pico headers.
+EXPANSION_SIGNALS = ('PC6', 'PC7', 'PB5', 'PB8', 'PB9', 'PB12', 'PB13')
 
 # Pins reserved for USB, PD, recovery and board power control.
 INTERNAL_SIGNALS = {
@@ -130,4 +133,4 @@ def validate() -> None:
     if any(p.proposed!='GND' for p in HEADER if p.pico in {'GND','AGND'}):
         raise ValueError("Pico ground positions must remain ground")
     if {p.number for p in HEADER if p.proposed=='NC'}!={35,37}:
-        raise ValueError("Rev B reserves ADC_VREF and 3V3_EN header positions")
+        raise ValueError("ADC_VREF and 3V3_EN header positions are reserved")

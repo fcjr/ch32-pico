@@ -1,5 +1,5 @@
 > **Rev A reference.** This document describes the former CH32V003 board.
-> See [Revision B](revision-b.md) for the current X035/PD design.
+> See [Revision C](revision-c.md) for the current X035/PD design.
 
 # Cost and sourcing
 

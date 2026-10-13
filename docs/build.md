@@ -1,9 +1,10 @@
-Current Rev B checks: `make check`. Optional draft reports:
+Current Rev C checks: `make check`. Optional draft reports:
 `python3 scripts/revb_bom_review.py` and `python3 scripts/revb_preview.py`.
-The retained Rev A routing/firmware/fabrication entry points reject the new
-revision until their migration is complete.
+See the [Rev C build sequence](revision-c.md#generated-files) for routing,
+rendering and fabrication previews. The retained Rev A programmer and demo
+firmware entry points reject the current revision.
 
-> **Rev A reference.** The [Rev B migration](revision-b.md) supersedes the circuit, pinout, costs and manufacturing status below.
+> **Rev A reference.** The [Rev C design](revision-c.md) supersedes the circuit, pinout, costs and manufacturing status below.
 
 # Build and routing
 

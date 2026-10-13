@@ -11,6 +11,6 @@ def require_current_layout():
     if not path.exists():raise ValueError('No reviewed layout exists for the current revision')
     doc=parse(path.read_text())
     if f'REV {BOARD_REVISION}' not in {n[1] for n in children(doc,'gr_text')}:
-        raise ValueError(f'Saved layout is not Rev {BOARD_REVISION}. Finish routing and review before export; Rev A files cannot manufacture Rev B.')
+        raise ValueError(f'Saved layout is not Rev {BOARD_REVISION}. Finish routing and review before export; older revision files cannot manufacture the current board.')
     from .verify_placement import verify_board
     verify_board(path)

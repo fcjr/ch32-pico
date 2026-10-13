@@ -41,13 +41,8 @@ class DesignContract(unittest.TestCase):
         self.assertEqual([pins[n] for n in (31, 32, 34)], ["PA0", "PA1", "PA2"])
 
     def test_holes_fit_and_clear_header_copper(self):
-        for x, y in MECHANICAL.mounting_holes:
-            r = MECHANICAL.mounting_drill / 2
-            self.assertGreater(min(x, 21 - x, y, 51 - y), r)
-            for pin in range(1, 41):
-                px, py = MECHANICAL.position(pin)
-                gap = ((px - x) ** 2 + (py - y) ** 2) ** 0.5 - r - MECHANICAL.header_pad / 2
-                self.assertGreater(gap, 0.25)
+        self.assertEqual(MECHANICAL.mounting_holes,())
+        self.assertNotIn('np_thru_hole',footprint())
 
     def test_generation_is_stable(self):
         self.assertEqual(board(footprint()), board(footprint()))

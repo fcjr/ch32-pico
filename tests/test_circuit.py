@@ -29,6 +29,10 @@ class CircuitContract(unittest.TestCase):
         with self.assertRaisesRegex(ValueError,'U1.32'):
             verify_contract(self.altered('U1',{'32':'USB_DP','33':'USB_DM'}))
 
+    def test_expansion_pad_wrong_gpio_rejected(self):
+        with self.assertRaisesRegex(ValueError,'TP7.1'):
+            verify_contract(self.altered('TP7',{'1':'PC6'}))
+
     def test_exported_netlist_corruption_rejected(self):
         path=Path('build/ch32-pico.net.xml')
         if not path.exists(): self.skipTest('Run make electrical-check to export the netlist')

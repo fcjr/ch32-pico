@@ -1,12 +1,12 @@
 # SPDX-License-Identifier: MIT
-"""Rev B first-order power estimates; no assigned prototype current rating."""
+"""Rev C first-order power estimates; no assigned prototype current rating."""
 import json
 from .library import ROOT
 
 
 def report():
     return {
-        'revision':'B','status':'calculation only; no qualified continuous current rating',
+        'revision':'C','status':'calculation only; no qualified continuous current rating',
         'topology':'VBUS -> protected load switch -> pin 40; separate fixed 3.3 V buck',
         'input_pd_contract_goal_v':20,'input_pd_contract_goal_a':5,
         'output_continuous_rating_a':None,'3v3_header_bringup_limit_ma':50,

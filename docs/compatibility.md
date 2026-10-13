@@ -1,4 +1,4 @@
-> **Revision B:** See the [current X035 pinout](revision-b.md). The material below describes the retained Rev A board.
+> **Revision C:** See the [current X035 pinout](revision-c.md). The material below describes the retained Rev A board.
 
 # Pico compatibility contract
 

@@ -81,7 +81,16 @@ def grade(path):
     except ValueError as error:
         result['silkscreen']={'error':str(error)}
         result['silkscreen_passes']=False
-    result['passes_connectivity_and_drc']=not (not result['silkscreen_passes'] or result['violations'] or result['unconnected']
+    from .design import BOARD_REVISION
+    result['power_layout_passes']=True
+    if BOARD_REVISION=='C':
+        from .power_layout import audit as power_audit
+        try:
+            result['power_layout']=power_audit(doc)
+        except ValueError as error:
+            result['power_layout']={'error':str(error)}
+            result['power_layout_passes']=False
+    result['passes_connectivity_and_drc']=not (not result['power_layout_passes'] or not result['silkscreen_passes'] or result['violations'] or result['unconnected']
         or result['via_in_paste'] or result['foreign_tracks_on_ground_layer']
         or result['changed_critical_segments'] or result['changed_critical_vias']
         or not result['usb_geometry_passes'])

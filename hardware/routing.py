@@ -83,7 +83,7 @@ def grade(path):
         result['silkscreen_passes']=False
     from .design import BOARD_REVISION
     result['power_layout_passes']=True
-    if BOARD_REVISION=='C':
+    if BOARD_REVISION in ('C','D'):
         from .power_layout import audit as power_audit
         try:
             result['power_layout']=power_audit(doc)

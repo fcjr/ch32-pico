@@ -29,7 +29,7 @@ def verify_contract(components=COMPONENTS):
     require('D1',{1:'VIN_SYS',2:'VBUS'})
     require('D4',{1:'VIN_SYS',2:'VSYS'})
     require('D2',{2:'GND',5:'3V3_OUT'})
-    require('U4',{1:'3V3_OUT',2:None,3:'VIN_SYS',4:'GND',5:'BUCK_SW',6:'BUCK_BST'})
+    require('U4',{1:'3V3_OUT',2:'3V3_EN',3:'VIN_SYS',4:'GND',5:'BUCK_SW',6:'BUCK_BST'})
     require('L1',{1:'BUCK_SW',2:'3V3_OUT'})
     require('U3',{1:'PD_ENABLE',2:'PD_OVLO',4:'PD_FAULT_N',5:'VBUS',6:'PD_OUT',8:'GND',9:'PD_ILM'})
     if c['U3'].part!='C3662793':raise ValueError('Use the reviewed 470L load-switch variant')
@@ -50,6 +50,9 @@ def verify_contract(components=COMPONENTS):
     require('R12',{1:'USB_DP',2:'BOOT_PULLUP'})
     for net in ('VBUS','PD_OUT','VIN_SYS','VSYS'):
         if net in c['U1'].nets.values():raise ValueError('High-voltage net connected directly to MCU')
+    shutdown_nodes={(x.ref,p) for x in components for p,n in x.nets.items() if n=='3V3_EN'}
+    if shutdown_nodes!={('J1','37'),('U4','2')}:
+        raise ValueError('3V3_EN must connect only header 37 and regulator EN, with no VIN pull-up')
     enable_nodes={(x.ref,p) for x in components for p,n in x.nets.items() if n=='PD_ENABLE'}
     if enable_nodes!={('U1','22'),('U3','1'),('R7','1')}:
         raise ValueError('PD_ENABLE must carry control only')

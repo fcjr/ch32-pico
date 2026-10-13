@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-"""Rev C geometry gates for the local buck loop and feedback connection.
+"""Revs C/D geometry gates for the local buck loop and feedback connection.
 
 These reject layout regressions, not thermal, EMC or stability failures.
 """

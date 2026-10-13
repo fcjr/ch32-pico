@@ -85,6 +85,7 @@ def main():
         copy_notices(out)
         manifest = {
             'status': 'quote inputs checked locally; factory review and order release pending',
+            'board_revision': BOARD_REVISION,
             'source_board_sha256': order['source_board_sha256'],
             'panel_sha256': order['panel_sha256'],
             'panels': order['panels'], 'boards_per_panel': order['boards_per_panel'],

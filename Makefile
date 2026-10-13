@@ -22,6 +22,11 @@ route: placement-check
 	$(PYTHON) scripts/router_dependencies.py
 	$(PYTHON) -m hardware.routing --kicad-python "$(KICAD_PYTHON)"
 
+.PHONY: route-enable
+route-enable: check
+	$(PYTHON) scripts/router_dependencies.py
+	$(PYTHON) -m hardware.enable_routing
+
 procurement:
 	$(PYTHON) scripts/procurement.py
 

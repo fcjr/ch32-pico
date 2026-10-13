@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-"""Rev C placement in mm, top view. TP6–TP13 are on the back."""
+"""Revs C/D placement in mm, top view. TP6–TP13 are on the back."""
 PLACEMENT = {'J1': (0, 0, 0),
  'J2': (10.5, 3.375, 180),
  'U1': (10.5, 28, 90),

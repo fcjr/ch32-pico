@@ -10,7 +10,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-BOARD_REVISION = 'C'
+BOARD_REVISION = 'D'
 
 
 @dataclass(frozen=True)
@@ -115,7 +115,7 @@ HEADER = tuple(HeaderPin(*row) for row in (
     (34, "GP28 / ADC2", "PA2", "ADC channel 2"),
     (35, "ADC_VREF", "NC", "No independent external ADC reference input"),
     (36, "3V3_OUT", "3V3_OUT", "Fixed 3.3 V output; prototype load rating pending"),
-    (37, "3V3_EN", "NC", "Reserved; isolated from high-voltage regulator control"),
+    (37, "3V3_EN", "3V3_EN", "Pull low to shut down 3.3 V; release for automatic startup"),
     (38, "GND", "GND", "Ground"),
     (39, "VSYS", "VSYS", "4.3-5.5 V input only; diode-isolated from PD VBUS"),
     (40, "VBUS", "PD_OUT", "Switched negotiated 5-20 V output; incompatible with fixed-5V Pico carriers"),
@@ -132,5 +132,5 @@ def validate() -> None:
         raise ValueError("Board controls, USB, PD and debug must not share header GPIO")
     if any(p.proposed!='GND' for p in HEADER if p.pico in {'GND','AGND'}):
         raise ValueError("Pico ground positions must remain ground")
-    if {p.number for p in HEADER if p.proposed=='NC'}!={35,37}:
-        raise ValueError("ADC_VREF and 3V3_EN header positions are reserved")
+    if {p.number for p in HEADER if p.proposed=='NC'}!={35}:
+        raise ValueError("Only ADC_VREF is unconnected")

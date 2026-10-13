@@ -17,6 +17,15 @@ class CircuitContract(unittest.TestCase):
     def test_current_design(self):
         verify_contract()
 
+    def test_shutdown_cannot_be_left_unconnected(self):
+        with self.assertRaisesRegex(ValueError, 'U4.2'):
+            verify_contract(self.altered('U4', {'2': None}))
+
+    def test_shutdown_cannot_be_pulled_up_to_pd_voltage(self):
+        from hardware.circuit import two
+        with self.assertRaisesRegex(ValueError, 'no VIN pull-up'):
+            verify_contract((*COMPONENTS, two('R99', 'C25744', '3V3_EN', 'VIN_SYS', 'power')))
+
     def test_reversed_input_diode_rejected(self):
         with self.assertRaisesRegex(ValueError,'D1.1'):
             verify_contract(self.altered('D1',{'1':'VBUS','2':'VSYS'}))

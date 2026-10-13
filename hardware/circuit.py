@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: MIT
 # Copyright (c) 2026 ch32-pico contributors
-"""Rev C electrical source. Every terminal has an explicit net or NC.
+"""Rev D electrical source. Every terminal has an explicit net or NC.
 
 CH32X035 is the only MCU and PD controller. PD_OUT is switched VBUS;
 the fixed buck powers only the MCU and 3V3 header. Prototype, not released.
@@ -40,7 +40,7 @@ COMPONENTS = (
     # Diode OR feeds ONLY the control supply. Header VSYS never sees PD VBUS.
     two('D1','C8598','VIN_SYS','VBUS','power','B5819W','Cathode pin 1; control-rail current only'),
     two('D4','C8598','VIN_SYS','VSYS','power','B5819W','Cathode pin 1; blocks PD backfeed into header 39'),
-    Component('U4','C780769',{'1':'3V3_OUT','2':None,'3':'VIN_SYS','4':'GND','5':'BUCK_SW','6':'BUCK_BST'},'power',note='AP63203 fixed 3.3 V; EN open per datasheet for autostart'),
+    Component('U4','C780769',{'1':'3V3_OUT','2':'3V3_EN','3':'VIN_SYS','4':'GND','5':'BUCK_SW','6':'BUCK_BST'},'power',note='AP63203 fixed 3.3 V; EN to header 37; ground to shut down, release for autostart'),
     two('L1','C48496','BUCK_SW','3V3_OUT','power','4.7uH'),
     two('C1','C13585','VIN_SYS','GND','power','10uF / 50V','Input capacitance/inrush requires bench qualification'),
     two('C2','C29277','3V3_OUT','GND','power','22uF / 10V'),

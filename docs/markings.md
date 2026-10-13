@@ -1,13 +1,13 @@
-# Rev C silkscreen review
+# Rev D silkscreen review
 
-The silkscreen matches the CH32X035 Rev C circuit. All 40 header labels are
+The silkscreen matches the CH32X035 Rev D circuit. All 40 header labels are
 on the back, beside their corresponding physical header row. GPIO labels use
 the X035 names, not the old V003 names or Pico GPIO numbers. Corner numbers
 1, 20, 21 and 40 establish orientation. The back artwork is mirrored in PCB
 coordinates so it reads normally when the board is turned over.
 
-Pin 30 reads `RST`, pins 35 and 37 read `NC`, and pin 40 reads `PDOUT`.
-The front also carries `PDOUT 5-20V`, `REV C`, `ch32-pico` and the Left Shift
+Pin 30 reads `RST`, pin 35 reads `NC`, pin 37 reads `EN`, and pin 40 reads `PDOUT`.
+The front also carries `PDOUT 5-20V`, `REV D`, `ch32-pico` and the Left Shift
 Logical logo. The voltage legend matters: pin 40 is no longer a fixed 5 V pin.
 
 Recovery pads and controls are on the front, with their labels on the same
@@ -33,7 +33,7 @@ castellated pad nets, and follows each named GPIO to its actual U1 package
 pad. It checks all eight service labels for their net, board side, distance
 and orientation. Test-pad labels must be closest to their intended pad.
 The eight expansion pads have matching back-side legends.
-All text is at least 0.8 mm high with at least 0.1 mm strokes.
+All text is at least 1.0 mm high with at least 0.15 mm strokes.
 
 The fault tests reject swapped service labels, a label on the wrong side,
 incorrect GPIO names or MCU connections, missing labels and incorrect back
@@ -41,10 +41,10 @@ mirroring. KiCad DRC checks silk-to-mask, hole and text clearance. Panel checks
 compare every copy's text and logo with the reviewed single board.
 
 The populated front/back CAD render was inspected for label association,
-readability and component-body obstruction. The labels moved with the Rev C
+readability and component-body obstruction. The labels moved with the Rev D
 components and the four mounting holes were removed. Eight additional back
 labels identify TP6–TP13, the expansion pads. Printed legibility and physical
 component fit still need a prototype check. The full audit is under `checks.silkscreen` in
 [validation.json](../hardware/review/validation.json).
 
-![Rev C front and back silkscreen](images/ch32-pico.png)
+![Rev D front and back silkscreen](images/ch32-pico.png)

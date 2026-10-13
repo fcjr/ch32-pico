@@ -1,5 +1,8 @@
 # Revision C: CH32X035 + USB PD
 
+Historical revision: the current board is [Rev D](revision-d.md), which connects
+pin 37 to regulator enable. The pinout and measurements below describe Rev C.
+
 This revision has a checked schematic, routed board, front/back CAD render and
 four-up KiKit manufacturing previews. It is not released for ordering. PD/USB
 application firmware and physical qualification remain unfinished. Rev A files

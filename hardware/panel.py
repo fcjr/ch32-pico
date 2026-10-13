@@ -164,7 +164,8 @@ def main():
     data=json.loads(drc.read_text());passed=not(data['violations'] or data['unconnected_items'])
     from .factory_checks import panel_tooling
     tooling_review=panel_tooling(doc)
-    report={'status':'panel preview; not released for ordering','kikit_version':version,'options':OPTIONS,
+    from .design import BOARD_REVISION
+    report={'board_revision':BOARD_REVISION,'status':'panel preview; not released for ordering','kikit_version':version,'options':OPTIONS,
         'panels':PANELS,'boards_per_panel':COPIES,'total_boards':PANELS*COPIES,
         'nominal_size_mm':[93,71],'measured_outline_mm':dimensions,'source_board_sha256':hashlib.sha256(source.read_bytes()).hexdigest(),
         'panel_sha256':hashlib.sha256(board.read_bytes()).hexdigest(),'copies':copies,

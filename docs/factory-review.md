@@ -1,4 +1,16 @@
-# Rev C parts and factory review
+# Parts and factory review
+
+## Rev D update
+
+Rev D adds pin 37 regulator shutdown and updates its back label to `EN` and
+the front revision to `REV D`. The BOM, placement, panel process and part
+requirements remain unchanged. See [Rev D shutdown control](revision-d.md#shutdown-control)
+for operation, external-driver requirements and remaining bench tests.
+The current generated upload bundle contains Rev D. The Rev C upload observation
+below does not validate the new files. No Rev D factory upload or approval has
+been performed.
+
+## Rev C review record
 
 Reviewed 2026-10-13 UTC for five four-up panels, 20 devices. Local fabrication
 and assembly-file checks pass after the corrections below. **Factory approval

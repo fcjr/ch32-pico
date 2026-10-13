@@ -1,4 +1,4 @@
-ch32-pico Rev C: fabrication and assembly review notes
+ch32-pico Rev D: fabrication and assembly review notes
 Not a purchase authorization or production release.
 
 QUANTITY AND FABRICATION
@@ -27,6 +27,11 @@ its tolerance against the adjacent tab fillet and confirm panel handling.
 No fixture or tab may obstruct the USB shell. Please quote any required pallet.
 Leave rails attached for shipping; protect components during depaneling and
 trim tab remnants flush. No tabs or burrs may remain on castellated sides.
+
+REVISION IDENTIFICATION
+Rev D is marked on the front; header pin 37 is labeled EN on the back.
+It connects to regulator U4 pin 2. Only pin 35 remains NC.
+Use the Rev D files together; the earlier Rev C Gerber upload is superseded.
 
 ASSEMBLY
 41 fitted parts per device, 164 per panel, 820 across the batch.

@@ -56,6 +56,8 @@ def report():
     for filename, digest in panel['file_sha256'].items():
         if hashlib.sha256((panel_path / filename).read_bytes()).hexdigest() != digest:
             raise ValueError(f'Panel artifact changed: {filename}')
+    from .factory_checks import panel_tooling
+    tooling = panel_tooling(parse((panel_path / 'ch32-pico-panel.kicad_pcb').read_text()))
     dimensions = panel['measured_outline_mm']
     if not all(lo <= v <= hi for lo, v, hi in zip(policy['standard_panel_minimum_mm'], dimensions,
                                                 policy['standard_panel_maximum_mm'])):
@@ -107,6 +109,7 @@ def report():
         'observed_utc': source['observed_utc'], 'policy': policy,
         'panels': panel['panels'], 'boards_per_panel': panel['boards_per_panel'], 'total_boards': boards,
         'panel_size_mm': dimensions, 'assembly_service': 'Standard', 'economic_eligible': False,
+        'factory_tooling_review': tooling,
         'reason': 'Pico castellations retained; JLC Economic PCBA excludes castellated holes.',
         'source_board_sha256': panel['source_board_sha256'], 'panel_sha256': panel['panel_sha256'],
         'parts_fitted_only_usd': cost_report(panels=panel['panels'],
@@ -119,7 +122,7 @@ def report():
         'conditional_fixtures_usd': policy['conditional_two_rigid_fixtures_usd'],
         'not_in_partial_total': ['PCB fabrication including castellations and ENIG',
             'Actual JLC joint counting, USB insertion/shell soldering and fixtures',
-            'Packing, any handling/panel/storage/review fees, shipping and tax',
+            'Required X-ray inspection of U3 hidden joints, packing, handling/panel/storage/review fees, shipping and tax',
             'Actual sourcing quote, purchase minimums and order-specific attrition'],
         'attrition_assumption': 'max(fitted quantity + displayed loss count, displayed assembly minimum), per C-code per batch',
         'attrition_verified_for_order': False, 'assembly_rotations_verified': False,

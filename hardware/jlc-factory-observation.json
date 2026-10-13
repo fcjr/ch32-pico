@@ -1,0 +1,25 @@
+{
+  "observed_date_utc": "2026-10-13",
+  "revision": "C",
+  "source": "https://cart.jlcpcb.com/quote?factory_review=revc",
+  "uploaded_filename": "ch32-pico-RevC-factory-reviewed-panel.zip",
+  "uploaded_bytes": 380532,
+  "uploaded_gerbers_sha256": "41574a8265422516b3a493c56b5de62ec4275829be74aa01003266b61bc3c1cb",
+  "source_board_sha256": "602be0ada4b9b8e9348ec9adfb7246414cd58fc729e9fd606f33f0d4b5423429",
+  "panel_sha256": "ee22912b43195d8b1a954a491aa9df185cd25b6c5f5a511f0f33cdafad0f02bf",
+  "gerber_parse_observed": {
+    "layers": 4,
+    "dimensions_mm": [
+      71,
+      93
+    ]
+  },
+  "account_authenticated": false,
+  "sign_in_error_observed": "Cannot read properties of undefined (reading 'gotoLogin')",
+  "bom_cpl_uploaded": false,
+  "factory_models_verified": false,
+  "parts_allocated": false,
+  "quote_confirmed": false,
+  "order_placed": false,
+  "note": "Public Gerber parsing only, observed in the shared browser. Does not establish factory approval, order settings or assembly suitability. Main site still showed Sign In on follow-up."
+}

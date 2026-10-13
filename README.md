@@ -1,53 +1,43 @@
 # ch32-pico
 
-A RISC-V development board from Left Shift Logical, built around one
-CH32X035C8T6 with native USB and USB Power Delivery. It keeps the Raspberry Pi
-Pico's 21 × 51 mm outline, 40 header positions and castellated edges. Rev C
-omits the Pico mounting holes so USB-C can sit at the board edge.
+A tiny RISC-V board with USB-C programming, 33 accessible GPIOs and hardware
+for programmable USB Power Delivery. Built by Left Shift Logical around the
+CH32X035, in a familiar 21 × 51 mm Pico-sized board.
 
 ![ch32-pico Rev C, front and back](docs/images/ch32-pico.png)
 
-**Rev C is a routed prototype, not ready to order.** The schematic, board and
-four-up KiKit panel pass the local electrical and layout checks. Application
-firmware and physical power testing are still unfinished.
+- Program through USB-C using the chip's factory USB bootloader. No separate
+  programmer is needed to load your application.
+- Put your USB-C supply to work. The integrated PD peripheral and protected
+  output switch provide the hardware for firmware-selectable 5, 9, 12, 15 or
+  20 V, when offered by your supply.
+- Connect sensors, displays and controls through 26 header GPIOs, with UART,
+  I2C, SPI, PWM and three ADC inputs. Seven underside GPIO pads expose more
+  of the chip, including op-amp connections and one-wire PIOC.
+- Fit a breadboard with headers, or solder the castellated edges straight
+  onto your own carrier. USB-C sits at the board edge for easy cable access.
+- Make it yours. The hardware is open, the project software is MIT-licensed,
+  and the Python design sources are included so you can generate revisions.
 
-USB-C provides power and access to the chip's factory USB bootloader. The
-planned firmware will negotiate 5, 9, 12, 15 or 20 V and switch that voltage to
-pin 40. Each voltage must be offered by the connected supply; 12 V is optional.
-Native USB serial is planned but not implemented yet.
+**Pin 40 is off by default.** Firmware must enable the protected PD output;
+once enabled, it can carry the negotiated **5–20 V**. Check your carrier's
+wiring before using it. The output discharges through a resistor when switched
+off, so attached capacitors can retain voltage briefly.
 
-**Pin 40 is PD OUT and can carry 20 V.** Check a Pico carrier's wiring before
-connecting it. The output uses a protected load switch, controlled by the MCU.
-The design targets a 5 A input contract, but the continuous output rating still
-needs thermal and connector testing.
+The outline and 40 header positions match the Pico, with CH32-specific GPIO
+labels. Check the [pinout](docs/revision-c.md#peripheral-access) before connecting
+a Pico accessory. This board runs CH32 firmware; pins 35 and 37 are unconnected.
 
-All 26 Pico GPIO positions have CH32 GPIOs. UART, I2C, SPI and three ADC inputs
-occupy familiar positions, but this board cannot run Pico firmware or reproduce
-every Pico peripheral mapping. Pin 30 is reset, pin 36 is fixed 3.3 V, and pin 39
-accepts a 4.3–5.5 V input. Pins 35 and 37 are unconnected. Seven additional
-underside pads expose the remaining free GPIOs, including
-OPA1 input/output, one-wire PIOC and the clock output. A ground pad sits
-beside them. These pads add no fitted parts.
-See the [complete pinout and peripheral limits](docs/revision-c.md#peripheral-access)
-and [silkscreen review](docs/markings.md).
+**Rev C is a prototype in development.** The board and panel pass local design
+checks. USB-PD application firmware, USB serial and assembled-board testing
+are still ahead; the continuous output-current rating is not yet qualified.
 
-The estimated fitted BOM is **$3.91 per device** for a 20-device run, before
-PCB fabrication, assembly, attrition and shipping. Five four-up panels make
-20 devices. The saved JLC stock check found only two of the selected MCUs,
-leaving 18 short before attrition. Stock and prices need checking again before
-an order.
+Explore the [design and pinout](docs/revision-c.md),
+[build the hardware files](docs/revision-c.md#generated-files), or read the
+[parts and factory review](docs/factory-review.md) for manufacturing status
+and costs. The front and back renders above come from the checked KiCad board.
 
-The board is generated from Python in `hardware/`. The [Rev C design notes](docs/revision-c.md)
-cover the circuit, sources, remaining work and
-[build and fabrication commands](docs/revision-c.md#generated-files).
-The front/back images come from the checked KiCad board via `make render`.
-The buck converter now sits in the upper power section, with short input
-capacitor connections and a dedicated feedback trace. Generation scripts
-remain in the repository for future revisions. Documents marked Rev A or
-Rev B describe earlier boards.
-
-Original software and firmware changes use [MIT](LICENSES/MIT.txt). The original
-board design uses [CERN-OHL-P-2.0](LICENSES/CERN-OHL-P-2.0.txt), the permissive
-CERN Open Hardware Licence. Both allow commercial reuse. The factory USB
-bootloader is WCH vendor code, not MIT project firmware. See
-[licensing](docs/licensing.md) for scope and third-party attribution.
+Software: [MIT](LICENSES/MIT.txt). Hardware:
+[CERN-OHL-P-2.0](LICENSES/CERN-OHL-P-2.0.txt). Both allow commercial reuse.
+See [licensing](docs/licensing.md) for scope, third-party attribution and the
+WCH factory bootloader.

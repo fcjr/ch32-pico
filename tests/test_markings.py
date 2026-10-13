@@ -35,7 +35,7 @@ class MarkingAudit(unittest.TestCase):
         with self.assertRaisesRegex(ValueError,'too far|nearer'):audit(self.doc)
 
     def test_wrong_header_gpio_is_rejected(self):
-        self.label('1\nPB10')[1]='1\nPB11'
+        self.label('1 PB10')[1]='1 PB11'
         with self.assertRaisesRegex(ValueError,'header label at pin 1'):audit(self.doc)
 
     def test_correct_header_label_with_wrong_mcu_connection_is_rejected(self):
@@ -47,7 +47,7 @@ class MarkingAudit(unittest.TestCase):
             audit(self.doc)
 
     def test_unmirrored_back_label_is_rejected(self):
-        effects=one(self.label('1\nPB10'),'effects')
+        effects=one(self.label('1 PB10'),'effects')
         effects.remove(one(effects,'justify'))
         with self.assertRaisesRegex(ValueError,'mirroring'):audit(self.doc)
 

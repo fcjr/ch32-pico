@@ -48,6 +48,7 @@ def main():
         (out / 'assembly-orientation.json').write_text(json.dumps(assembly, indent=2) + '\n')
         (out / 'assembly-orientation.svg').write_text(svg_guide(assembly, board))
         (out / 'order-review.json').write_text(json.dumps(order, indent=2) + '\n')
+        shutil.copyfile(ROOT / 'docs/factory-notes.txt', out / 'factory-notes.txt')
         (out / 'README.txt').write_text(
             f'ch32-pico Rev {BOARD_REVISION}: quote review package, NOT an order release\n\n'
             'Extract this package first. Upload gerbers.zip to the PCB form.\n'
@@ -71,6 +72,9 @@ def main():
             f'{order["total_boards"]} {MCU_PART} MCUs are fitted; stock is unallocated.\n'
             f'{supply_notice}'
             'Confirm all charged quantities and attrition in the factory quote.\n\n'
+            'Read factory-notes.txt for stencil, silicon-lot, rail and polarity requirements.\n'
+            'Enable Confirm Production file and Confirm Parts Placement in the quote.\n'
+            'Include U3 hidden-joint X-ray inspection in the complete price.\n\n'
             'Confirm rail/tab handling, hybrid USB assembly, actual stackup,\n'
             'via pricing, castellations and the complete delivered price.\n'
             'The quote form may reset settings when other choices change.\n'

@@ -1,6 +1,6 @@
 {
   "status": "routing checked; not released for ordering",
-  "saved_at": "2026-10-13T00:16:11.093328+00:00",
+  "saved_at": "2026-10-13T04:37:23.531410+00:00",
   "engine": "freerouting",
   "selection": "passing DRC/connectivity, then minimum vias and trace length",
   "checks": {
@@ -60,7 +60,7 @@
       "header_labels": [
         {
           "pin": 1,
-          "label": "1\nPB10",
+          "label": "1 PB10",
           "net": "PB10",
           "side": "back",
           "pad_xy_mm": [
@@ -250,7 +250,7 @@
         },
         {
           "pin": 20,
-          "label": "20\nPA22",
+          "label": "20 PA22",
           "net": "PA22",
           "side": "back",
           "pad_xy_mm": [
@@ -260,7 +260,7 @@
         },
         {
           "pin": 21,
-          "label": "21\nPA6",
+          "label": "21 PA6",
           "net": "PA6",
           "side": "back",
           "pad_xy_mm": [
@@ -450,7 +450,7 @@
         },
         {
           "pin": 40,
-          "label": "40\nPDOUT",
+          "label": "40 PDOUT",
           "net": "PD_OUT",
           "side": "back",
           "pad_xy_mm": [
@@ -471,7 +471,7 @@
             48.5
           ],
           "text_xy_mm": [
-            7.0,
+            6.7,
             49.9
           ]
         },
@@ -501,7 +501,7 @@
             48.5
           ],
           "text_xy_mm": [
-            14.0,
+            14.3,
             49.9
           ]
         },
@@ -679,7 +679,7 @@
     },
     "passes_connectivity_and_drc": true
   },
-  "board_sha256": "8a48de59734e4cb1ae95fbd2bf7107f615404c002b55d4ec7d394a4781eae2dd",
+  "board_sha256": "602be0ada4b9b8e9348ec9adfb7246414cd58fc729e9fd606f33f0d4b5423429",
   "comparison": {
     "status": "passed",
     "started_at": "2026-10-13T00:13:53.907560+00:00",

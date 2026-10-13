@@ -13,9 +13,9 @@ from .usb_review import pad_centers
 # ref, legend, net at pin 1, offset from the component center, purpose.
 # Service controls and pads are accessible on the front only.
 SERVICES = (
-    ('TP1', 'SDIO', 'SDIO', (0,1.4), 'U1 PC18 / two-wire SDI data'),
+    ('TP1', 'SDIO', 'SDIO', (-.3,1.4), 'U1 PC18 / two-wire SDI data'),
     ('TP2', 'SDCK', 'SDCK', (0,1.4), 'U1 PC19 / two-wire SDI clock'),
-    ('TP3', '3V3', '3V3_OUT', (0,1.4), 'Fixed 3.3 V measurement'),
+    ('TP3', '3V3', '3V3_OUT', (.3,1.4), 'Fixed 3.3 V measurement'),
     ('TP4', 'GND', 'GND', (0,1.4), 'Common ground'),
     ('TP5', 'RST', 'PA21', (0,1.4), 'U1 PA21 reset'),
     ('SW1', 'RESET', 'PA21', (0,1.9), 'X035 reset'),
@@ -30,26 +30,38 @@ EXPANSIONS = tuple((f'TP{i}', n) for i,n in enumerate((*EXPANSION_SIGNALS,'GND')
 
 def header_legend(pin):
     label = ALIASES.get(pin.proposed, pin.proposed)
-    return f'{pin.number}\n{label}' if pin.number in (1,20,21,40) else label
+    if pin.number in (1,20,21,40):
+        return f'{pin.number} {label}'
+    return label
+
+
+def header_label_position(pin):
+    _, y = MECHANICAL.position(pin.number)
+    x = 4.4 if pin.number <= 20 else 16.6
+    # Two numbered rows fit between the USB shell stakes at the top end.
+    if pin.number == 1:
+        return 10, y
+    if pin.number == 40:
+        return 10.5, 3.15
+    return {3:3.9,20:6.5,21:13.8,38:17.1}.get(pin.number,x), y
 
 
 def text(label, x, y, side, identity):
     mirror = '(justify mirror)' if side == 'B.SilkS' else ''
     return parse(f'''(gr_text {json.dumps(label)} (at {x} {y}) (layer "{side}")
         (uuid "{uid('marking/' + identity)}")
-        (effects (font (size .8 .8) (thickness .12)) {mirror}))''')
+        (effects (font (size 1 1) (thickness .15)) {mirror}))''')
 
 
 def apply(doc):
     header_labels = {p.proposed for p in HEADER} | set(ALIASES.values()) | {'-', '3V3', 'EN'} | {f'{p.number} {ALIASES.get(p.proposed,p.proposed)}' for p in HEADER if p.number in (1,20,21,40)}
     header_labels |= {header_legend(p) for p in HEADER}
+    header_labels |= {'1\nPB10', '20\nPA22', '21\nPA6', '40\nPDOUT'}
     service_labels = LEGACY | {s[1] for s in SERVICES} | set(EXPANSION_SIGNALS)
     doc[:] = [n for n in doc if not (isinstance(n,list) and n and n[0]=='gr_text' and
         (n[1] in service_labels or (one(n,'layer')[1]=='B.SilkS' and n[1] in header_labels)))]
     for pin in HEADER:
-        _, y = MECHANICAL.position(pin.number)
-        x = 3.9 if pin.number<=20 else 17.1
-        x = {1:8.2,20:7.7,21:13.1,40:12.3}.get(pin.number,x)
+        x,y = header_label_position(pin)
         doc.append(text(header_legend(pin),x,y,'B.SilkS',f'header/{pin.number}'))
     for ref,label,net,(dx,dy),purpose in SERVICES:
         x,y,*_ = PLACEMENT[ref]
@@ -84,15 +96,17 @@ def audit(doc):
             raise ValueError(f'Wrong text mirroring: {n[1]}')
         if 'hide' in n or 'hide' in effects:
             raise ValueError(f'Hidden marking: {n[1]}')
-        if min(map(float,one(font,'size')[1:]))<.8 or float(one(font,'thickness')[1])<.1:
+        if min(map(float,one(font,'size')[1:]))<1 or float(one(font,'thickness')[1])<.15:
             raise ValueError(f'Undersized marking: {n[1]}')
     allowed={s[1] for s in SERVICES}|{'ch32-pico','LEFT SHIFT','LOGICAL',f'REV {BOARD_REVISION}', 'PDOUT 5-20V'}
     if any(n[1] not in allowed for n in front):raise ValueError('Unknown front legend')
     header=[]
     for pin in HEADER:
         px,py=pads['J1',str(pin.number)]
-        # Match by row and physical side, independently of text UUIDs.
-        matched=[n for n in back if abs(float(one(n,'at')[2])-py)<.01 and
+        # Numbered USB-end legends sit between the shell stakes. Match by
+        # intended row and physical side, independently of text UUIDs.
+        _, label_y = header_label_position(pin)
+        matched=[n for n in back if abs(float(one(n,'at')[2])-label_y)<.01 and
                  ((float(one(n,'at')[1])<MECHANICAL.width/2)==(px<MECHANICAL.width/2))]
         if len(matched)!=1 or matched[0][1]!=header_legend(pin):
             raise ValueError(f'Incorrect header label at pin {pin.number}')

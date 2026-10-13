@@ -23,10 +23,13 @@ KIKIT_VERSION='1.8.1'
 OPTIONS={
     'layout':'grid; rows: 1; cols: 4; space: 3mm; renameref: B{n}_{orig}; renamenet: B{n}_{orig}',
     'tabs':f'plugin; code: {ROOT / "scripts/panel_tabs.py"}.EdgeTabs',
-    'cuts':'mousebites; drill: 0.5mm; spacing: 1mm; offset: -0.2mm; prolong: 0.5mm',
+    'cuts':'mousebites; drill: 0.5mm; spacing: 0.8mm; offset: -0.2mm; prolong: 0.5mm',
     'framing':'railstb; width: 7mm; space: 3mm',
-    'tooling':'3hole; hoffset: 2.5mm; voffset: 3.5mm; size: 1.152mm',
-    'fiducials':'3fid; hoffset: 7mm; voffset: 3.5mm; coppersize: 1mm; opening: 1mm',
+    # Standard PCBA process-edge guidance, reviewed 2026-10-13. The 1.152 mm
+    # tooling example applies to Economic; use 2 mm on these supplied rails.
+    'tooling':'3hole; hoffset: 2.5mm; voffset: 3.5mm; size: 2mm',
+    # Leave 3.5 mm beyond the complete 2 mm mask opening to the outer edge.
+    'fiducials':'3fid; hoffset: 7mm; voffset: 4.5mm; coppersize: 1mm; opening: 2mm',
     'post':'millradius: 1mm',
 }
 
@@ -159,11 +162,14 @@ def main():
     if any(abs(a-b)>.01 for a,b in zip(dimensions,(93,71))):raise ValueError('Unexpected panel dimensions')
     if not all(70<=d<=250 for d in dimensions):raise ValueError('Panel outside Standard PCBA size limits')
     data=json.loads(drc.read_text());passed=not(data['violations'] or data['unconnected_items'])
+    from .factory_checks import panel_tooling
+    tooling_review=panel_tooling(doc)
     report={'status':'panel preview; not released for ordering','kikit_version':version,'options':OPTIONS,
         'panels':PANELS,'boards_per_panel':COPIES,'total_boards':PANELS*COPIES,
         'nominal_size_mm':[93,71],'measured_outline_mm':dimensions,'source_board_sha256':hashlib.sha256(source.read_bytes()).hexdigest(),
         'panel_sha256':hashlib.sha256(board.read_bytes()).hexdigest(),'copies':copies,
         'usb_overhang_fit':json.loads(fit.read_text()),
+        'factory_tooling':tooling_review,
         'drc_violations':len(data['violations']),'unconnected':len(data['unconnected_items']),'passes':passed,
         'assembly_service':'Standard','economic_eligible':False,
         'economic_exclusion':'Castellated holes are unsupported by Economic PCBA.',

@@ -6,6 +6,7 @@ import hashlib
 import html
 import json
 from .circuit import COMPONENTS
+from .design import BOARD_REVISION
 from .library import ROOT, load_library
 from .order_review import checked_board
 from .sexp import parse, children, one
@@ -89,7 +90,7 @@ def svg_guide(result, doc):
     svg = ['<svg xmlns="http://www.w3.org/2000/svg" width="1100" height="820" viewBox="0 0 1100 820">',
         '<rect width="1100" height="820" fill="white"/>',
         '<g font-family="sans-serif" fill="#17263c">',
-        '<text x="35" y="36" font-size="24" font-weight="bold">ch32-pico — assembly orientation guide</text>',
+        f'<text x="35" y="36" font-size="24" font-weight="bold">ch32-pico Rev {BOARD_REVISION}: assembly orientation guide</text>',
         '<text x="35" y="63" font-size="14">Top view · USB at top · physical anchors, not approved JLC model angles</text>',
         '<text x="35" y="87" font-size="12">Orange marks show the specific pad named at right. Dimensions are board coordinates in mm.</text>',
         '<g transform="translate(40 115) scale(12)">',
@@ -134,7 +135,7 @@ def svg_guide(result, doc):
         svg.append(f'<text x="330" y="{top+19}" font-size="13">{e(note)}</text>')
         svg.append(f'<text x="330" y="{top+36}" font-size="12" fill="#58677a">Pad {pin}: x={x:.4f}, y={y:.4f} · {e(terminal["net"] or "NC")} · KiCad {row["kicad_angle_deg"]:g}°</text>')
     svg += ['<text x="330" y="712" font-size="13">Resistors and ceramic capacitors have no polarity.</text>',
-            '<text x="330" y="734" font-size="13">Use the JSON companion for all 132 panel placements and anchor coordinates.</text>',
+            f'<text x="330" y="734" font-size="13">Use the JSON companion for all {result["panel_cpl_rows_checked"]} panel placements and anchor coordinates.</text>',
             '<text x="35" y="783" font-size="12">Compare actual pad numbering and body marks in JLC preview; a red model dot alone is not proof of pin 1.</text>',
             '</g></svg>']
     return '\n'.join(svg) + '\n'

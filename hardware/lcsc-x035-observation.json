@@ -1,0 +1,40 @@
+{
+  "observed_utc": "2026-10-13T04:36:23.766915+00:00",
+  "source": "https://www.lcsc.com/product-detail/C29779902.html",
+  "mpn": "CH32X035C8T6",
+  "lcsc": "C29779902",
+  "package": "LQFP-48(7x7)",
+  "stock": 2,
+  "fitted_requirement": 20,
+  "minimum": 1,
+  "multiple": 1,
+  "price_tiers_usd": [
+    {
+      "minimum": 1,
+      "unit_usd": 0.73
+    },
+    {
+      "minimum": 10,
+      "unit_usd": 0.5869
+    },
+    {
+      "minimum": 30,
+      "unit_usd": 0.5163
+    },
+    {
+      "minimum": 250,
+      "unit_usd": 0.4456
+    },
+    {
+      "minimum": 500,
+      "unit_usd": 0.4045
+    },
+    {
+      "minimum": 1000,
+      "unit_usd": 0.3831
+    }
+  ],
+  "available_alternative_supplier_offer_observed": false,
+  "stock_reserved": false,
+  "note": "Read from public product page in shared T3 browser. Not a JLC parts allocation. No replenishment date or silicon lot provided."
+}

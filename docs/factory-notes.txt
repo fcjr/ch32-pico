@@ -1,0 +1,65 @@
+ch32-pico Rev C: fabrication and assembly review notes
+Not a purchase authorization or production release.
+
+QUANTITY AND FABRICATION
+Five supplied panels, four identical devices per panel: 20 assembled devices.
+One design, 93 x 71 mm panel, Standard top-side PCBA. Use the supplied panel
+Gerbers, panel BOM and panel CPL together. Do not panelize them again.
+Four layers, 1.0 mm finished thickness, green mask, white silk, ENIG 1 microinch.
+JLC04101H-3313 / Nan Ya NP-155F, outer 1 oz and inner 0.5 oz copper.
+Keep the L1-to-L2 dielectric at the specified 0.0994 mm stackup value.
+All vias are 0.45 mm diameter / 0.20 mm drill. No filled/capped via-in-pad.
+Please confirm the quote category against those actual via dimensions.
+Use flying-probe electrical test and provide production files for review.
+
+CASTELLATIONS AND PANEL
+Each device has 40 plated half-holes, 0.60 mm drill, on its two long edges.
+There are 160 castellations per supplied panel, including the internal slots.
+Do not mistake them for ordinary edge-crossing holes or omit their plating.
+Use CNC routing, not V-scoring, at castellated edges.
+Rails are 7 mm wide, separated from devices by 3 mm. Each device has a 5 mm
+corner tab at the USB end and a 5 mm centered tab at the opposite end.
+Mouse bites: 0.5 mm drills, nominal 0.8 mm pitch. Actual spacing is adjusted
+by KiKit to fill each tab. Three 2 mm NPTH tooling holes; three top fiducials,
+1 mm copper / 2 mm mask opening, with 3.5 mm opening-to-outer-edge clearance.
+The USB shell projects 0.30 mm beyond the finished device outline. Review
+its tolerance against the adjacent tab fillet and confirm panel handling.
+No fixture or tab may obstruct the USB shell. Please quote any required pallet.
+Leave rails attached for shipping; protect components during depaneling and
+trim tab remnants flush. No tabs or burrs may remain on castellated sides.
+
+ASSEMBLY
+41 fitted parts per device, 164 per panel, 820 across the batch.
+21 BOM rows use 20 distinct LCSC part numbers. Header and test pads are not
+fitted parts. There is no underside assembly and no paste on underside pads.
+Do not substitute components without an exact-part/package review.
+Check every model against assembly-orientation.svg and its JSON coordinates.
+CPL rotations are KiCad angles, not approved JLC model rotation offsets.
+D1/D4 pin 1 is cathode; LED D3 pin 2 is cathode. U1 is LQFP48, not QFN48.
+U3 must be TPS259470LRPWR, TI RPW0010A VQFN-HR-10, 2 x 2 mm.
+Preserve its supplied paste geometry from TI drawing 4225183/A: split windows
+on IN/OUT pads 5/6 and reduced corner apertures. TI's example uses a 0.100 mm
+stencil. Please review stencil thickness or local step requirements for U3,
+0402 passives and USB-C together, and include hidden-joint X-ray inspection.
+J2 is GT-USB-7010AW, not the similar ASV model. It has SMT contacts, four plated
+shell stakes and two unplated locating holes. Confirm insertion, shell soldering,
+reflow limits and any separate manual-assembly or fixture charge.
+Keep unpopulated header/castellated holes open during shell soldering.
+
+MCU SOURCING
+20 CH32X035C8T6 / C29779902 devices are fitted, plus actual factory attrition.
+JLC and LCSC both reported only two units on 2026-10-13 UTC. No stock reserved.
+Please provide exact-part replenishment quantity, price and lead time.
+Require silicon supporting hardware I2C and ADC3/ADC7. WCH datasheet v1.7,
+table 2-1 note 3, excludes these functions on specified early lots. Obtain
+lot identification and supplier confirmation; do not assume any stock is new.
+Retain the factory USB bootloader and reset/debug option-byte functionality.
+Application firmware is not supplied for factory programming at this stage.
+
+QUOTE AND RELEASE
+Return actual charged part quantities/attrition, placement model review,
+production-file review, stencil/USB process confirmation and complete charges,
+including X-ray, handling, fixtures, PCB, assembly, shipping and tax.
+The 20 V / 5 A input contract is a design goal; assembled prototype tests must
+establish the continuous current rating. No functional production-test program
+or released PD/CDC application firmware exists yet.

@@ -1,11 +1,17 @@
 {
-  "observed_date": "2026-10-12",
+  "observed_date": "2026-10-13",
   "capabilities_source": "https://jlcpcb.com/capabilities/pcb-assembly-capabilities",
   "price_source": "https://jlcpcb.com/help/article/pcb-assembly-price",
   "sourcing_source": "https://jlcpcb.com/help/article/how-to-build-your-own-parts-library-in-jlcpcb",
   "economic_supports_castellations": false,
-  "standard_panel_minimum_mm": [70, 70],
-  "standard_panel_maximum_mm": [250, 250],
+  "standard_panel_minimum_mm": [
+    70,
+    70
+  ],
+  "standard_panel_maximum_mm": [
+    250,
+    250
+  ],
   "standard_single_side_setup_usd": 25.56,
   "standard_single_side_stencil_usd": 8.21,
   "standard_feeder_per_part_type_usd": 1.53,
@@ -13,5 +19,9 @@
   "manual_per_joint_usd": 0.0164,
   "manual_labor_per_order_usd": 3.58,
   "conditional_two_rigid_fixtures_usd": 16.42,
-  "quote_confirmed": false
+  "quote_confirmed": false,
+  "process_edge_source": "https://jlcpcb.com/help/article/specifications-for-adding-process-edges-and-positioning-holes",
+  "fiducial_source": "https://jlcpcb.com/help/article/how-to-add-edge-rails-fiducials-for-pcb-assembly-order",
+  "conditional_xray_20_qfn_usd": 16.4,
+  "handling_fee_published_minimum_usd": 14.93
 }

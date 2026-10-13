@@ -6,7 +6,7 @@ selects its LCSC C-number; `hardware/library.py` reads the associated metadata
 and assigns reviewed electrical pin types. The schematic generator draws its
 own typed symbols instead of using the importer's unspecified pin types.
 
-Revision B uses the KiCad LQFP-48 7 × 7 mm land pattern for CH32X035C8T6
+Revisions B and C use the KiCad LQFP-48 7 × 7 mm land pattern for CH32X035C8T6
 and SOT-23-6 for USBLC6-2SC6. `scripts/prepare_footprints.py` vendors those
 patterns and moves imported legends to fabrication layers. Normal builds use
 the checked-in files and do not depend on the workstation's library.
@@ -16,8 +16,8 @@ connector and TI RPW0010A eFuse footprint. The AW drawing specifies 5 A on
 VBUS. Its SMT row has a 50 µm tailward adjustment within the manufacturer's
 land-pattern tolerance to clear the locating holes. See the
 [connector research](../research/usb-c/README.md) for the pinned source and
-mechanical limits. Pico mounting holes remain present; ordinary screw heads
-do not fit beside this connector.
+mechanical limits. Rev C removes the Pico mounting holes and positions the
+socket mouth 0.30 mm beyond the short board edge.
 
 The eFuse copper follows TI drawing 4225183/A. Overlapping rectangles share
 terminal numbers at the L-shaped corner lands. Separate paste-only apertures
@@ -36,7 +36,7 @@ applies to those upstream files. EasyEDA/LCSC data has separate provenance;
 the probe firmware's MIT license does not relicense third-party CAD data.
 
 `Pico_Header.kicad_mod` is generated from our mechanical contract. It includes
-40 header lands, 40 connected castellated half-holes, and four 2.1 mm mounting
+40 header lands and 40 connected castellated half-holes. Rev C has no mounting
 holes. `TestPad_1mm` is a local PCB feature, not a purchased component. Review
 all exact manufacturer package drawings and JLC assembly orientation before
 releasing a manufacturing package.

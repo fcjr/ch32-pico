@@ -9,9 +9,9 @@ class EdgeTabs(TabsPlugin):
     def buildTabAnnotations(self, panel):
         for substrate in panel.substrates:
             left, top, right, bottom = substrate.bounds()
-            # The tab ends at X=4.75 mm. Reserve room for the 1 mm
-            # milling fillet before the connector starts at X=6.03 mm.
+            # A 5 mm tab starts at the left corner. Its right milling fillet
+            # must clear the USB shell; panel_fit checks the final geometry.
             substrate.annotations.append(TabAnnotation(
-                None, (left + 3.5 * mm, top), (0, 1), 2.5 * mm))
+                None, (left + 2.5 * mm, top), (0, 1), 5 * mm))
             substrate.annotations.append(TabAnnotation(
-                None, ((left + right) / 2, bottom), (0, -1), 3 * mm))
+                None, ((left + right) / 2, bottom), (0, -1), 5 * mm))

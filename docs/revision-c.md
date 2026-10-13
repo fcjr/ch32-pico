@@ -240,7 +240,7 @@ sides have no tabs.
 
 ## Cost and remaining work
 
-The fitted BOM estimate for 20 devices is **$3.9110 per board** (41 fitted
+The 2026-10-13 UTC fitted BOM estimate for 20 devices is **$3.9214 per board** (41 fitted
 parts), excluding assembly, PCB, setup, attrition, MOQ rounding, shipping and
 tax. This is above the original low-cost target once manufacturing is added.
 The protected 5 A switch and wide-input 3.3 V buck account for about $2.25 of
@@ -249,7 +249,7 @@ Reproduce it with `python3 scripts/revb_bom_review.py` from the dated inventory
 snapshot. Cost optimization remains part of the revision work.
 
 The selected 5 A USB-C socket is about $0.2445 each at the observed tier.
-The ESD part is now USBLC6-2SC6 (C7519), with 45,703 reported available,
+The ESD part is now USBLC6-2SC6 (C7519), with 45,269 reported available,
 replacing the scarce SOT666 part. Only **two** C29779902 MCUs were reported
 available; that does not cover the 20-board run. Inventory is not reserved.
 
@@ -260,6 +260,9 @@ rejection and fault/detach handling. It is platform-independent policy code,
 **not yet flashable X035 firmware**. The tests compile it with address and
 undefined-behavior sanitizers. USB-PD transport, ADC/GPIO drivers, watchdog
 handling and CDC integration still need implementation and hardware tests.
+
+See the [parts and factory review](factory-review.md) for the refreshed inventory,
+panel corrections and outstanding factory confirmations.
 
 ## Remaining release gates
 

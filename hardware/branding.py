@@ -8,11 +8,11 @@ from .sexp import children, one, parse, dump
 
 def artwork():
     nodes = []
-    for label, x, y, size in [('ch32-pico', 10.5, 34.7, .9),
-                              ('LEFT SHIFT', 10.5, 36.2, .8),
-                              ('LOGICAL', 10.5, 37.4, .8),
-                              (f'REV {BOARD_REVISION}', 10.5, 21.8, .8),
-                              ('PDOUT 5-20V',10.5,45.2,.8)]:
+    for label, x, y, size in [('ch32-pico', 10.5, 34.7, 1),
+                              ('LEFT SHIFT', 10.5, 36.2, 1),
+                              ('LOGICAL', 10.5, 37.4, 1),
+                              (f'REV {BOARD_REVISION}', 10.5, 21.8, 1),
+                              ('PDOUT 5-20V',10.5,45.2,1)]:
         nodes.append(parse(f'''(gr_text "{label}" (at {x} {y}) (layer "F.SilkS")
             (uuid "{uid('brand/text/' + label)}")
             (effects (font (size {size} {size}) (thickness 0.15))))'''))

@@ -13,6 +13,7 @@ from .library import ROOT,load_library
 from .circuit import COMPONENTS
 from .placement import PLACEMENT
 from .manufacturing import LAYERS
+from .jlc_model_frames import cpl_adjustment
 from .sexp import parse,children,one,Atom
 from .route_geometry import fingerprint
 from .usb_review import pad_centers
@@ -113,7 +114,11 @@ def assembly_files(board,out,copies):
     if rows.keys()!=expected.keys():raise ValueError('Panel CPL missing fitted parts')
     with (out/'cpl.csv').open('w',newline='') as f:
         w=csv.writer(f);w.writerow(['Designator','Mid X','Mid Y','Rotation','Layer'])
-        for ref,row in sorted(rows.items()):w.writerow([ref,row['PosX'],row['PosY'],row['Rot'],'top'])
+        for ref,(c,_) in sorted(expected.items()):
+            row=rows[ref];_,_,angle=PLACEMENT[c.ref]
+            rotation,dx,dy=cpl_adjustment(c.part,angle)
+            w.writerow([ref,f"{float(row['PosX'])+dx:.6f}",f"{float(row['PosY'])+dy:.6f}",
+                f"{rotation:.6f}",'top'])
     groups=defaultdict(list)
     for ref,(c,_) in expected.items():groups[c.part,c.value].append(ref)
     with (out/'bom.csv').open('w',newline='') as f:
@@ -121,7 +126,7 @@ def assembly_files(board,out,copies):
         for (code,value),refs in sorted(groups.items()):
             p=library[code];w.writerow([value or p.mpn,','.join(sorted(refs)),p.footprint,code,len(refs),p.manufacturer,p.mpn])
     return {'fitted_parts_per_panel':len(rows),'bom_rows':len(groups),'cpl_rows':len(rows),
-            'rotation_status':'KiCad angles; JLC model orientation review pending'}
+            'rotation_status':'JLC model-frame deltas applied (U1/D2 rotation, J2 anchor); angles normalized 0-360; JLC preview confirmation pending'}
 
 
 def main():

@@ -67,8 +67,9 @@ def main():
             f'{assembly["panel_cpl_rows_checked"]} fitted placements per panel, '
             f'{assembly["panel_cpl_rows_checked"] * order["panels"]} across the batch.\n\n'
             'Review pin 1, polarity, USB mouth and centroids in JLC models using\n'
-            'assembly-orientation.svg and its JSON coordinates. CPL angles are\n'
-            'KiCad angles; JLC model offsets remain unverified.\n'
+            'assembly-orientation.svg and its JSON coordinates. CPL angles apply\n'
+            'reviewed JLC model-frame deltas (U1/D2 rotation, J2 anchor) and are\n'
+            'normalized 0-360; confirm U1, D2, J2 and U4 in the JLC placement preview.\n'
             f'{order["total_boards"]} {MCU_PART} MCUs are fitted; stock is unallocated.\n'
             f'{supply_notice}'
             'Confirm all charged quantities and attrition in the factory quote.\n\n'
@@ -79,7 +80,8 @@ def main():
             'via pricing, castellations and the complete delivered price.\n'
             'The quote form may reset settings when other choices change.\n'
             'Physical USB, PD power, cable fit and native USB firmware qualification remain.\n'
-            'The 5 A design goal is not a qualified continuous current rating.\n'
+            'The 2.93 A nominal eFuse threshold is not a qualified continuous current rating.\n'
+            'Power-design review remains open: C8 startup, C12 bypass, OVLO, transients and ILM routing.\n'
             'No purchase, stock reservation or upload is performed by this build.\n')
         from scripts.license_files import copy_notices
         copy_notices(out)

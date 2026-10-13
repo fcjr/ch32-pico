@@ -41,7 +41,11 @@ ASSEMBLY
 fitted parts. There is no underside assembly and no paste on underside pads.
 Do not substitute components without an exact-part/package review.
 Check every model against assembly-orientation.svg and its JSON coordinates.
-CPL rotations are KiCad angles, not approved JLC model rotation offsets.
+CPL rotations apply reviewed JLC model-frame deltas: U1 and D2 are rotated
+-90 deg from their KiCad angles, J2 is shifted 1.345 mm along its axis to
+JLC's model origin, and all angles are normalized to 0-360. These are
+coordinate conversions against JLC's own library frames, not an approval;
+confirm U1, D2, J2 and U4 in the placement preview before assembly.
 D1/D4 pin 1 is cathode; LED D3 pin 2 is cathode. U1 is LQFP48, not QFN48.
 U3 must be TPS259470LRPWR, TI RPW0010A VQFN-HR-10, 2 x 2 mm.
 Preserve its supplied paste geometry from TI drawing 4225183/A: split windows
@@ -67,8 +71,14 @@ QUOTE AND RELEASE
 Return actual charged part quantities/attrition, placement model review,
 production-file review, stencil/USB process confirmation and complete charges,
 including X-ray, handling, fixtures, PCB, assembly, shipping and tax.
-The 20 V / 5 A input contract is a design goal; assembled prototype tests must
-establish the continuous current rating. No functional production-test program
+The eFuse limit is about 2.93 A nominal, with tolerance; assembled prototype
+tests must establish the continuous current rating. All nine 100 nF capacitors
+must be 50 V C307331 / CL05B104KB54PNC; do not fit the old 16 V C1525.
+R17 must be 4.7 kΩ C25900, with R18 still 1.5 kΩ C25867.
+Engineering hold: C8 slew/series resistance, C12 output bypass, OVLO margin,
+power transients and ILM layout need review before power qualification.
+See docs/preorder-review.md. No continuous-current rating has been assigned.
+No functional production-test program
 or released PD/CDC application firmware exists yet.
 
 Rev E diagnostic contacts TP14-TP24 are bare copper, with NO paste or parts.

@@ -39,6 +39,8 @@ release to enable. See the
 checks. USB-PD application firmware, USB serial and assembled-board testing,
 including shutdown and restart, are still ahead; the continuous output-current
 rating is not yet qualified.
+The eFuse is set to about 2.93 A nominal; this is a fault threshold, not a
+continuous rating. See the [power-path correction](docs/revision-e.md#power-path-correction).
 
 Explore the [design and pinout](docs/revision-e.md),
 [build the hardware files](docs/revision-e.md#generated-files), or read the

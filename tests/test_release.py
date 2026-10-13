@@ -5,9 +5,23 @@ from tempfile import TemporaryDirectory
 from unittest import TestCase
 from unittest.mock import patch
 from hardware.release import require_current_layout
+from hardware.sexp import parse,children,dump
+from hardware.verify_placement import verify_board
 
 
 class ReleaseRevision(TestCase):
+    def test_saved_board_cannot_keep_old_part_or_value(self):
+        original=Path('hardware/review/ch32-pico.kicad_pcb').read_text()
+        for ref,field,value in (('C5','LCSC Part','C1525'),('R17','Value','1k')):
+            with self.subTest(ref=ref), TemporaryDirectory() as directory:
+                doc=parse(original)
+                fp=next(fp for fp in children(doc,'footprint') if any(
+                    p[1:3]==['Reference',ref] for p in children(fp,'property')))
+                next(p for p in children(fp,'property') if p[1]==field)[2]=value
+                path=Path(directory)/'stale.kicad_pcb';path.write_text(dump(doc)+'\n')
+                with self.assertRaisesRegex(ValueError,ref+': PCB part/value'):
+                    verify_board(path)
+
     def test_stale_board_is_rejected_before_export(self):
         with TemporaryDirectory() as directory:
             root=Path(directory)

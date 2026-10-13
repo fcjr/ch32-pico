@@ -51,7 +51,7 @@ def main():
             'Measured USB performance; nonuniform connector/package fanouts (docs/usb-routing.md)',
             'Physical USB cable, overhang and locating-peg fit (docs/revision-e.md)',
             'Pin 37 shutdown/restart, released EN voltage, back-power and loaded PD shutdown timing',
-            '5 A power copper/contact temperature, eFuse faults, inrush, discharge, backfeed and fixed 3.3 V load budget',
+            'Power copper/contact temperature with ~3 A nominal eFuse limit, tolerance, inrush, discharge, backfeed and fixed 3.3 V load budget',
             'Native USB ISP/recovery, open PD/CDC firmware integration, reset/detach handling and watchdog',
             'JLC IC/diode polarity and stencil review, 0.100 mm TI stencil example, order quantity/attrition']}
     (directory/'validation.json').write_text(json.dumps(report,indent=2)+'\n')

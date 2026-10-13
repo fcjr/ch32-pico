@@ -46,8 +46,13 @@ request generation. Polling must not delay that action behind USB console
 output. Do not automatically re-arm after a reset or reconnection.
 
 The output budget is the negotiated input current less a conservative reserve
-for the MCU and fixed 3.3 V output. A source advertising less than 5 A, or a
-board connection qualified for less, must reduce the budget. An absent 12 V
+for the MCU and fixed 3.3 V output. Rev E uses R17 = 4.7 kΩ in parallel with
+R18 = 1.5 kΩ, giving 1,137 Ω and a nominal 2.93 A eFuse threshold. Use this
+resistance for ILM current conversion. The application must pass a qualified
+board/connection limit below the minimum eFuse threshold, including tolerance,
+and never use the old 5 A goal. The current design target is at most 3 A;
+continuous operation remains unqualified. Lower source capability must reduce
+the budget further. An absent 12 V
 PDO is an error. Do not silently substitute another voltage.
 
 Bench validation must include both cable orientations, 3 A and 5 A cables,

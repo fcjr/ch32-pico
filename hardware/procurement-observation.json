@@ -1,5 +1,5 @@
 {
-  "observed_utc": "2026-10-13T04:24:43.114602+00:00",
+  "observed_utc": "2026-10-13T14:15:39.076026+00:00",
   "source": "JLCPCB public product pages",
   "stock_is_not_reserved": true,
   "lcsc_live_stock_independently_verified": false,
@@ -9,8 +9,8 @@
       "mpn": "0402WGF1001TCE",
       "jlc_url": "https://jlcpcb.com/partdetail/C11702",
       "lcsc_url": "https://www.lcsc.com/product-detail/C11702.html",
-      "jlc_reported_stock": 7999000,
-      "jlc_can_presale_number": 4912403,
+      "jlc_reported_stock": 7858306,
+      "jlc_can_presale_number": 4771594,
       "is_buy_component": "1",
       "minimum_prepurchase": 4512,
       "no_buy_reason": null,
@@ -19,7 +19,7 @@
         {
           "minimum": 1,
           "maximum": 999,
-          "unit_usd": 0.003
+          "unit_usd": 0.0031
         },
         {
           "minimum": 1000,
@@ -47,114 +47,66 @@
           "unit_usd": 0.0016
         }
       ],
-      "displayed_initial_unit_usd": 0.003,
+      "displayed_initial_unit_usd": 0.0031,
       "reported_attrition": 10,
       "reported_assembly_minimum": 20,
-      "response_sha256": "d8ca4a62c95aec0a786d3441cee4305aa5effd1eb28697c626a812ba8d86bb26",
+      "response_sha256": "026c8254a06d57e8499fed9605bb34782c081d6534f8502f4e6914dcd69c47b8",
       "exact_mpn_match": true
     },
     "C13585": {
       "mpn": "CL31A106KBHNNNE",
       "jlc_url": "https://jlcpcb.com/partdetail/C13585",
       "lcsc_url": "https://www.lcsc.com/product-detail/C13585.html",
-      "jlc_reported_stock": 2204369,
-      "jlc_can_presale_number": 1371779,
+      "jlc_reported_stock": 2155314,
+      "jlc_can_presale_number": 1322334,
       "is_buy_component": "1",
-      "minimum_prepurchase": 58,
+      "minimum_prepurchase": 57,
       "no_buy_reason": null,
       "package": "1206",
       "price_tiers_usd": [
         {
           "minimum": 1,
           "maximum": 99,
-          "unit_usd": 0.1582
+          "unit_usd": 0.1584
         },
         {
           "minimum": 100,
           "maximum": 299,
-          "unit_usd": 0.1235
+          "unit_usd": 0.1237
         },
         {
           "minimum": 300,
           "maximum": 1999,
-          "unit_usd": 0.1065
+          "unit_usd": 0.1067
         },
         {
           "minimum": 2000,
           "maximum": 3999,
-          "unit_usd": 0.0914
+          "unit_usd": 0.0915
         },
         {
           "minimum": 4000,
           "maximum": 9999,
-          "unit_usd": 0.0872
+          "unit_usd": 0.0873
         },
         {
           "minimum": 10000,
           "maximum": -1,
-          "unit_usd": 0.0847
+          "unit_usd": 0.0849
         }
       ],
-      "displayed_initial_unit_usd": 0.1582,
+      "displayed_initial_unit_usd": 0.1584,
       "reported_attrition": 4,
       "reported_assembly_minimum": 5,
-      "response_sha256": "19d18d54f57241f741bff40160b1a7cad008d5a4a37d87de06529eed00306949",
-      "exact_mpn_match": true
-    },
-    "C1525": {
-      "mpn": "CL05B104KO5NNNC",
-      "jlc_url": "https://jlcpcb.com/partdetail/C1525",
-      "lcsc_url": "https://www.lcsc.com/product-detail/C1525.html",
-      "jlc_reported_stock": 23583634,
-      "jlc_can_presale_number": 15934863,
-      "is_buy_component": "1",
-      "minimum_prepurchase": 2256,
-      "no_buy_reason": null,
-      "package": "0402",
-      "price_tiers_usd": [
-        {
-          "minimum": 1,
-          "maximum": 999,
-          "unit_usd": 0.0051
-        },
-        {
-          "minimum": 1000,
-          "maximum": 2999,
-          "unit_usd": 0.004
-        },
-        {
-          "minimum": 3000,
-          "maximum": 9999,
-          "unit_usd": 0.0035
-        },
-        {
-          "minimum": 10000,
-          "maximum": 49999,
-          "unit_usd": 0.0032
-        },
-        {
-          "minimum": 50000,
-          "maximum": 99999,
-          "unit_usd": 0.003
-        },
-        {
-          "minimum": 100000,
-          "maximum": -1,
-          "unit_usd": 0.0029
-        }
-      ],
-      "displayed_initial_unit_usd": 0.0051,
-      "reported_attrition": 10,
-      "reported_assembly_minimum": 20,
-      "response_sha256": "ac4ae394c77568e82472a28f9659b425fe80d9b6819f77291245514eb79b2394",
+      "response_sha256": "6ab2c77a468c693e7a8b45d1844015a5845da66b242380abc5b95c06250715ff",
       "exact_mpn_match": true
     },
     "C2286": {
       "mpn": "KT-0603R",
       "jlc_url": "https://jlcpcb.com/partdetail/C2286",
       "lcsc_url": "https://www.lcsc.com/product-detail/C2286.html",
-      "jlc_reported_stock": 7083479,
-      "jlc_can_presale_number": 6438937,
+      "jlc_reported_stock": 7017695,
+      "jlc_can_presale_number": 6371933,
       "is_buy_component": "1",
       "minimum_prepurchase": 1556,
       "no_buy_reason": null,
@@ -194,63 +146,63 @@
       "displayed_initial_unit_usd": 0.0076,
       "reported_attrition": 10,
       "reported_assembly_minimum": 20,
-      "response_sha256": "5f94213e7f703b28a68bf308a3940dc6f18aafa90ca19775e9cc6fe95c2720a7",
+      "response_sha256": "17c30978cefdf6540fb9254ba41f938a62a822cbe1d9fa66db524d4df995174a",
       "exact_mpn_match": true
     },
     "C25741": {
       "mpn": "0402WGF1003TCE",
       "jlc_url": "https://jlcpcb.com/partdetail/C25741",
       "lcsc_url": "https://www.lcsc.com/product-detail/C25741.html",
-      "jlc_reported_stock": 7970630,
-      "jlc_can_presale_number": 6310766,
+      "jlc_reported_stock": 10157791,
+      "jlc_can_presale_number": 8497862,
       "is_buy_component": "1",
-      "minimum_prepurchase": 6445,
+      "minimum_prepurchase": 9023,
       "no_buy_reason": null,
       "package": "0402",
       "price_tiers_usd": [
         {
           "minimum": 1,
           "maximum": 999,
-          "unit_usd": 0.0021
+          "unit_usd": 0.0016
         },
         {
           "minimum": 1000,
           "maximum": 2999,
-          "unit_usd": 0.0016
+          "unit_usd": 0.0012
         },
         {
           "minimum": 3000,
           "maximum": 9999,
-          "unit_usd": 0.0014
+          "unit_usd": 0.001
         },
         {
           "minimum": 10000,
           "maximum": 49999,
-          "unit_usd": 0.0013
+          "unit_usd": 0.0009
         },
         {
           "minimum": 50000,
           "maximum": 50199,
-          "unit_usd": 0.0011
+          "unit_usd": 0.0008
         },
         {
           "minimum": 50200,
           "maximum": -1,
-          "unit_usd": 0.0011
+          "unit_usd": 0.0008
         }
       ],
-      "displayed_initial_unit_usd": 0.0021,
+      "displayed_initial_unit_usd": 0.0016,
       "reported_attrition": 10,
       "reported_assembly_minimum": 20,
-      "response_sha256": "955b3256055b6c20d53945f474b0383389ce1cc32bd8dffecb4e37da3dee9b10",
+      "response_sha256": "51df02fad562d3dead5e927457bba0135e2cd936822d68ac3674e65ff3583080",
       "exact_mpn_match": true
     },
     "C25744": {
       "mpn": "0402WGF1002TCE",
       "jlc_url": "https://jlcpcb.com/partdetail/C25744",
       "lcsc_url": "https://www.lcsc.com/product-detail/C25744.html",
-      "jlc_reported_stock": 19052863,
-      "jlc_can_presale_number": 13937525,
+      "jlc_reported_stock": 22421961,
+      "jlc_can_presale_number": 17306528,
       "is_buy_component": "1",
       "minimum_prepurchase": 4102,
       "no_buy_reason": null,
@@ -290,15 +242,15 @@
       "displayed_initial_unit_usd": 0.0033,
       "reported_attrition": 10,
       "reported_assembly_minimum": 20,
-      "response_sha256": "56c89db9759dcb5844384e3e5b3a8cb3de94aeae8f864e2a329645346af59abb",
+      "response_sha256": "48d907076433f5168b722110c52905cb17da8a224171527c0afe3f0b7cd720a7",
       "exact_mpn_match": true
     },
     "C25867": {
       "mpn": "0402WGF1501TCE",
       "jlc_url": "https://jlcpcb.com/partdetail/C25867",
       "lcsc_url": "https://www.lcsc.com/product-detail/C25867.html",
-      "jlc_reported_stock": 1921364,
-      "jlc_can_presale_number": 1664378,
+      "jlc_reported_stock": 1929472,
+      "jlc_can_presale_number": 1672456,
       "is_buy_component": "1",
       "minimum_prepurchase": 4749,
       "no_buy_reason": null,
@@ -312,7 +264,7 @@
         {
           "minimum": 1000,
           "maximum": 2999,
-          "unit_usd": 0.0022
+          "unit_usd": 0.0023
         },
         {
           "minimum": 3000,
@@ -338,63 +290,15 @@
       "displayed_initial_unit_usd": 0.0029,
       "reported_attrition": 10,
       "reported_assembly_minimum": 20,
-      "response_sha256": "eb6d754ca720073d0e5e5d7798e301121fee1ea7001dc8b138a547be1ed2a5a1",
+      "response_sha256": "63b2613922ded18b3ef39ced586af1e5d30e52b2a981bfdf2a55b70ed32e7c3f",
       "exact_mpn_match": true
     },
     "C25900": {
       "mpn": "0402WGF4701TCE",
       "jlc_url": "https://jlcpcb.com/partdetail/C25900",
       "lcsc_url": "https://www.lcsc.com/product-detail/C25900.html",
-      "jlc_reported_stock": 14244292,
-      "jlc_can_presale_number": 12416441,
-      "is_buy_component": "1",
-      "minimum_prepurchase": 5308,
-      "no_buy_reason": null,
-      "package": "0402",
-      "price_tiers_usd": [
-        {
-          "minimum": 1,
-          "maximum": 999,
-          "unit_usd": 0.0027
-        },
-        {
-          "minimum": 1000,
-          "maximum": 2999,
-          "unit_usd": 0.0021
-        },
-        {
-          "minimum": 3000,
-          "maximum": 9999,
-          "unit_usd": 0.0017
-        },
-        {
-          "minimum": 10000,
-          "maximum": 49999,
-          "unit_usd": 0.0016
-        },
-        {
-          "minimum": 50000,
-          "maximum": 50199,
-          "unit_usd": 0.0013
-        },
-        {
-          "minimum": 50200,
-          "maximum": -1,
-          "unit_usd": 0.0013
-        }
-      ],
-      "displayed_initial_unit_usd": 0.0027,
-      "reported_attrition": 10,
-      "reported_assembly_minimum": 20,
-      "response_sha256": "66434bbea34af33b9fc340354afd3a8825dcf350fd2b44acd096b64c1bb9f27c",
-      "exact_mpn_match": true
-    },
-    "C25905": {
-      "mpn": "0402WGF5101TCE",
-      "jlc_url": "https://jlcpcb.com/partdetail/C25905",
-      "lcsc_url": "https://www.lcsc.com/product-detail/C25905.html",
-      "jlc_reported_stock": 5458422,
-      "jlc_can_presale_number": 4638232,
+      "jlc_reported_stock": 16587237,
+      "jlc_can_presale_number": 14759371,
       "is_buy_component": "1",
       "minimum_prepurchase": 6016,
       "no_buy_reason": null,
@@ -434,29 +338,77 @@
       "displayed_initial_unit_usd": 0.0024,
       "reported_attrition": 10,
       "reported_assembly_minimum": 20,
-      "response_sha256": "57be1bd117bbf0a2466d9ead3db3a742c2795f31766dcd40363bbf0eb1bf187b",
+      "response_sha256": "c387d721501163e1e0f71ea64854dcced851bbdd6cee4c03bc81d83754b6c3ce",
+      "exact_mpn_match": true
+    },
+    "C25905": {
+      "mpn": "0402WGF5101TCE",
+      "jlc_url": "https://jlcpcb.com/partdetail/C25905",
+      "lcsc_url": "https://www.lcsc.com/product-detail/C25905.html",
+      "jlc_reported_stock": 5430099,
+      "jlc_can_presale_number": 4609859,
+      "is_buy_component": "1",
+      "minimum_prepurchase": 6016,
+      "no_buy_reason": null,
+      "package": "0402",
+      "price_tiers_usd": [
+        {
+          "minimum": 1,
+          "maximum": 999,
+          "unit_usd": 0.0024
+        },
+        {
+          "minimum": 1000,
+          "maximum": 2999,
+          "unit_usd": 0.0018
+        },
+        {
+          "minimum": 3000,
+          "maximum": 9999,
+          "unit_usd": 0.0015
+        },
+        {
+          "minimum": 10000,
+          "maximum": 49999,
+          "unit_usd": 0.0014
+        },
+        {
+          "minimum": 50000,
+          "maximum": 50199,
+          "unit_usd": 0.0012
+        },
+        {
+          "minimum": 50200,
+          "maximum": -1,
+          "unit_usd": 0.0012
+        }
+      ],
+      "displayed_initial_unit_usd": 0.0024,
+      "reported_attrition": 10,
+      "reported_assembly_minimum": 20,
+      "response_sha256": "ec3ba9476024c7fbc732227d728cb2fc2faf2a36f14e2524f366c8b0252cf96d",
       "exact_mpn_match": true
     },
     "C29277": {
       "mpn": "CL21A226MPQNNNE",
       "jlc_url": "https://jlcpcb.com/partdetail/C29277",
       "lcsc_url": "https://www.lcsc.com/product-detail/C29277.html",
-      "jlc_reported_stock": 29147,
-      "jlc_can_presale_number": 24524,
+      "jlc_reported_stock": 278825,
+      "jlc_can_presale_number": 274197,
       "is_buy_component": "1",
-      "minimum_prepurchase": 153,
+      "minimum_prepurchase": 152,
       "no_buy_reason": null,
       "package": "0805",
       "price_tiers_usd": [
         {
           "minimum": 1,
           "maximum": 99,
-          "unit_usd": 0.0818
+          "unit_usd": 0.0819
         },
         {
           "minimum": 100,
           "maximum": 299,
-          "unit_usd": 0.0593
+          "unit_usd": 0.0594
         },
         {
           "minimum": 300,
@@ -471,18 +423,18 @@
         {
           "minimum": 4000,
           "maximum": 9999,
-          "unit_usd": 0.0349
+          "unit_usd": 0.035
         },
         {
           "minimum": 10000,
           "maximum": -1,
-          "unit_usd": 0.0326
+          "unit_usd": 0.0327
         }
       ],
-      "displayed_initial_unit_usd": 0.0818,
+      "displayed_initial_unit_usd": 0.0819,
       "reported_attrition": 0,
       "reported_assembly_minimum": 0,
-      "response_sha256": "b69a3345b5c08eab12f617dc7b3d2d62803e33807d4c0d8f0b26b197640e39f2",
+      "response_sha256": "72188ad76237a43b861f7a7e6ff9dbb60237d6fe1c0a625f66c5b058da592f7a",
       "exact_mpn_match": true
     },
     "C29779902": {
@@ -499,46 +451,94 @@
         {
           "minimum": 1,
           "maximum": 9,
-          "unit_usd": 0.7231
+          "unit_usd": 0.7242
         },
         {
           "minimum": 10,
           "maximum": 29,
-          "unit_usd": 0.5814
+          "unit_usd": 0.5823
         },
         {
           "minimum": 30,
           "maximum": 249,
-          "unit_usd": 0.5114
+          "unit_usd": 0.5122
         },
         {
           "minimum": 250,
           "maximum": 499,
-          "unit_usd": 0.4414
+          "unit_usd": 0.442
         },
         {
           "minimum": 500,
           "maximum": 999,
-          "unit_usd": 0.4006
+          "unit_usd": 0.4013
         },
         {
           "minimum": 1000,
           "maximum": -1,
-          "unit_usd": 0.3795
+          "unit_usd": 0.3801
         }
       ],
-      "displayed_initial_unit_usd": 0.5814,
+      "displayed_initial_unit_usd": 0.5823,
       "reported_attrition": 0,
       "reported_assembly_minimum": 0,
-      "response_sha256": "66c0b7a33033ea3436c81be1c22cfece5ebbda5ca36a864b9b7305437432cdad",
+      "response_sha256": "7e5873156456dc8e49627be95c9d17912276408dfa629a62099ad7f41d4b819a",
+      "exact_mpn_match": true
+    },
+    "C307331": {
+      "mpn": "CL05B104KB54PNC",
+      "jlc_url": "https://jlcpcb.com/partdetail/C307331",
+      "lcsc_url": "https://www.lcsc.com/product-detail/C307331.html",
+      "jlc_reported_stock": 15043347,
+      "jlc_can_presale_number": 11036065,
+      "is_buy_component": "1",
+      "minimum_prepurchase": 868,
+      "no_buy_reason": null,
+      "package": "0402",
+      "price_tiers_usd": [
+        {
+          "minimum": 1,
+          "maximum": 999,
+          "unit_usd": 0.0104
+        },
+        {
+          "minimum": 1000,
+          "maximum": 2999,
+          "unit_usd": 0.008
+        },
+        {
+          "minimum": 3000,
+          "maximum": 9999,
+          "unit_usd": 0.0069
+        },
+        {
+          "minimum": 10000,
+          "maximum": 49999,
+          "unit_usd": 0.0061
+        },
+        {
+          "minimum": 50000,
+          "maximum": 99999,
+          "unit_usd": 0.0058
+        },
+        {
+          "minimum": 100000,
+          "maximum": -1,
+          "unit_usd": 0.0056
+        }
+      ],
+      "displayed_initial_unit_usd": 0.0104,
+      "reported_attrition": 10,
+      "reported_assembly_minimum": 20,
+      "response_sha256": "dc385d27e3f0ba41f1ab66fb7d05f084be93397ea6f8ce71a4aa3543a945ab61",
       "exact_mpn_match": true
     },
     "C3662793": {
       "mpn": "TPS259470LRPWR",
       "jlc_url": "https://jlcpcb.com/partdetail/C3662793",
       "lcsc_url": "https://www.lcsc.com/product-detail/C3662793.html",
-      "jlc_reported_stock": 557,
-      "jlc_can_presale_number": 513,
+      "jlc_reported_stock": 523,
+      "jlc_can_presale_number": 484,
       "is_buy_component": "1",
       "minimum_prepurchase": 7,
       "no_buy_reason": null,
@@ -547,46 +547,46 @@
         {
           "minimum": 1,
           "maximum": 9,
-          "unit_usd": 1.4445
+          "unit_usd": 1.4467
         },
         {
           "minimum": 10,
           "maximum": 29,
-          "unit_usd": 1.1937
+          "unit_usd": 1.1956
         },
         {
           "minimum": 30,
           "maximum": 99,
-          "unit_usd": 1.0569
+          "unit_usd": 1.0586
         },
         {
           "minimum": 100,
           "maximum": 499,
-          "unit_usd": 0.9006
+          "unit_usd": 0.902
         },
         {
           "minimum": 500,
           "maximum": 999,
-          "unit_usd": 0.8322
+          "unit_usd": 0.8335
         },
         {
           "minimum": 1000,
           "maximum": -1,
-          "unit_usd": 0.8012
+          "unit_usd": 0.8025
         }
       ],
-      "displayed_initial_unit_usd": 1.4445,
+      "displayed_initial_unit_usd": 1.4467,
       "reported_attrition": 0,
       "reported_assembly_minimum": 0,
-      "response_sha256": "df833e4168505a3206b4b8da7975de591e2c9c44109df8ec6fa223a5fbdd6199",
+      "response_sha256": "d3354e4436c946475d51d23a876ffba9aa6e6216d6e38646f70d2bc3f9f049ff",
       "exact_mpn_match": true
     },
     "C4142": {
       "mpn": "0402WGF8202TCE",
       "jlc_url": "https://jlcpcb.com/partdetail/C4142",
       "lcsc_url": "https://www.lcsc.com/product-detail/C4142.html",
-      "jlc_reported_stock": 26593,
-      "jlc_can_presale_number": 7353,
+      "jlc_reported_stock": 26683,
+      "jlc_can_presale_number": 7443,
       "is_buy_component": "1",
       "minimum_prepurchase": 7519,
       "no_buy_reason": null,
@@ -626,15 +626,15 @@
       "displayed_initial_unit_usd": 0.0017,
       "reported_attrition": 10,
       "reported_assembly_minimum": 20,
-      "response_sha256": "b005f2311ddf82bef8f706114cbfdfd0d518bc1341967442ed67095714706968",
+      "response_sha256": "3e249263e571d6dc6b91a0de1f1712b84ce4560c6f3dca2bd6b3160480173dd7",
       "exact_mpn_match": true
     },
     "C48496": {
       "mpn": "SWPA5040S4R7MT",
       "jlc_url": "https://jlcpcb.com/partdetail/C48496",
       "lcsc_url": "https://www.lcsc.com/product-detail/C48496.html",
-      "jlc_reported_stock": 7370,
-      "jlc_can_presale_number": 7194,
+      "jlc_reported_stock": 7361,
+      "jlc_can_presale_number": 7185,
       "is_buy_component": "1",
       "minimum_prepurchase": 145,
       "no_buy_reason": null,
@@ -643,12 +643,12 @@
         {
           "minimum": 1,
           "maximum": 99,
-          "unit_usd": 0.0763
+          "unit_usd": 0.0764
         },
         {
           "minimum": 100,
           "maximum": 299,
-          "unit_usd": 0.0623
+          "unit_usd": 0.0624
         },
         {
           "minimum": 300,
@@ -658,12 +658,12 @@
         {
           "minimum": 1500,
           "maximum": 4499,
-          "unit_usd": 0.05
+          "unit_usd": 0.0501
         },
         {
           "minimum": 4500,
           "maximum": 10499,
-          "unit_usd": 0.0458
+          "unit_usd": 0.0459
         },
         {
           "minimum": 10500,
@@ -671,66 +671,66 @@
           "unit_usd": 0.0439
         }
       ],
-      "displayed_initial_unit_usd": 0.0763,
+      "displayed_initial_unit_usd": 0.0764,
       "reported_attrition": 4,
       "reported_assembly_minimum": 5,
-      "response_sha256": "540aba5cac2a3aedf54e77deeae61317ecdcfe2d4149cb9ff7010c50df6869e0",
+      "response_sha256": "7d124f3260a5da263ed7599431eb4608819b243540ef408586cbdeeba6aba05a",
       "exact_mpn_match": true
     },
     "C52923": {
       "mpn": "CL05A105KA5NQNC",
       "jlc_url": "https://jlcpcb.com/partdetail/C52923",
       "lcsc_url": "https://www.lcsc.com/product-detail/C52923.html",
-      "jlc_reported_stock": 7222988,
-      "jlc_can_presale_number": 5032308,
+      "jlc_reported_stock": 7772334,
+      "jlc_can_presale_number": 5581684,
       "is_buy_component": "1",
-      "minimum_prepurchase": 1327,
+      "minimum_prepurchase": 1368,
       "no_buy_reason": null,
       "package": "0402",
       "price_tiers_usd": [
         {
           "minimum": 1,
           "maximum": 499,
-          "unit_usd": 0.0087
+          "unit_usd": 0.0084
         },
         {
           "minimum": 500,
           "maximum": 1499,
-          "unit_usd": 0.0068
+          "unit_usd": 0.0066
         },
         {
           "minimum": 1500,
           "maximum": 9999,
-          "unit_usd": 0.006
+          "unit_usd": 0.0058
         },
         {
           "minimum": 10000,
           "maximum": 19999,
-          "unit_usd": 0.0054
+          "unit_usd": 0.0052
         },
         {
           "minimum": 20000,
           "maximum": 49999,
-          "unit_usd": 0.0051
+          "unit_usd": 0.005
         },
         {
           "minimum": 50000,
           "maximum": -1,
-          "unit_usd": 0.005
+          "unit_usd": 0.0048
         }
       ],
-      "displayed_initial_unit_usd": 0.0087,
+      "displayed_initial_unit_usd": 0.0084,
       "reported_attrition": 10,
       "reported_assembly_minimum": 20,
-      "response_sha256": "f847f32364376d375cf77964d8160141e4f197c92199d7b113425e17abfdd44a",
+      "response_sha256": "30f8d350191f6e37e58736ba8e91da5cc7a4d6020327261326fad6ad27867e72",
       "exact_mpn_match": true
     },
     "C720477": {
       "mpn": "TS-1088-AR02016",
       "jlc_url": "https://jlcpcb.com/partdetail/C720477",
       "lcsc_url": "https://www.lcsc.com/product-detail/C720477.html",
-      "jlc_reported_stock": 686289,
-      "jlc_can_presale_number": 624662,
+      "jlc_reported_stock": 697846,
+      "jlc_can_presale_number": 636205,
       "is_buy_component": "1",
       "minimum_prepurchase": 213,
       "no_buy_reason": null,
@@ -739,12 +739,12 @@
         {
           "minimum": 1,
           "maximum": 99,
-          "unit_usd": 0.0525
+          "unit_usd": 0.0526
         },
         {
           "minimum": 100,
           "maximum": 299,
-          "unit_usd": 0.0424
+          "unit_usd": 0.0425
         },
         {
           "minimum": 300,
@@ -754,7 +754,7 @@
         {
           "minimum": 1000,
           "maximum": 3999,
-          "unit_usd": 0.0329
+          "unit_usd": 0.033
         },
         {
           "minimum": 4000,
@@ -767,18 +767,18 @@
           "unit_usd": 0.0297
         }
       ],
-      "displayed_initial_unit_usd": 0.0525,
+      "displayed_initial_unit_usd": 0.0526,
       "reported_attrition": 4,
       "reported_assembly_minimum": 5,
-      "response_sha256": "12fd51bc37063eeda74f691cdf570b731653a719fad031513b9e5deed9e8fbac",
+      "response_sha256": "7a288d8ecd64f146544840a580680db417e83d8bac7e43e06f1e2786bbe05694",
       "exact_mpn_match": true
     },
     "C7519": {
       "mpn": "USBLC6-2SC6",
       "jlc_url": "https://jlcpcb.com/partdetail/C7519",
       "lcsc_url": "https://www.lcsc.com/product-detail/C7519.html",
-      "jlc_reported_stock": 45269,
-      "jlc_can_presale_number": 39381,
+      "jlc_reported_stock": 42788,
+      "jlc_can_presale_number": 36905,
       "is_buy_component": "1",
       "minimum_prepurchase": 67,
       "no_buy_reason": null,
@@ -787,46 +787,46 @@
         {
           "minimum": 1,
           "maximum": 49,
-          "unit_usd": 0.177
+          "unit_usd": 0.1772
         },
         {
           "minimum": 50,
           "maximum": 149,
-          "unit_usd": 0.1362
+          "unit_usd": 0.1364
         },
         {
           "minimum": 150,
           "maximum": 499,
-          "unit_usd": 0.1163
+          "unit_usd": 0.1165
         },
         {
           "minimum": 500,
           "maximum": 2999,
-          "unit_usd": 0.0986
+          "unit_usd": 0.0987
         },
         {
           "minimum": 3000,
           "maximum": 5999,
-          "unit_usd": 0.0937
+          "unit_usd": 0.0938
         },
         {
           "minimum": 6000,
           "maximum": -1,
-          "unit_usd": 0.0908
+          "unit_usd": 0.0909
         }
       ],
-      "displayed_initial_unit_usd": 0.177,
+      "displayed_initial_unit_usd": 0.1772,
       "reported_attrition": 2,
       "reported_assembly_minimum": 5,
-      "response_sha256": "d2911320d7776ffce76fe577f0d42b205956f17790065e0f49977c658a918b8c",
+      "response_sha256": "0b964437d5de5ef98a85d9e97acc2110ce51ce4ca14d31e3315d2131727d292f",
       "exact_mpn_match": true
     },
     "C780769": {
       "mpn": "AP63203WU-7",
       "jlc_url": "https://jlcpcb.com/partdetail/C780769",
       "lcsc_url": "https://www.lcsc.com/product-detail/C780769.html",
-      "jlc_reported_stock": 13446,
-      "jlc_can_presale_number": 10549,
+      "jlc_reported_stock": 8099,
+      "jlc_can_presale_number": 4602,
       "is_buy_component": "1",
       "minimum_prepurchase": 8,
       "no_buy_reason": null,
@@ -835,46 +835,46 @@
         {
           "minimum": 1,
           "maximum": 9,
-          "unit_usd": 1.1807
+          "unit_usd": 1.1825
         },
         {
           "minimum": 10,
           "maximum": 29,
-          "unit_usd": 1.0553
+          "unit_usd": 1.0569
         },
         {
           "minimum": 30,
           "maximum": 99,
-          "unit_usd": 0.9348
+          "unit_usd": 0.9362
         },
         {
           "minimum": 100,
           "maximum": 499,
-          "unit_usd": 0.8468
+          "unit_usd": 0.8482
         },
         {
           "minimum": 500,
           "maximum": 999,
-          "unit_usd": 0.7768
+          "unit_usd": 0.778
         },
         {
           "minimum": 1000,
           "maximum": -1,
-          "unit_usd": 0.7589
+          "unit_usd": 0.7601
         }
       ],
-      "displayed_initial_unit_usd": 1.1807,
+      "displayed_initial_unit_usd": 1.1825,
       "reported_attrition": 0,
       "reported_assembly_minimum": 5,
-      "response_sha256": "5a46ba5542ac6d5c8157fb7369cef67bfbe454610c7c00097606346138f511fa",
+      "response_sha256": "051dfbbfacd393d45758579d9bf6cb1e26d5c5c08680b0aeea7603af253642df",
       "exact_mpn_match": true
     },
     "C8598": {
       "mpn": "B5819W SL",
       "jlc_url": "https://jlcpcb.com/partdetail/C8598",
       "lcsc_url": "https://www.lcsc.com/product-detail/C8598.html",
-      "jlc_reported_stock": 390210,
-      "jlc_can_presale_number": 276035,
+      "jlc_reported_stock": 383322,
+      "jlc_can_presale_number": 269147,
       "is_buy_component": "1",
       "minimum_prepurchase": 407,
       "no_buy_reason": null,
@@ -883,7 +883,7 @@
         {
           "minimum": 1,
           "maximum": 199,
-          "unit_usd": 0.0282
+          "unit_usd": 0.0283
         },
         {
           "minimum": 200,
@@ -893,7 +893,7 @@
         {
           "minimum": 600,
           "maximum": 2999,
-          "unit_usd": 0.0194
+          "unit_usd": 0.0195
         },
         {
           "minimum": 3000,
@@ -911,10 +911,10 @@
           "unit_usd": 0.016
         }
       ],
-      "displayed_initial_unit_usd": 0.0282,
+      "displayed_initial_unit_usd": 0.0283,
       "reported_attrition": 8,
       "reported_assembly_minimum": 20,
-      "response_sha256": "80bbacaa7d3ee5d9bebd1538d14417435c74ce371f5131db017ac89f58e6cb3c",
+      "response_sha256": "052cff5b362160a6339a97e12436dc47f51f6f2cd6233706299afadbe86cb30a",
       "exact_mpn_match": true
     },
     "C963411": {
@@ -931,38 +931,38 @@
         {
           "minimum": 1,
           "maximum": 49,
-          "unit_usd": 0.2445
+          "unit_usd": 0.2449
         },
         {
           "minimum": 50,
           "maximum": 149,
-          "unit_usd": 0.1953
+          "unit_usd": 0.1956
         },
         {
           "minimum": 150,
           "maximum": 999,
-          "unit_usd": 0.1742
+          "unit_usd": 0.1745
         },
         {
           "minimum": 1000,
           "maximum": 1999,
-          "unit_usd": 0.1357
+          "unit_usd": 0.1359
         },
         {
           "minimum": 2000,
           "maximum": 4999,
-          "unit_usd": 0.124
+          "unit_usd": 0.1242
         },
         {
           "minimum": 5000,
           "maximum": -1,
-          "unit_usd": 0.117
+          "unit_usd": 0.1172
         }
       ],
-      "displayed_initial_unit_usd": 0.2445,
+      "displayed_initial_unit_usd": 0.2449,
       "reported_attrition": 0,
       "reported_assembly_minimum": 5,
-      "response_sha256": "e480416d20813cac2df12b2598089e7b18b875b65a3a8fdbe25c7280eac1ad24",
+      "response_sha256": "b57415401b341365dee2251b6a0d8f0fc315b73591faafddbf18312bdd33cda4",
       "exact_mpn_match": true
     }
   }

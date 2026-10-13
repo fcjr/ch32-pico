@@ -994,7 +994,7 @@
 				)
 			)
 		)
-		(property "LCSC Part" "C52923"
+		(property "LCSC Part" "C307331"
 			(at 0 0 90)
 			(layer "F.Fab")
 			(hide yes)
@@ -1311,7 +1311,7 @@
 				)
 			)
 		)
-		(property "LCSC Part" "C25900"
+		(property "LCSC Part" "C25744"
 			(at 0 0 0)
 			(layer "F.Fab")
 			(hide yes)
@@ -1727,7 +1727,7 @@
 				)
 			)
 		)
-		(property "LCSC Part" "C25900"
+		(property "LCSC Part" "C25741"
 			(at 0 0 90)
 			(layer "F.Fab")
 			(hide yes)
@@ -1930,7 +1930,7 @@
 				)
 			)
 		)
-		(property "LCSC Part" "C52923"
+		(property "LCSC Part" "C307331"
 			(at 0 0 180)
 			(layer "F.Fab")
 			(hide yes)
@@ -2177,7 +2177,7 @@
 				)
 			)
 		)
-		(property "LCSC Part" "C25900"
+		(property "LCSC Part" "C25744"
 			(at 0 0 0)
 			(layer "F.Fab")
 			(hide yes)
@@ -2583,7 +2583,7 @@
 				)
 			)
 		)
-		(property "LCSC Part" "C52923"
+		(property "LCSC Part" "C307331"
 			(at 0 0 90)
 			(layer "F.Fab")
 			(hide yes)
@@ -3109,7 +3109,7 @@
 				)
 			)
 		)
-		(property "Value" "1k"
+		(property "Value" "4.7k"
 			(at 0 4 0)
 			(layer "F.Fab")
 			(hide yes)
@@ -3416,7 +3416,7 @@
 				)
 			)
 		)
-		(property "LCSC Part" "C52923"
+		(property "LCSC Part" "C307331"
 			(at 0 0 270)
 			(layer "F.Fab")
 			(hide yes)
@@ -3663,7 +3663,7 @@
 				)
 			)
 		)
-		(property "LCSC Part" "C25900"
+		(property "LCSC Part" "C25744"
 			(at 0 0 0)
 			(layer "F.Fab")
 			(hide yes)
@@ -4406,7 +4406,7 @@
 				)
 			)
 		)
-		(property "LCSC Part" "C25900"
+		(property "LCSC Part" "C25744"
 			(at 0 0 0)
 			(layer "F.Fab")
 			(hide yes)
@@ -4604,6 +4604,18 @@
 			(effects
 				(font
 					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC Part" "C3662793"
+			(at 0 0 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "25802c44-67ce-44dd-96c1-d5673c930dd2")
+			(effects
+				(font
+					(size 1.27 1.27)
+					(thickness 0.15)
 				)
 			)
 		)
@@ -5282,7 +5294,7 @@
 				)
 			)
 		)
-		(property "LCSC Part" "C25900"
+		(property "LCSC Part" "C11702"
 			(at 0 0 90)
 			(layer "F.Fab")
 			(hide yes)
@@ -5485,7 +5497,7 @@
 				)
 			)
 		)
-		(property "LCSC Part" "C52923"
+		(property "LCSC Part" "C307331"
 			(at 0 0 90)
 			(layer "F.Fab")
 			(hide yes)
@@ -5732,7 +5744,7 @@
 				)
 			)
 		)
-		(property "LCSC Part" "C25900"
+		(property "LCSC Part" "C25905"
 			(at 0 0 0)
 			(layer "F.Fab")
 			(hide yes)
@@ -6252,7 +6264,7 @@
 				)
 			)
 		)
-		(property "LCSC Part" "C25900"
+		(property "LCSC Part" "C25905"
 			(at 0 0 0)
 			(layer "F.Fab")
 			(hide yes)
@@ -6618,7 +6630,7 @@
 				)
 			)
 		)
-		(property "LCSC Part" "C25900"
+		(property "LCSC Part" "C25744"
 			(at 0 0 90)
 			(layer "F.Fab")
 			(hide yes)
@@ -6821,7 +6833,7 @@
 				)
 			)
 		)
-		(property "LCSC Part" "C25900"
+		(property "LCSC Part" "C11702"
 			(at 0 0 0)
 			(layer "F.Fab")
 			(hide yes)
@@ -7024,7 +7036,7 @@
 				)
 			)
 		)
-		(property "LCSC Part" "C52923"
+		(property "LCSC Part" "C307331"
 			(at 0 0 270)
 			(layer "F.Fab")
 			(hide yes)
@@ -7484,7 +7496,7 @@
 				)
 			)
 		)
-		(property "LCSC Part" "C52923"
+		(property "LCSC Part" "C307331"
 			(at 0 0 0)
 			(layer "F.Fab")
 			(hide yes)
@@ -7731,7 +7743,7 @@
 				)
 			)
 		)
-		(property "LCSC Part" "C52923"
+		(property "LCSC Part" "C307331"
 			(at 0 0 0)
 			(layer "F.Fab")
 			(hide yes)
@@ -7984,6 +7996,18 @@
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "6400d7bb-5aab-5e5f-86d6-7e7dea02ca9b")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "LCSC Part" "C7519"
+			(at 0 2.4 90)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "1dead4a9-624d-4b4b-a4c1-475b6e24d744")
 			(effects
 				(font
 					(size 1 1)
@@ -8309,7 +8333,7 @@
 				)
 			)
 		)
-		(property "LCSC Part" "C25900"
+		(property "LCSC Part" "C25744"
 			(at 0 0 90)
 			(layer "F.Fab")
 			(hide yes)
@@ -8512,7 +8536,7 @@
 				)
 			)
 		)
-		(property "LCSC Part" "C25900"
+		(property "LCSC Part" "C4142"
 			(at 0 0 90)
 			(layer "F.Fab")
 			(hide yes)
@@ -8918,7 +8942,7 @@
 				)
 			)
 		)
-		(property "LCSC Part" "C52923"
+		(property "LCSC Part" "C307331"
 			(at 0 0 270)
 			(layer "F.Fab")
 			(hide yes)
@@ -9482,7 +9506,7 @@
 				)
 			)
 		)
-		(property "LCSC Part" "C25900"
+		(property "LCSC Part" "C25741"
 			(at 0 0 90)
 			(layer "F.Fab")
 			(hide yes)
@@ -9686,6 +9710,18 @@
 			(effects
 				(font
 					(size 1.27 1.27)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "LCSC Part" "C963411"
+			(at 0 5 180)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "253c284e-c829-4a28-a5ac-9197d4531f98")
+			(effects
+				(font
+					(size 1 1)
 					(thickness 0.15)
 				)
 			)
@@ -10725,6 +10761,18 @@
 				)
 			)
 		)
+		(property "LCSC Part" "C29779902"
+			(at 0 5.85 90)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "49671a03-c5f3-4087-9c8c-73fadc769b43")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
@@ -11479,7 +11527,7 @@
 				)
 			)
 		)
-		(property "LCSC Part" "C25900"
+		(property "LCSC Part" "C25867"
 			(at 0 0 0)
 			(layer "F.Fab")
 			(hide yes)
@@ -12206,7 +12254,7 @@
 				)
 			)
 		)
-		(property "Value" "PC7"
+		(property "Value" "PD_FAULT_N"
 			(at 0 1.2 0)
 			(layer "B.Fab")
 			(hide yes)

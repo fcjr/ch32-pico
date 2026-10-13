@@ -26,6 +26,11 @@ CHANGED_NETS = {'PC7', 'GPIO35', 'PD_FAULT_N'} | {d.net for d in DIAGNOSTICS}
 
 
 def prepare(doc, placed):
+    # The historical checkpoint predates the capacitor/ILM BOM correction.
+    # Keep its routed copper but take purchasing fields from the current seed.
+    from .library import update_board_parts
+    from .circuit import COMPONENTS
+    update_board_parts(doc,COMPONENTS)
     for fp in children(doc, 'footprint'):
         ref=next(p[2] for p in children(fp,'property') if p[1]=='Reference')
         for pad in children(fp,'pad'):

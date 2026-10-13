@@ -71,6 +71,8 @@ def generate():
     # KiCad exposes read-only UUID handles. Normalize the saved document,
     # instead of mutating native ownership pointers.
     doc=parse(out.read_text())
+    from .library import update_board_parts
+    update_board_parts(doc,physical)
     one(doc,'setup').append(parse('''(stackup
       (layer "F.Cu" (type "copper") (thickness 0.035))
       (layer "dielectric 1" (type "prepreg") (thickness 0.0994) (material "3313 RC57%") (epsilon_r 4.1) (loss_tangent 0.02))

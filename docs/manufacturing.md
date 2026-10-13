@@ -73,8 +73,9 @@ this restriction. The panel includes the required rails and fiducials.
 `just order-review` checks panel artifact hashes, computes a dated assembly-cost
 scenario and writes a physical pin/polarity guide under `build/order-review/`.
 The JSON guide checks all 164 panel CPL rows and gives anchor coordinates in
-both board and panel/CPL conventions. Its SVG is an assembly reference; it does
-not establish JLC model rotation offsets. See [order review](order-review.md).
+both board and panel/CPL conventions. Panel CPL angles apply reviewed JLC
+model-frame deltas (U1/D2 rotation, J2 anchor); JLC preview confirmation is
+still required. See [order review](order-review.md).
 
 The preview is not an order release. Check the reviews in `manifest.json`,
 resolve the recorded component shortages, allocation and assembly attrition for the chosen

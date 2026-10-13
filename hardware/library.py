@@ -9,7 +9,9 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from pathlib import Path
+import re
 from .sexp import parse, children, one
+from copy import deepcopy
 from .design import HEADER, TARGET_PINS
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -30,6 +32,13 @@ class Part:
     manufacturer: str
     footprint: str
     pins: tuple[Pin, ...]
+    description: str = ''
+
+    @property
+    def voltage_rating_v(self):
+        """Vendor metadata, independent of the schematic/BOM value label."""
+        match=re.search(r'\b(\d+(?:\.\d+)?)V\b',self.description)
+        return float(match[1]) if match else None
 
 
 def pin_sort(pin):
@@ -66,7 +75,7 @@ def load_library():
         pins=tuple(sorted(pins,key=pin_sort))
         if len(pins)!=len({p.number for p in pins}):
             raise ValueError(f'Duplicate symbol pins: {code}')
-        library[code]=Part(code,props['MPN'],props.get('Manufacturer',''),props['Footprint'].split(':')[-1],pins)
+        library[code]=Part(code,props['MPN'],props.get('Manufacturer',''),props['Footprint'].split(':')[-1],pins,props.get('ki_description',''))
     library['PICO_HEADER']=Part('','Pico header pads','','Pico_Header',
         tuple(Pin(str(p.number),p.pico.split(' / ')[0]) for p in HEADER))
     library['TESTPAD']=Part('','Test pad','','TestPad_1mm',(Pin('1','TP'),))
@@ -99,3 +108,21 @@ def validate_library(components, library):
             if pin.electrical=='unspecified': raise ValueError(f'{c.ref}.{pin.number} unspecified type')
             if pin.electrical in {'power_in','power_out'} and c.nets[pin.number] is None:
                 raise ValueError(f'{c.ref}.{pin.number} supply pin left NC')
+
+
+def update_board_parts(doc,components):
+    """Refresh BOM fields on an unchanged footprint without touching copper."""
+    library=load_library();by_ref={c.ref:c for c in components}
+    for fp in children(doc,'footprint'):
+        props={p[1]:p for p in children(fp,'property')}
+        c=by_ref[props['Reference'][2]];part=library[c.part]
+        if fp[1].split(':')[-1]!=part.footprint:
+            raise ValueError(f'{c.ref}: part change requires a new footprint')
+        props['Value'][2]=c.value or part.mpn
+        if part.code:
+            if 'LCSC Part' not in props:
+                field=deepcopy(props['Value']);field[1]='LCSC Part'
+                field[:]=[n for n in field if not isinstance(n,list) or n[0]!='uuid']
+                if not children(field,'hide'):field.append(parse('(hide yes)'))
+                fp.append(field);props['LCSC Part']=field
+            props['LCSC Part'][2]=part.code

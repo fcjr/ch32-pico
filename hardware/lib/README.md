@@ -6,6 +6,13 @@ selects its LCSC C-number; `hardware/library.py` reads the associated metadata
 and assigns reviewed electrical pin types. The schematic generator draws its
 own typed symbols instead of using the importer's unspecified pin types.
 
+On 2026-10-13, the 100 nF selection changed to Samsung CL05B104KB54PNC,
+[C307331](https://www.lcsc.com/product-detail/C307331.html), verified as
+50 V, X7R, ±10%, 0402. Its symbol reuses C1525's two-terminal geometry and
+the existing C0402 footprint, with corrected MPN, voltage and vendor link.
+C1525 remains in the library for historical designs and regression checks.
+Voltage checks read vendor descriptions independently of circuit value labels.
+
 Revisions B and C use the KiCad LQFP-48 7 × 7 mm land pattern for CH32X035C8T6
 and SOT-23-6 for USBLC6-2SC6. `scripts/prepare_footprints.py` vendors those
 patterns and moves imported legends to fabrication layers. Normal builds use

@@ -18,11 +18,16 @@ from .mechanical_checks import usb_fit
 def verify_board(path):
     doc=parse(path.read_text())
     wanted={c.ref:c for c in COMPONENTS if not c.ref.startswith('#')}
+    library=load_library()
     observed={}
     for fp in children(doc,'footprint'):
         ref=next(p[2] for p in children(fp,'property') if p[1]=='Reference')
         if ref in observed: raise ValueError(f'Duplicate PCB reference {ref}')
         c=wanted[ref]
+        props={p[1]:p[2] for p in children(fp,'property')}
+        part=library[c.part]
+        if props.get('Value')!=(c.value or part.mpn) or (part.code and props.get('LCSC Part')!=part.code):
+            raise ValueError(f'{ref}: PCB part/value differs from source')
         pads={}
         for pad in children(fp,'pad'):
             if not pad[1]: continue

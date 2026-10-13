@@ -1,15 +1,27 @@
 # Parts and factory review
 
+See the [current pre-order review](preorder-review.md) for all 20 fitted part
+numbers, refreshed batch quantities and stock, and the open power-design issues.
+The historical stock and price tables below are retained as prior observations.
+
 ## Rev E update
 
 Rev E exposes PC7 on header 35 only through normally open SJ1 and changes TP7
 from PC7 to FAULT. TP14–TP24 add eleven diagnostic contacts; two tented
 ground vias stitch the USB-end pour to L2. Silkscreen identifies every new
-contact and reads PC7*, SJ1, FAULT and REV E. The fitted BOM,
-assembly placement and panel process are unchanged; SJ1 receives no paste or
+contact and reads PC7*, SJ1, FAULT and REV E. Assembly placement and the panel
+process are unchanged; SJ1 receives no paste or
 factory solder bridge. `just jlcpcb` creates the current Rev E fabrication files in `build/jlcpcb/`. No Rev E
 factory upload, allocation or approval has been performed. See the
 [Rev E design and usage notes](revision-e.md).
+
+The subsequent [power-path correction](revision-e.md#power-path-correction)
+replaces all nine 100 nF capacitors with 50 V C307331 and changes R17 to
+4.7 kΩ C25900 for a 2.93 A nominal eFuse limit. Use the regenerated Rev E BOM.
+The Rev C quantities and prices below are historical and predate this correction.
+C307331's separate dated stock observation is recorded in
+`hardware/procurement-observation.json`; the current quantity and cost reports
+are generated under `build/order-review/`.
 
 ## Rev D update
 

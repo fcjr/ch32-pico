@@ -1,6 +1,6 @@
 {
   "status": "routing checked; not released for ordering",
-  "saved_at": "2026-10-13T05:51:54.875790+00:00",
+  "saved_at": "2026-10-13T14:10:51.217443+00:00",
   "engine": "krt-jumper",
   "selection": "passing DRC/connectivity, then minimum vias and trace length",
   "checks": {
@@ -862,7 +862,7 @@
     },
     "passes_connectivity_and_drc": true
   },
-  "board_sha256": "d066d847328c33f6ea2b10fbbf5716ba73c27f35d09fc564bb1d4c6d7571fcd2",
+  "board_sha256": "ba942c830eea947282d963c76d3801e59fa8171ef1ac29eec5106eb7ce027933",
   "comparison": {
     "status": "passed",
     "started_at": "2026-10-13T05:48:00.513073+00:00",
@@ -1775,7 +1775,7 @@
     "Measured USB performance; nonuniform connector/package fanouts (docs/usb-routing.md)",
     "Physical USB cable, overhang and locating-peg fit (docs/revision-e.md)",
     "Pin 37 shutdown/restart, released EN voltage, back-power and loaded PD shutdown timing",
-    "5 A power copper/contact temperature, eFuse faults, inrush, discharge, backfeed and fixed 3.3 V load budget",
+    "Power copper/contact temperature with ~3 A nominal eFuse limit, tolerance, inrush, discharge, backfeed and fixed 3.3 V load budget",
     "Native USB ISP/recovery, open PD/CDC firmware integration, reset/detach handling and watchdog",
     "JLC IC/diode polarity and stencil review, 0.100 mm TI stencil example, order quantity/attrition"
   ]

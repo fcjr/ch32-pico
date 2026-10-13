@@ -56,7 +56,7 @@ POWER_REQUIREMENTS = {
     "vsys_min_v": 4.3, "vsys_max_v": 5.5, "output_v": 3.3,
     "header_current_goal_ma": 50, "usb_backfeed_allowed": False,
     "pd_voltage_steps_v": (5, 9, 12, 15, 20),
-    "pd_output_current_goal_ma": 5000,
+    "pd_output_current_goal_ma": 3000,
     "pd_output_location": "Pico pin 40, replaces fixed 5 V VBUS",
 }
 

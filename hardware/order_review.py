@@ -7,7 +7,7 @@ from collections import Counter
 from .circuit import COMPONENTS
 from .design import MCU_PART
 from .cost_review import report as cost_report
-from .library import ROOT
+from .library import ROOT, load_library
 from .sexp import parse, children, one
 
 
@@ -64,11 +64,12 @@ def report():
         raise ValueError('Standard PCBA panel dimensions unsupported')
     boards = panel['total_boards']
     fitted = {c.ref: c for c in COMPONENTS if c.fitted}
+    library = load_library()
     counts = Counter(c.part for c in fitted.values())
     rows = []
     for code, count in sorted(counts.items()):
         part = source['parts'][code]
-        if not part.get('exact_mpn_match'):
+        if not part.get('exact_mpn_match') or part.get('mpn') != library[code].mpn:
             raise ValueError(f'Unverified procurement record: {code}')
         used = count * boards
         loss, minimum = part['reported_attrition'], part['reported_assembly_minimum']
@@ -79,6 +80,7 @@ def report():
         # explicitly provisional; never silently mark order attrition verified.
         planned = max(used + loss, minimum)
         rows.append({'lcsc': code, 'mpn': part['mpn'], 'fitted_quantity': used,
+                     'references_per_board': sorted(c.ref for c in fitted.values() if c.part == code),
                      'displayed_loss_count': loss, 'displayed_assembly_minimum': minimum,
                      'provisional_quantity': planned,
                      'provisional_cost_usd': round(planned * unit_price(part, planned), 4),
@@ -129,6 +131,8 @@ def report():
         'mcu_prepurchase_candidate': prepurchase_candidate(source['parts'][MCU_PART],
             next(r['provisional_quantity'] for r in rows if r['lcsc'] == MCU_PART)),
         'mcu_allocation_confirmed': False, 'rows': rows,
+        'public_stock_sufficient_for_batch': not any(row['stock_shortfall'] for row in rows),
+        'parts_with_shortfalls': [row['lcsc'] for row in rows if row['stock_shortfall']],
     }
 
 

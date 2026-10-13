@@ -9,6 +9,7 @@ from .circuit import COMPONENTS
 from .design import BOARD_REVISION
 from .library import ROOT, load_library
 from .order_review import checked_board
+from .jlc_model_frames import FRAME_DELTAS, cpl_adjustment
 from .sexp import parse, children, one
 from .usb_review import pad_centers
 
@@ -62,12 +63,15 @@ def report():
                 raise ValueError(f'Unexpected pad net at {ref}.{pad[1]}')
             terminals.append({'pin': str(pad[1]), 'net': c.nets[str(pad[1])],
                               'board_xy_mm': pads[ref, str(pad[1])]})
+        rotation,anchor_dx,anchor_dy=cpl_adjustment(c.part,angle)
         copies = []
         for copy in manifest['copies']:
             panel_ref = copy['prefix'] + ref; dx, dy = copy['translation_mm']; row = cpl[panel_ref]
-            if (abs(float(row['Mid X']) - x - dx) > 1e-5
-                or abs(float(row['Mid Y']) + y + dy) > 1e-5
-                or (float(row['Rotation']) - angle) % 360 != 0 or row['Layer'] != 'top'):
+            cpl_rotation = float(row['Rotation'])
+            if (abs(float(row['Mid X']) - x - dx - anchor_dx) > 1e-5
+                or abs(float(row['Mid Y']) + y + dy - anchor_dy) > 1e-5
+                or abs(cpl_rotation - rotation) > 1e-6 or not 0 <= cpl_rotation < 360
+                or row['Layer'] != 'top'):
                 raise ValueError(f'CPL mismatch at {panel_ref}')
             anchor = ANCHORS.get(ref)
             point = pads[ref, anchor[0]] if anchor else None
@@ -75,11 +79,13 @@ def report():
                 'anchor_cpl_xy_mm': [round(point[0] + dx, 6), round(-point[1] - dy, 6)] if point else None})
         rows.append({'ref': ref, 'lcsc': c.part, 'mpn': lib[c.part].mpn,
                      'board_center_mm': [x, y], 'kicad_angle_deg': angle,
+                     'cpl_rotation_deg': rotation,
                      'orientation_anchor': ANCHORS.get(ref), 'terminals': terminals, 'panel_copies': copies})
-    return {'status': 'physical pin guide; JLC model orientations remain unverified',
+    return {'status': 'physical pin guide; JLC model-frame deltas applied; JLC preview confirmation pending',
             'source_board_sha256': hashlib.sha256(board.read_bytes()).hexdigest(),
             'panel_sha256': manifest['panel_sha256'], 'cpl_sha256': manifest['file_sha256']['cpl.csv'],
             'coordinate_convention': 'Board: X right, Y down from upper-left. CPL: X right, Y up from panel origin.',
+            'jlc_frame_deltas': FRAME_DELTAS,
             'fitted_parts_per_board': len(rows), 'panel_cpl_rows_checked': len(cpl),
             'jlc_model_rotations_verified': False, 'parts': rows}, doc
 
@@ -91,7 +97,7 @@ def svg_guide(result, doc):
         '<rect width="1100" height="820" fill="white"/>',
         '<g font-family="sans-serif" fill="#17263c">',
         f'<text x="35" y="36" font-size="24" font-weight="bold">ch32-pico Rev {BOARD_REVISION}: assembly orientation guide</text>',
-        '<text x="35" y="63" font-size="14">Top view · USB at top · physical anchors, not approved JLC model angles</text>',
+        '<text x="35" y="63" font-size="14">Top view · USB at top · physical anchors; JLC frame deltas applied, preview pending</text>',
         '<text x="35" y="87" font-size="12">Orange marks show the specific pad named at right. Dimensions are board coordinates in mm.</text>',
         '<g transform="translate(40 115) scale(12)">',
         '<rect width="21" height="51" fill="#edf2f5" stroke="#26394f" stroke-width="0.12"/>']
@@ -133,7 +139,7 @@ def svg_guide(result, doc):
         x, y = terminal['board_xy_mm']; top = 124 + 56 * i
         svg.append(f'<text x="330" y="{top}" font-size="16" font-weight="bold">{ref} · {e(row["mpn"])}</text>')
         svg.append(f'<text x="330" y="{top+19}" font-size="13">{e(note)}</text>')
-        svg.append(f'<text x="330" y="{top+36}" font-size="12" fill="#58677a">Pad {pin}: x={x:.4f}, y={y:.4f} · {e(terminal["net"] or "NC")} · KiCad {row["kicad_angle_deg"]:g}°</text>')
+        svg.append(f'<text x="330" y="{top+36}" font-size="12" fill="#58677a">Pad {pin}: x={x:.4f}, y={y:.4f} · {e(terminal["net"] or "NC")} · KiCad {row["kicad_angle_deg"]:g}° · CPL {row["cpl_rotation_deg"]:g}°</text>')
     svg += ['<text x="330" y="712" font-size="13">Resistors and ceramic capacitors have no polarity.</text>',
             f'<text x="330" y="734" font-size="13">Use the JSON companion for all {result["panel_cpl_rows_checked"]} panel placements and anchor coordinates.</text>',
             '<text x="35" y="783" font-size="12">Compare actual pad numbering and body marks in JLC preview; a red model dot alone is not proof of pin 1.</text>',
@@ -146,7 +152,7 @@ def main():
     (out / 'assembly-orientation.json').write_text(json.dumps(result, indent=2) + '\n')
     (out / 'assembly-orientation.svg').write_text(svg_guide(result, doc))
     print(f"Physical assembly guide: {result['fitted_parts_per_board']} parts; "
-          f"{result['panel_cpl_rows_checked']} panel positions checked; JLC rotations pending")
+          f"{result['panel_cpl_rows_checked']} panel positions checked; JLC preview confirmation pending")
 
 
 if __name__ == '__main__':

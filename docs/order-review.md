@@ -63,9 +63,15 @@ upload only the inner `gerbers.zip` to JLCPCB's PCB form, followed by the BOM
 and CPL at the assembly step. See [manufacturing](manufacturing.md) and
 [build setup](build.md).
 
-KiCad angles are not verified JLC model offsets. Check IC pin 1, diode/LED
-polarity, USB mouth, switch orientation and centroids in the assembly preview.
-Record any required corrections in source before regenerating the files.
+KiCad angles are converted against JLC's own library footprints: U1 (LQFP-48)
+and D2 (SOT-23-6) carry a -90 degree frame delta because KiCad's footprints
+anchor pin 1 top-left while JLC's `…-BL` frames anchor it bottom-left, and J2
+is shifted 1.345 mm to JLC's model origin. The table lives in
+`hardware/jlc_model_frames.py` and the applied values are recorded in the
+orientation JSON. These conversions are not an approval: check IC pin 1,
+diode/LED polarity, USB mouth, switch orientation and centroids in the
+assembly preview, and record any required corrections in source before
+regenerating the files.
 
 No Rev E assembly preview, stock allocation or factory approval has been
 completed. Earlier Rev C browser observations remain historical evidence in

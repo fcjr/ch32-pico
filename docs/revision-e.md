@@ -6,12 +6,42 @@ the remaining internal MCU signals, raw VBUS and ground. Two local ground
 stitching vias connect the USB-end pour to the internal ground plane. It keeps Rev D's regulator-enable
 connection at pin 37, the 21 × 51 mm outline, 40 header positions, castellations
 and edge-aligned USB-C. There are no mounting holes. The fitted BOM remains
-41 parts, with no added purchasing or assembly line item.
+41 parts. The power-path correction below changes the capacitor part and R17.
 
 This is a routed prototype, not a manufacturing release. PD/USB application
 firmware, physical power qualification and factory approval remain pending.
 The [Rev D architecture](revision-d.md#selected-architecture) still describes
 the MCU, USB, protected PD output and fixed 3.3 V supply.
+
+## Power-path correction
+
+All nine 100 nF capacitors now use Samsung CL05B104KB54PNC,
+[LCSC C307331](https://www.lcsc.com/product-detail/C307331.html), a 50 V X7R
+0402 part. The original C1525 was rated only 16 V despite the 50 V BOM label.
+C5 and C12 see negotiated VBUS; C8 on dVdT requires a rating of at least
+VIN + 5 V. The other six positions also use C307331 to keep one 100 nF BOM row.
+
+R17 is now 4.7 kΩ, C25900, in parallel with the existing 1.5 kΩ R18.
+The effective 1,137 Ω sets a nominal 2.93 A current limit using
+[TI's TPS25947 equation](https://www.ti.com/lit/ds/symlink/tps25947.pdf).
+This replaces the earlier 600 Ω / 5.56 A setting and the 5 A design goal in
+the historical revision notes. IC and resistor tolerances can allow more than
+3 A. This is not a guaranteed 3 A ceiling or a continuous output rating.
+
+The locked connector and eFuse copper still needs thermal qualification.
+At 3 A and an assumed hot 45 mΩ on-resistance, the switch alone dissipates
+about 0.405 W. Qualify traces, vias, switch temperature and the actual pin-40
+contact before assigning a load rating. Firmware must use the lower qualified
+limit and allow for control-supply current and current-limit tolerance.
+Current sensing must use the new ILM resistance when converting ADC voltage.
+
+The footprints and copper are unchanged. Circuit checks reject underrated
+high-voltage capacitors, misleading voltage labels and the old ILM network;
+PCB and netlist checks also compare part identity and value with the source.
+
+The [pre-order parts and power review](preorder-review.md) records the current
+MCU shortage and additional startup, bypass, OVLO and transient-protection
+issues. The 2.93 A nominal limit does not resolve those qualification items.
 
 ## Pin 35 and SJ1
 
@@ -174,7 +204,7 @@ checks verify connectivity, clearances, critical power/USB geometry, ground
 reference, paste, and the updated silkscreen.
 
 The routed board has 152 vias and 1,445.197 mm of trace
-centerline. Source/PCB net checks, 69 regression tests and routed-board DRC
+centerline. Source/PCB checks, regression tests and routed-board DRC
 pass with zero open connections. Panel and export checks must also pass
 before `just jlcpcb` creates the upload bundle. See [build setup](build.md) for
 the uv/just environments and prerequisites.

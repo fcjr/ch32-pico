@@ -4,6 +4,7 @@
 from collections import defaultdict
 from pathlib import Path
 import json
+import re
 import xml.etree.ElementTree as ET
 from .circuit import COMPONENTS
 from .library import load_library, validate_library
@@ -31,7 +32,7 @@ def verify_contract(components=COMPONENTS):
     require('D2',{2:'GND',5:'3V3_OUT'})
     require('U4',{1:'3V3_OUT',2:'3V3_EN',3:'VIN_SYS',4:'GND',5:'BUCK_SW',6:'BUCK_BST'})
     require('L1',{1:'BUCK_SW',2:'3V3_OUT'})
-    require('U3',{1:'PD_ENABLE',2:'PD_OVLO',4:'PD_FAULT_N',5:'VBUS',6:'PD_OUT',8:'GND',9:'PD_ILM'})
+    require('U3',{1:'PD_ENABLE',2:'PD_OVLO',4:'PD_FAULT_N',5:'VBUS',6:'PD_OUT',7:'PD_DVDT',8:'GND',9:'PD_ILM'})
     if c['U3'].part!='C3662793':raise ValueError('Use the reviewed 470L load-switch variant')
     require('R7',{1:'PD_ENABLE',2:'GND'})
     require('R3',{1:'CC1',2:'GND'});require('R4',{1:'CC2',2:'GND'})
@@ -76,7 +77,24 @@ def verify_contract(components=COMPONENTS):
     if enable_nodes!={('U1','22'),('U3','1'),('R7','1'),('TP21','1')}:
         raise ValueError('PD_ENABLE must carry control only')
     for ref in ('C1','C5','C8','C12'):
-        if c[ref].part not in {'C13585','C1525'}:raise ValueError('High-voltage capacitor rating changed')
+        rating=library[c[ref].part].voltage_rating_v
+        if rating is None or rating<50:
+            raise ValueError(f'{ref}: high-voltage capacitor requires a verified 50 V part')
+    for item in components:
+        if item.ref.startswith('C'):
+            label=re.search(r'/\s*(\d+(?:\.\d+)?)V\b',item.value)
+            if label and float(label[1])!=library[item.part].voltage_rating_v:
+                raise ValueError(f'{item.ref}: capacitor value label differs from vendor voltage rating')
+    require('C5',{1:'VBUS',2:'GND'})
+    require('C8',{1:'PD_DVDT',2:'GND'})
+    require('C12',{1:'PD_OUT',2:'GND'})
+    for ref,part,value in (('R17','C25900','4.7k'),('R18','C25867','1.5k')):
+        require(ref,{1:'PD_ILM',2:'GND'})
+        if not c[ref].fitted or (c[ref].part,c[ref].value)!=(part,value):
+            raise ValueError(f'{ref}: use the reviewed ~3 A ILM network')
+    ilm_nodes={(x.ref,p) for x in components for p,n in x.nets.items() if n=='PD_ILM'}
+    if ilm_nodes!={('U3','9'),('R17','1'),('R18','1'),('R24','1')}:
+        raise ValueError('Unreviewed connection to ILM programming network')
     # Reject accidental direct bypasses of the switch or VSYS isolation diode.
     for x in components:
         nets=set(x.nets.values())
@@ -91,6 +109,13 @@ def verify_netlist(path,components=COMPONENTS):
     actual_refs={e.attrib['ref'] for e in tree.findall('./components/comp')}
     if actual_refs!=set(expected):
         raise ValueError(f'Component mismatch: {actual_refs ^ set(expected)}')
+    library=load_library()
+    for node in tree.findall('./components/comp'):
+        item=expected[node.attrib['ref']]
+        fields={f.attrib['name']:f.text or '' for f in node.findall('./fields/field')}
+        part=library[item.part]
+        if (node.findtext('value'),fields.get('LCSC',''),fields.get('MPN'))!=(item.value or part.mpn,part.code,part.mpn):
+            raise ValueError(f'{item.ref}: netlist part/value differs from source')
     observed={}
     for net in tree.findall('./nets/net'):
         nodes=net.findall('node')

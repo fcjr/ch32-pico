@@ -9,7 +9,7 @@ front. Four copper layers replace the earlier six-layer checkpoint.
 The dated parts-only estimate is $5.69 per device for 20 devices, down from
 $22.88. This excludes fabrication, assembly setup/feeders, attrition, minimum
 purchases, shipping and tax. See the [recorded screen](../hardware/research/cost-down-screen.json).
-The saved layout has zero DRC violations and zero unconnected nets; all 96 tests
+The saved layout has zero DRC violations and zero unconnected nets; all 99 tests
 pass. Matching panel and manufacturing exports are generated. No assembled-board current rating,
 USB compliance result or production release exists.
 
@@ -265,8 +265,17 @@ See the [factory review](factory-review.md) for stock, cost and approval limits.
 The stack is JLC04101H-3313, nominal 1 mm, with 1 oz outer and 0.5 oz inner
 copper. In1.Cu remains ground; In2.Cu carries 3.3 V pours and signals. The
 0.0994 mm front-to-ground spacing is retained. Fitted components remain on
-F.Cu. The checked layout has 193 vias and 1,774.969 mm of trace centerline,
+F.Cu. The checked layout has 197 vias and 1,777.845 mm of trace centerline,
 zero DRC violations and no unconnected nets. Critical copper, USB ground
 reference, pad/net parity and drill-to-paste checks pass. The four-up panel
 and matching manufacturing exports are regenerated; old six-layer artifacts
 are not current manufacturing inputs.
+
+The local ground stitching includes two connector-region vias, two beside
+C12, and one additional via beside each of D5 and D6. C12 now reaches its two
+local vias through 0.4 mm top copper in about 1.1 and 1.6 mm, instead of the
+previous roughly 7.15 mm path to the nearest ground via. Each clamp has two
+ground vias reached within 2 mm. The four added vias are ordinary tented
+0.45 mm / 0.20 mm through-vias outside paste. Nearby GPIO35 and 3.3 V routing
+was adjusted to retain clearances and plane connectivity. These are geometry
+improvements; surge, thermal and load qualification still require assembled boards.

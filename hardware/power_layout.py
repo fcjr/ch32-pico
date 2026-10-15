@@ -9,6 +9,26 @@ from .sexp import parse, children, one
 from .usb_review import pad_centers, path_length, contains
 
 
+def ground_returns(doc):
+    """Require two local through-vias reached by at least 0.4 mm top copper."""
+    pads=pad_centers(doc)
+    tracks=[s for s in children(doc,'segment') if one(s,'net')[-1]=='GND'
+            and one(s,'layer')[1]=='F.Cu' and float(one(s,'width')[1])>=.4]
+    vias={tuple(map(float,one(v,'at')[1:3])) for v in children(doc,'via')
+          if one(v,'net')[-1]=='GND' and one(v,'layers')[1:]==['F.Cu','B.Cu']}
+    result={}
+    for ref,pin in (('C12','2'),('D5','7'),('D6','7')):
+        paths=[]
+        for via in sorted(vias):
+            if math.dist(pads[ref,pin],via)>2.5:continue
+            try:distance=path_length(tracks,pads[ref,pin],via)
+            except ValueError:continue
+            if distance<=2.5:paths.append({'via_mm':list(via),'path_mm':round(distance,4)})
+        if len(paths)<2:raise ValueError(f'{ref} needs two local ground vias with wide top-layer returns')
+        result[ref]=paths
+    return result
+
+
 def audit(doc):
     pads=pad_centers(doc)
     tracks=children(doc,'segment')
@@ -49,7 +69,10 @@ def audit(doc):
         totals[net]=round(sum(math.dist(tuple(map(float,one(s,'start')[1:3])),
                                        tuple(map(float,one(s,'end')[1:3])))
                               for s in tracks if one(s,'net')[-1]==net),3)
+    from .design import BOARD_REVISION
+    returns=ground_returns(doc) if BOARD_REVISION=='E' else {}
     return {'input_capacitor_connections_mm':loops,'switch_copper_total_mm':round(length,3),
+            'local_ground_returns':returns,
             'load_switch_timing_connection_mm':round(timing,3),'local_programming_paths_mm':local,
             'supply_trace_totals_mm':totals,'feedback_via_isolated_from_shared_plane':True,
             'passes':True,'limitations':'Geometry only; current, temperature, ripple and EMC require hardware testing'}

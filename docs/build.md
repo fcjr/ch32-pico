@@ -99,7 +99,8 @@ and B.Cu signals. The USB pair stays entirely on F.Cu. Its two probe contacts
 expose existing trace copper without adding branches or vias. Independent gates
 check source/PCB parity, critical geometry, USB ground reference, paste
 clearance and the power layout. Ground stitches use ordinary
-tented 0.45/0.20 mm vias. These checks do not establish USB or thermal compliance.
+tented 0.45/0.20 mm vias. C12 and each surge clamp must reach at least two
+local ground vias within 2.5 mm through top copper at least 0.4 mm wide. These checks do not establish USB or thermal compliance.
 
 ## Rendering
 

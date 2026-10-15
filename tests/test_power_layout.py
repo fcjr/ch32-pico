@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: MIT
 from pathlib import Path
 from unittest import TestCase
-from hardware.power_layout import audit
+from hardware.power_layout import audit,ground_returns
 from hardware.sexp import parse,children,one
 
 
@@ -26,3 +26,25 @@ class PowerLayout(TestCase):
         self.doc.append(parse('''(zone (net "3V3_OUT") (filled_polygon (layer "In2.Cu")
             (pts (xy 5 23) (xy 6.2 23) (xy 6.2 24.1) (xy 5 24.1))))'''))
         with self.assertRaisesRegex(ValueError,'bypasses'):audit(self.doc)
+
+    def test_capacitor_and_clamps_have_two_short_wide_ground_returns(self):
+        for paths in ground_returns(self.doc).values():
+            self.assertGreaterEqual(len(paths),2)
+            self.assertTrue(all(p['path_mm']<=2.5 for p in paths))
+
+    def test_missing_local_ground_via_rejected(self):
+        for ref,paths in ground_returns(self.doc).items():
+            with self.subTest(ref=ref):
+                via=next(v for v in children(self.doc,'via')
+                         if list(map(float,one(v,'at')[1:3]))==paths[0]['via_mm'])
+                self.doc.remove(via)
+                with self.assertRaisesRegex(ValueError,ref):ground_returns(self.doc)
+                self.doc.append(via)
+
+    def test_narrow_capacitor_ground_return_rejected(self):
+        from hardware.usb_review import pad_centers
+        center=pad_centers(self.doc)['C12','2']
+        for s in children(self.doc,'segment'):
+            if one(s,'net')[-1]=='GND' and any(tuple(map(float,one(s,k)[1:3]))==center for k in ('start','end')):
+                one(s,'width')[1]='0.15'
+        with self.assertRaisesRegex(ValueError,'C12'):ground_returns(self.doc)

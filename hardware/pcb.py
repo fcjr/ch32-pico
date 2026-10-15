@@ -73,15 +73,18 @@ def generate():
     doc=parse(out.read_text())
     from .library import update_board_parts
     update_board_parts(doc,physical)
-    one(doc,'setup').append(parse('''(stackup
-      (layer "F.Cu" (type "copper") (thickness 0.035))
-      (layer "dielectric 1" (type "prepreg") (thickness 0.0994) (material "3313 RC57%") (epsilon_r 4.1) (loss_tangent 0.02))
-      (layer "In1.Cu" (type "copper") (thickness 0.0152))
-      (layer "dielectric 2" (type "core") (thickness 0.7) (material "NP-155F") (epsilon_r 4.53) (loss_tangent 0.02))
-      (layer "In2.Cu" (type "copper") (thickness 0.0152))
-      (layer "dielectric 3" (type "prepreg") (thickness 0.0994) (material "3313 RC57%") (epsilon_r 4.1) (loss_tangent 0.02))
-      (layer "B.Cu" (type "copper") (thickness 0.035))
-      (copper_finish "ENIG") (dielectric_constraints yes))'''))
+    stack = json.loads((ROOT/'hardware/jlc-stackup.json').read_text())
+    layers = []; dielectric = 0
+    for item in stack['layers']:
+        if item['name'].endswith('.Cu'):
+            layers.append(f'(layer "{item["name"]}" (type "copper") (thickness {item["thickness_mm"]}))')
+        else:
+            dielectric += 1
+            layers.append(f'(layer "dielectric {dielectric}" (type "{item["name"]}") '
+                f'(thickness {item["thickness_mm"]}) (material "{item["material"]}") '
+                f'(epsilon_r {item["epsilon_r"]}) (loss_tangent 0.02))')
+    one(doc,'setup').append(parse('(stackup '+ ' '.join(layers) +
+        ' (copper_finish "ENIG") (dielectric_constraints yes))'))
     def signature(node):
         if not isinstance(node,list): return node
         return [signature(v) for v in node if not (isinstance(v,list) and v[0]=='uuid')]

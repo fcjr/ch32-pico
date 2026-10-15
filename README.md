@@ -4,6 +4,13 @@ A tiny RISC-V board with USB-C programming, 33 accessible GPIOs and hardware
 for programmable USB Power Delivery. Built by Left Shift Logical around the
 CH32X035, in a familiar 21 × 51 mm Pico-sized board.
 
+**Cost-reduced prototype layout complete.** The fitted parts estimate is now about
+$5.69 per board at a quantity of 20, down from $22.88. Power components are
+grouped by USB-C and pin 40, the two buttons sit together at the bottom, and
+the layout uses four copper layers with front-side assembly. PCB, assembly,
+attrition and shipping costs are additional. The renders below show the checked
+four-layer layout.
+
 ![ch32-pico Rev E, front and back](docs/images/ch32-pico.png)
 
 - Program through USB-C using the chip's factory USB bootloader. No separate
@@ -35,12 +42,13 @@ Pin 37, labeled `EN`, controls the 3.3 V regulator: ground it to disable, then
 release to enable. See the
 [shutdown notes](docs/revision-e.md#shutdown-control) for driver requirements.
 
-**Rev E is a prototype in development.** The board and panel pass local design
-checks. USB-PD application firmware, USB serial and assembled-board testing,
+**Rev E is a prototype in development.** The schematic and routed board pass electrical and layout checks, with all 96 regression tests passing. USB-PD application firmware, USB serial and assembled-board testing,
 including shutdown and restart, are still ahead; the continuous output-current
 rating is not yet qualified.
-The eFuse is set to about 2.93 A nominal; this is a fault threshold, not a
-continuous rating. See the [power-path correction](docs/revision-e.md#power-path-correction).
+The eFuse is set to about 3.64 A nominal; this is a fault threshold, not a
+continuous rating. The hardware target is 3 A, with the board supply subtracted
+from the negotiated current. Weak 5 V sources or cable loss can cause safe
+shutdown. See the [power-path correction](docs/revision-e.md#power-path-correction).
 
 Explore the [design and pinout](docs/revision-e.md),
 [build the hardware files](docs/revision-e.md#generated-files), or read the

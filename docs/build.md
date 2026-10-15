@@ -57,20 +57,23 @@ require zero open connections and zero DRC violations.
 
 ## Routing a revision
 
-For the current Rev E incremental change:
+To reproduce the current checked Rev E power layout:
 
 ```sh
-just route-jumper
+just route-power
 just review
 just render
 just jlcpcb
 ```
 
-`route-jumper` retrieves the hash-pinned Rev D PCB from Git history, adds the
-open PC7 jumper, FAULT and diagnostic contacts, and the local ground stitching.
-A full clone containing commit `23297c1` is required. The pinned native router
-routes the header/jumper first, then the diagnostic branches. Existing copper
-is preserved and independently checked after routing.
+`route-power` retrieves the hash-pinned PCB at commit `461bf67` and applies
+the saved, reviewed power-layout changes. It then runs independent geometry,
+connectivity and source-parity checks. A clone containing that commit is
+required. This reproduces the layout; it does not qualify its current rating.
+
+The historical `route-jumper` workflow added the open PC7 jumper, FAULT and
+diagnostic contacts to Rev D. It rejects the current power-component changes.
+Use its historical checkout to reproduce that earlier migration.
 
 For a new placement or a broader routing change, `just route` compares the
 pinned KiCadRoutingTools and Freerouting engines from the generated seed.
@@ -95,7 +98,7 @@ The four-layer stack is F.Cu signals, In1.Cu ground, In2.Cu 3.3 V and signals,
 and B.Cu signals. The USB pair stays entirely on F.Cu. Its two probe contacts
 expose existing trace copper without adding branches or vias. Independent gates
 check source/PCB parity, critical geometry, USB ground reference, paste
-clearance and the power layout. The two new ground stitches use ordinary
+clearance and the power layout. Ground stitches use ordinary
 tented 0.45/0.20 mm vias. These checks do not establish USB or thermal compliance.
 
 ## Rendering

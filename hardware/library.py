@@ -63,6 +63,13 @@ def load_library():
                     electrical={'1':'input','2':'input','3':'power_in','4':'power_in','5':'power_out','6':'passive'}[number]
                 elif code=='C3662793':
                     electrical={'1':'input','2':'input','3':'open_collector','4':'open_collector','5':'power_in','6':'power_out','7':'passive','8':'power_in','9':'passive','10':'passive'}[number]
+                elif code in {'C1850276','C18197523'}:
+                    # One output terminal drives ERC; pin 18 is the same die node.
+                    electrical='power_in' if number in {'1','2','5','8','25'} else 'power_out' if number=='17' else 'open_collector' if number in {'14','16'} else 'passive'
+                elif code=='C2653623':
+                    electrical='power_in' if number in {'2','6'} else 'input' if number in {'3','4'} else 'passive'
+                elif code in {'C140262','C132788'}:
+                    electrical='open_collector' if number in {'1','6'} else 'input' if number in {'3','4'} else 'power_in'
                 elif code=='C5187096':
                     electrical='power_in' if number in {'7','9'} else 'input' if number=='4' else 'bidirectional'
                 elif code=='C82942':

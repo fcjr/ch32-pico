@@ -1,0 +1,375 @@
+{
+  "observed_utc": "2026-10-15T04:30:24.391987+00:00",
+  "status": "Resistor consolidation applied; candidate regulator/protection substitutions not adopted. No order release.",
+  "preserve": [
+    "Pico outline, 40 header holes and castellations",
+    "Native CH32 USB-PD and GPIOs",
+    "Front-side fitted assembly",
+    "Existing controls and branding",
+    "Protection functions and voltage ratings"
+  ],
+  "applied": {
+    "R20": {
+      "previous_lcsc": "C852929",
+      "previous_value": "82k / 0.1%",
+      "lcsc": "C852928",
+      "value": "82.5k / 0.1%",
+      "shared_with": "R27",
+      "precision": "0.1%, 25 ppm/C",
+      "ovlo_static_screen_v": {
+        "nominal": 22.593158,
+        "minimum": 21.449563,
+        "maximum": 23.750535
+      },
+      "effect": "OVLO nominal rises 0.576%; UVLO unchanged. Removes one unique fitted MPN and one modeled feeder."
+    }
+  },
+  "regulator": {
+    "decision": "Retain AP63203WU-7 for the 20-board prototype batch. SCT2332 circuit screened below is more expensive at this batch size; no safe drop-in stocked cheaper fixed-output part established.",
+    "candidate": "SCT2332TVBR C509069",
+    "datasheet_url": "https://www.silicontent.com/uploads/20241212/08ede82b8676176e4565d0721b2834e2.pdf",
+    "datasheet_sha256": "90ef7811c006e0963b22b6a564728dca1825ddc5d8e3d2b7aee635af136a8cd9",
+    "circuit_screen": "Rev1.3 table1: 6.5uH, 3x22uF, 93.5k/30k, 2k and 330pF. Price screen uses 6.8uH SLO0650H6R8MTT; its full magnetic qualification and layout fit are NOT approved. Adjustable 0.8V feedback is not interchangeable with the present direct 3.3V feedback connection.",
+    "cost_screen": [
+      {
+        "boards": 20,
+        "ic_saving_usd": 0.4587,
+        "inductor_increment_usd": 0.0851,
+        "output_capacitor_increment_usd": 0.0819,
+        "four_additional_feeders_per_board_usd": 0.306,
+        "net_saving_ceiling_before_new_resistors_cff_bypass_attrition_assembly_usd": -0.0143
+      },
+      {
+        "boards": 100,
+        "ic_saving_usd": 0.3901,
+        "inductor_increment_usd": 0.0733,
+        "output_capacitor_increment_usd": 0.0246,
+        "four_additional_feeders_per_board_usd": 0.0612,
+        "net_saving_ceiling_before_new_resistors_cff_bypass_attrition_assembly_usd": 0.231
+      }
+    ],
+    "cost_screen_scope": "Conservative reference-circuit price screen, not an exhaustive optimization or a completed alternative design. Existing part prices from Oct14 BOM snapshot; candidates from Oct15 reads. Four new MPNs for three resistors and Cff. Input bypass, new passive prices, extra joints and attrition omitted, so these are upper bounds on savings.",
+    "volume_followup": "At100 a possible saving below the displayed ceiling remains; needs a separate populated circuit/layout and load/loop qualification. Not included in present BOM savings.",
+    "other_candidates": {
+      "C509063": "SCT2323 fixed3.3V: stock0 and JLC reports no longer manufactured. Rejected for sourcing.",
+      "C509060": "SCT2320: stock0.",
+      "C509062": "SCT2322: stock0."
+    }
+  },
+  "protection": {
+    "decision": "Retain D5/D6 TVS2200DRVR and U6 TPS3701DDCR. No equivalent cheaper protection circuit established.",
+    "SMBJ22A": {
+      "source": "https://www.diodes.com/part/view/SMBJ22A",
+      "clamp_v": 35.5,
+      "reason": "Exceeds regulator32V operating/34V absolute maximum. Output substitution also needs ADC injection, hot clamp, unpowered/backfeed and pulse-energy review; not a drop-in equivalent."
+    },
+    "TPS3808G01DBVR-TP": {
+      "lcsc": "C42394092",
+      "source": "https://www.lcsc.com/product-detail/C42394092.html",
+      "manufacturer": "TECH PUBLIC, not Texas Instruments",
+      "reason": "Cheaper and stocked, but an authoritative full-temperature threshold/leakage/propagation and supply-off behavior specification was not established. Supplier page threshold data are inconsistent. Do not use TI TPS3808 limits for this different manufacturer; retain independent undervoltage interlock."
+    }
+  },
+  "candidate_observations": {
+    "C509063": {
+      "mpn": "SCT2323TVBR",
+      "jlc_url": "https://jlcpcb.com/partdetail/C509063",
+      "lcsc_url": "https://www.lcsc.com/product-detail/C509063.html",
+      "jlc_reported_stock": 0,
+      "jlc_can_presale_number": 0,
+      "is_buy_component": "0",
+      "minimum_prepurchase": 17,
+      "no_buy_reason": "This product is no longer manufactured.",
+      "package": "TSOT-23-6L",
+      "price_tiers_usd": [
+        {
+          "minimum": 1,
+          "maximum": 9,
+          "unit_usd": 0.6604
+        },
+        {
+          "minimum": 10,
+          "maximum": 29,
+          "unit_usd": 0.5332
+        },
+        {
+          "minimum": 30,
+          "maximum": 99,
+          "unit_usd": 0.4712
+        },
+        {
+          "minimum": 100,
+          "maximum": 499,
+          "unit_usd": 0.4093
+        },
+        {
+          "minimum": 500,
+          "maximum": 999,
+          "unit_usd": 0.3702
+        },
+        {
+          "minimum": 1000,
+          "maximum": -1,
+          "unit_usd": 0.3506
+        }
+      ],
+      "displayed_initial_unit_usd": 0.5332,
+      "reported_attrition": 0,
+      "reported_assembly_minimum": 2,
+      "response_sha256": "352c7cb2645c7d7964369b228a2ac775dbd4906c45eefa1ea94a86ccd24f68c9",
+      "exact_mpn_match": true
+    },
+    "C216165": {
+      "mpn": "SLO0650H6R8MTT",
+      "jlc_url": "https://jlcpcb.com/partdetail/C216165",
+      "lcsc_url": "https://www.lcsc.com/product-detail/C216165.html",
+      "jlc_reported_stock": 6924,
+      "jlc_can_presale_number": 6906,
+      "is_buy_component": "1",
+      "minimum_prepurchase": 67,
+      "no_buy_reason": null,
+      "package": "SMD,7.1x6.6mm",
+      "price_tiers_usd": [
+        {
+          "minimum": 1,
+          "maximum": 49,
+          "unit_usd": 0.1615
+        },
+        {
+          "minimum": 50,
+          "maximum": 149,
+          "unit_usd": 0.1357
+        },
+        {
+          "minimum": 150,
+          "maximum": 999,
+          "unit_usd": 0.1248
+        },
+        {
+          "minimum": 1000,
+          "maximum": 1999,
+          "unit_usd": 0.1046
+        },
+        {
+          "minimum": 2000,
+          "maximum": 4999,
+          "unit_usd": 0.0972
+        },
+        {
+          "minimum": 5000,
+          "maximum": -1,
+          "unit_usd": 0.0928
+        }
+      ],
+      "displayed_initial_unit_usd": 0.1615,
+      "reported_attrition": 1,
+      "reported_assembly_minimum": 5,
+      "response_sha256": "cffcdb45818ef0128c4d0dc5114a6f24aa51fe73a0bbf43c5ae9ce7d2cd139b6",
+      "exact_mpn_match": true
+    },
+    "C509062": {
+      "mpn": "SCT2322TVBR",
+      "jlc_url": "https://jlcpcb.com/partdetail/C509062",
+      "lcsc_url": "https://www.lcsc.com/product-detail/C509062.html",
+      "jlc_reported_stock": 0,
+      "jlc_can_presale_number": 0,
+      "is_buy_component": "1",
+      "minimum_prepurchase": 16,
+      "no_buy_reason": null,
+      "package": "TSOT-23-6L",
+      "price_tiers_usd": [
+        {
+          "minimum": 1,
+          "maximum": 9,
+          "unit_usd": 0.7256
+        },
+        {
+          "minimum": 10,
+          "maximum": 29,
+          "unit_usd": 0.5886
+        },
+        {
+          "minimum": 30,
+          "maximum": 99,
+          "unit_usd": 0.5185
+        },
+        {
+          "minimum": 100,
+          "maximum": 499,
+          "unit_usd": 0.4501
+        },
+        {
+          "minimum": 500,
+          "maximum": 999,
+          "unit_usd": 0.393
+        },
+        {
+          "minimum": 1000,
+          "maximum": -1,
+          "unit_usd": 0.3718
+        }
+      ],
+      "displayed_initial_unit_usd": 0.5886,
+      "reported_attrition": 0,
+      "reported_assembly_minimum": 2,
+      "response_sha256": "89b444c03942fc1d750d00b526389e8032f804c1b6eacc3bf9737105a2cc571a",
+      "exact_mpn_match": true
+    },
+    "C509069": {
+      "mpn": "SCT2332TVBR",
+      "jlc_url": "https://jlcpcb.com/partdetail/C509069",
+      "lcsc_url": "https://www.lcsc.com/product-detail/C509069.html",
+      "jlc_reported_stock": 10023,
+      "jlc_can_presale_number": 9861,
+      "is_buy_component": "1",
+      "minimum_prepurchase": 16,
+      "no_buy_reason": null,
+      "package": "TSOT-23-6L",
+      "price_tiers_usd": [
+        {
+          "minimum": 1,
+          "maximum": 9,
+          "unit_usd": 0.7403
+        },
+        {
+          "minimum": 10,
+          "maximum": 29,
+          "unit_usd": 0.5984
+        },
+        {
+          "minimum": 30,
+          "maximum": 99,
+          "unit_usd": 0.5283
+        },
+        {
+          "minimum": 100,
+          "maximum": 499,
+          "unit_usd": 0.4582
+        },
+        {
+          "minimum": 500,
+          "maximum": 999,
+          "unit_usd": 0.3995
+        },
+        {
+          "minimum": 1000,
+          "maximum": -1,
+          "unit_usd": 0.3783
+        }
+      ],
+      "displayed_initial_unit_usd": 0.7403,
+      "reported_attrition": 0,
+      "reported_assembly_minimum": 2,
+      "response_sha256": "6f0c5b9c219854542a3856d421202af07f4455631f3abc46007bb81bd51bf2bf",
+      "exact_mpn_match": true
+    },
+    "C42394092": {
+      "mpn": "TPS3808G01DBVR-TP",
+      "jlc_url": "https://jlcpcb.com/partdetail/C42394092",
+      "lcsc_url": "https://www.lcsc.com/product-detail/C42394092.html",
+      "jlc_reported_stock": 4374,
+      "jlc_can_presale_number": 4321,
+      "is_buy_component": "1",
+      "minimum_prepurchase": 64,
+      "no_buy_reason": null,
+      "package": "SOT-23-6",
+      "price_tiers_usd": [
+        {
+          "minimum": 1,
+          "maximum": 49,
+          "unit_usd": 0.1781
+        },
+        {
+          "minimum": 50,
+          "maximum": 149,
+          "unit_usd": 0.1419
+        },
+        {
+          "minimum": 150,
+          "maximum": 499,
+          "unit_usd": 0.1264
+        },
+        {
+          "minimum": 500,
+          "maximum": 2499,
+          "unit_usd": 0.1072
+        },
+        {
+          "minimum": 2500,
+          "maximum": 4999,
+          "unit_usd": 0.0935
+        },
+        {
+          "minimum": 5000,
+          "maximum": -1,
+          "unit_usd": 0.0883
+        }
+      ],
+      "displayed_initial_unit_usd": 0.1781,
+      "reported_attrition": 0,
+      "reported_assembly_minimum": 5,
+      "response_sha256": "aacfaacaac1c3118dbd9a371ad316c6c8c7db41b0c1730166f862d33d18ea551",
+      "exact_mpn_match": true
+    },
+    "C509060": {
+      "mpn": "SCT2320TVBR",
+      "jlc_url": "https://jlcpcb.com/partdetail/C509060",
+      "lcsc_url": "https://www.lcsc.com/product-detail/C509060.html",
+      "jlc_reported_stock": 0,
+      "jlc_can_presale_number": 0,
+      "is_buy_component": "1",
+      "minimum_prepurchase": 18,
+      "no_buy_reason": null,
+      "package": "TSOT-23-6L",
+      "price_tiers_usd": [
+        {
+          "minimum": 1,
+          "maximum": 9,
+          "unit_usd": 0.6245
+        },
+        {
+          "minimum": 10,
+          "maximum": 29,
+          "unit_usd": 0.5071
+        },
+        {
+          "minimum": 30,
+          "maximum": 99,
+          "unit_usd": 0.4484
+        },
+        {
+          "minimum": 100,
+          "maximum": 499,
+          "unit_usd": 0.3897
+        },
+        {
+          "minimum": 500,
+          "maximum": 999,
+          "unit_usd": 0.3555
+        },
+        {
+          "minimum": 1000,
+          "maximum": -1,
+          "unit_usd": 0.3359
+        }
+      ],
+      "displayed_initial_unit_usd": 0.5071,
+      "reported_attrition": 0,
+      "reported_assembly_minimum": 2,
+      "response_sha256": "f7d255bb9126cf1407f0c7e0b964c1335bfa566798ca72e010fdabf787353434",
+      "exact_mpn_match": true
+    }
+  },
+  "fitted_bom_price_observed_utc": "2026-10-14T05:34:34.405305+00:00",
+  "parts_scenarios": [
+    {
+      "boards": 20,
+      "parts_per_board_usd": 5.687
+    },
+    {
+      "boards": 100,
+      "parts_per_board_usd": 4.6314
+    }
+  ],
+  "qualification": "Analytical screen only; no assembled boards, current rating, USB compliance or arbitrary inductive load qualification."
+}

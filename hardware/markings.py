@@ -8,7 +8,7 @@ from .diagnostics import DIAGNOSTICS, LEADERS
 from .design import HEADER, MECHANICAL, BOARD_REVISION, TARGET_PINS, EXPANSION_SIGNALS
 from .placement import PLACEMENT
 from .schematic import uid
-from .sexp import parse, children, one, dump
+from .sexp import parse, children, one, dump, Atom
 from .usb_review import pad_centers
 
 # ref, legend, net at pin 1, offset from the component center, purpose.
@@ -17,11 +17,11 @@ SERVICES = (
     ('TP1', 'SDIO', 'SDIO', (-.3,1.4), 'U1 PC18 / two-wire SDI data'),
     ('TP2', 'SDCK', 'SDCK', (0,1.4), 'U1 PC19 / two-wire SDI clock'),
     ('TP3', '3V3', '3V3_OUT', (.3,1.4), 'Fixed 3.3 V measurement'),
-    ('TP4', 'GND', 'GND', (0,1.4), 'Common ground'),
-    ('TP5', 'RST', 'PA21', (0,1.4), 'U1 PA21 reset'),
-    ('SW1', 'RESET', 'PA21', (0,1.9), 'X035 reset'),
-    ('SW2', 'BOOT', 'BOOT_PULLUP', (0,1.9), 'Hold at power-up for USB ISP'),
-    ('D3', 'LED', 'LED_A', (0,1.2), 'PB3 application status LED'),
+    ('TP4', 'GND', 'GND', (-.8,-1.5), 'Common ground'),
+    ('TP5', 'RST', 'PA21', (0,-1.2), 'U1 PA21 reset'),
+    ('SW1', 'RESET', 'PA21', (0,-2), 'X035 reset'),
+    ('SW2', 'BOOT', 'BOOT_PULLUP', (0,-2), 'Hold at power-up for USB ISP'),
+    ('D3', 'LED', 'LED_A', (0,-1.3), 'PB3 application status LED'),
 )
 
 ALIASES = {'NC':'NC', '3V3_OUT':'3V3', '3V3_EN':'EN', 'PA21':'RST', 'PD_OUT':'PDOUT', 'GPIO35':'PC7*', 'PD_FAULT_N':'FAULT'}
@@ -47,11 +47,11 @@ def header_label_position(pin):
     return {3:3.9,20:6.5,21:13.8,38:17.1}.get(pin.number,x), y
 
 
-def text(label, x, y, side, identity):
+def text(label, x, y, side, identity, size=.9):
     mirror = '(justify mirror)' if side == 'B.SilkS' else ''
     return parse(f'''(gr_text {json.dumps(label)} (at {x} {y}) (layer "{side}")
         (uuid "{uid('marking/' + identity)}")
-        (effects (font (size 1 1) (thickness .15)) {mirror}))''')
+        (effects (font (size {size} {size}) (thickness .15)) {mirror}))''')
 
 
 def apply(doc):
@@ -73,12 +73,14 @@ def apply(doc):
         doc.append(text(header_legend(pin),x,y,'B.SilkS',f'header/{pin.number}'))
     for ref,label,net,(dx,dy),purpose in SERVICES:
         x,y,*_ = PLACEMENT[ref]
-        doc.append(text(label,round(x+dx,4),round(y+dy,4),'F.SilkS',ref))
+        doc.append(text(label,round(x+dx,4),round(y+dy,4),'F.SilkS',ref,
+                         size=.8 if ref in {'TP1','TP2','TP3'} else .9))
     for ref,net in EXPANSIONS:
         x,y,*_ = PLACEMENT[ref]
-        doc.append(text(ALIASES.get(net,net),x,y+1.15,'B.SilkS',ref))
+        tx,ty=(13.7,31.1) if ref=='TP6' else (x,y+1.15)
+        doc.append(text(ALIASES.get(net,net),tx,ty,'B.SilkS',ref,size=.8))
     for d in DIAGNOSTICS:
-        doc.append(text(d.label,*d.text_position,d.side+'.SilkS',d.ref))
+        doc.append(text(d.label,*d.text_position,d.side+'.SilkS',d.ref,size=.8))
     x,y,*_ = PLACEMENT['SJ1']
     doc.append(text('SJ1',x,y-1.45,'B.SilkS','SJ1'))
 
@@ -100,7 +102,10 @@ def audit(doc):
     texts = children(doc,'gr_text')
     front = [n for n in texts if one(n,'layer')[1]=='F.SilkS']
     back = [n for n in texts if one(n,'layer')[1]=='B.SilkS']
-    if len(back)!=41+len(EXPANSIONS)+sum(d.side=='B' for d in DIAGNOSTICS): raise ValueError('Back must contain 40 header, 8 expansion, diagnostic and 1 jumper labels; services belong on front')
+    from .branding import artwork
+    brand_count=sum(n[0]=='gr_text' and one(n,'layer')[1]=='B.SilkS' for n in artwork())
+    if len(back)!=41+brand_count+len(EXPANSIONS)+sum(d.side=='B' for d in DIAGNOSTICS):
+        raise ValueError('Back must contain 40 header, 8 expansion, diagnostic, jumper and current branding labels; services belong on front')
     for n in front+back:
         effects=one(n,'effects'); font=one(effects,'font')
         mirrored=any('mirror' in j[1:] for j in children(effects,'justify'))
@@ -108,7 +113,10 @@ def audit(doc):
             raise ValueError(f'Wrong text mirroring: {n[1]}')
         if 'hide' in n or 'hide' in effects:
             raise ValueError(f'Hidden marking: {n[1]}')
-        if min(map(float,one(font,'size')[1:]))<1 or float(one(font,'thickness')[1])<.15:
+        minimum=.8
+        # 0.8 mm type / 0.15 mm strokes are the smallest reviewed service
+        # legends; the main header labels use 0.9 mm type.
+        if min(map(float,one(font,'size')[1:]))<minimum or float(one(font,'thickness')[1])<.15:
             raise ValueError(f'Undersized marking: {n[1]}')
     allowed={s[1] for s in SERVICES}|{'ch32-pico','LEFT SHIFT','LOGICAL',f'REV {BOARD_REVISION}', 'PDOUT 5-20V'}
     allowed |= {d.label for d in DIAGNOSTICS if d.side=='F'}
@@ -145,7 +153,7 @@ def audit(doc):
         if one(pad,'net')[-1]!=net or circuit[ref].nets['1']!=net:
             raise ValueError(f'{ref} label/net mismatch: {label}')
         cx,cy=map(float,one(fp,'at')[1:3])
-        if math.dist((x,y),(cx,cy))>3:raise ValueError(f'Label too far from {ref}')
+        if math.dist((x,y),(cx,cy))>(4 if ref.startswith('SW') else 3):raise ValueError(f'Label too far from {ref}')
         if ref.startswith('TP'):
             nearest=min((r for r in fps if r.startswith('TP')),
                         key=lambda r:math.dist((x,y),pads[r,'1']))
@@ -156,7 +164,7 @@ def audit(doc):
     endpoints = {('U1','34'):'SDIO',('U1','37'):'SDCK',('U1','7'):'PA21',
                  ('U1','48'):'3V3_OUT',('U1','47'):'GND',('SW1','2'):'GND',
                  ('U1','23'):'STATUS_LED',('R11','1'):'STATUS_LED',
-                 ('R11','2'):'LED_A',('D3','2'):'GND',('U3','6'):'PD_OUT',('U3','4'):'PD_FAULT_N',('U1','24'):'PD_FAULT_N',
+                 ('R11','2'):'LED_A',('D3','2'):'GND',('U3','17'):'PD_OUT',('U3','14'):'PD_FAULT_N',('U1','24'):'PD_FAULT_N',
                  ('R9','1'):'PD_FAULT_N',('R9','2'):'3V3_OUT',('U1','19'):'PC7'}
     for (ref,pin),net in endpoints.items():
         pad=next(p for p in children(fps[ref],'pad') if p[1]==pin)
@@ -169,8 +177,9 @@ def audit(doc):
     expansion=[]
     for ref,net in EXPANSIONS:
         fp=fps[ref];pad=one(fp,'pad');x,y=pads[ref,'1']
+        label_xy=(13.7,31.1) if ref=='TP6' else (x,y+1.15)
         labels=[n for n in back if n[1]==ALIASES.get(net,net) and
-                math.dist(tuple(map(float,one(n,'at')[1:3])),(x,y+1.15))<.01]
+                math.dist(tuple(map(float,one(n,'at')[1:3])),label_xy)<.01]
         if len(labels)!=1 or one(fp,'layer')[1]!='B.Cu' or 'B.Mask' not in one(pad,'layers')[1:]:
             raise ValueError(f'Incorrect back expansion label/pad: {ref}')
         if one(pad,'net')[-1]!=net:raise ValueError(f'Expansion net mismatch: {ref}')

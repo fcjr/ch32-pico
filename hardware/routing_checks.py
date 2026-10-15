@@ -10,6 +10,27 @@ import math
 from .sexp import children, one
 
 
+def outside_outline_copper(board):
+    """Reject tracks/vias outside this board's rectangular finished outline.
+
+    KiCad can miss copper lying wholly outside Edge.Cuts. KiKit then drops it.
+    Footprints are excluded because the intentional castellated lands cross
+    the outline; routing copper must stay on the finished board.
+    """
+    from .design import MECHANICAL
+    bad=[]
+    for kind in ('segment','via'):
+        for node in children(board,kind):
+            radius=float(one(node,'width' if kind=='segment' else 'size')[1])/2
+            points=[tuple(map(float,one(node,key)[1:3]))
+                    for key in (('start','end') if kind=='segment' else ('at',))]
+            if any(x-radius < -1e-6 or y-radius < -1e-6 or
+                   x+radius > MECHANICAL.width+1e-6 or
+                   y+radius > MECHANICAL.length+1e-6 for x,y in points):
+                bad.append({'kind':kind,'net':one(node,'net')[-1],'points_mm':points})
+    return bad
+
+
 def geometry(segment):
     a=tuple(map(float,one(segment,'start')[1:3]))
     b=tuple(map(float,one(segment,'end')[1:3]))
@@ -51,3 +72,14 @@ def unpreserved_vias(seed,board):
         for net,at,diameter,drill,layers in
         (geometry(via) for via in children(seed,'via') if children(via,'locked'))
         if (net,at,diameter,drill,layers) not in actual]
+
+
+def stackup_matches(source, candidate):
+    """Require the source copper layers and stack before accepting a route."""
+    from .sexp import dump
+    def signature(doc):
+        layers=[n[1] for n in one(doc,'layers')[1:] if n[1].endswith('.Cu')]
+        stacks=children(one(doc,'setup'),'stackup')
+        return layers, dump(stacks[0]) if len(stacks)==1 else None
+    expected, actual=signature(source),signature(candidate)
+    return expected[1] is not None and expected==actual

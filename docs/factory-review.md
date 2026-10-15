@@ -1,8 +1,17 @@
 # Parts and factory review
 
-See the [current pre-order review](preorder-review.md) for all 20 fitted part
-numbers, refreshed batch quantities and stock, and the open power-design issues.
-The historical stock and price tables below are retained as prior observations.
+The current cost-reduced Rev E has 52 fitted parts, 31 part numbers and a
+$5.69 parts-only estimate at 20 boards. The [current pre-order review](preorder-review.md)
+contains the 2026-10-14 stock table and cost assumptions. The MCU still has
+only two reported units; no parts are reserved. See [Rev E](revision-e.md) for
+the power circuit, placement and qualification limits, and [factory notes](factory-notes.txt)
+for the current manufacturing instructions. The routed board and generated panel pass checks; matching exports are generated.
+
+## Historical factory observations
+
+Everything below records earlier circuits and uploads. Part counts, prices,
+stock, circuit descriptions and approvals in this section are historical and
+must not be used to order the cost-reduced board.
 
 ## Rev E update
 
@@ -16,8 +25,10 @@ factory upload, allocation or approval has been performed. See the
 [Rev E design and usage notes](revision-e.md).
 
 The subsequent [power-path correction](revision-e.md#power-path-correction)
-replaces all nine 100 nF capacitors with 50 V C307331 and changes R17 to
-4.7 kΩ C25900 for a 2.93 A nominal eFuse limit. Use the regenerated Rev E BOM.
+uses seven 50 V 100 nF capacitors, a 1 nF C0G C8, a larger 4.7 µF C12,
+a single 1.13 kΩ R17 and precision OVLO resistors. R18 is removed. There
+are now 40 fitted parts per board. C5/C8/C12/D4/R4/R17/R24 placement and
+routing changed. Review the regenerated BOM/CPL and factory preview.
 The Rev C quantities and prices below are historical and predate this correction.
 C307331's separate dated stock observation is recorded in
 `hardware/procurement-observation.json`; the current quantity and cost reports

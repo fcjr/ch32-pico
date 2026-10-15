@@ -12,7 +12,7 @@ class LowcostContractTests(unittest.TestCase):
                      for c in COMPONENTS_LOWCOST)
 
     def test_candidate_is_complete(self):
-        self.assertEqual(verify()['fitted_parts'],41)
+        self.assertEqual(verify()['fitted_parts'],52)
 
     def test_vsys_backfeed_is_rejected(self):
         with self.assertRaises(ValueError):

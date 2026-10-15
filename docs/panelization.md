@@ -31,7 +31,7 @@ do not ask JLC to repeat them four times again. The five-panel batch contains
 20 copies of every single-board BOM item, plus assembly attrition.
 
 The generated `build/panel-preview/` includes the KiCad panel, front SVG,
-Gerber ZIP, drills, 20-row BOM, 164-row CPL and a hash manifest. DRC has zero
+Gerber ZIP, drills, 32-row BOM, 208-row CPL and a hash manifest. Export requires zero DRC
 violations and zero open connections. Each copy's pads, net assignments,
 component rotations and trace/via geometry are checked against the source
 board before and after zone fill. JLC's assembly model rotations remain pending.

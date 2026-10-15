@@ -1,4 +1,4 @@
-# Rev B PD firmware
+# Rev E PD firmware
 
 `policy.c` is MIT-licensed, platform-independent code. It is not a flashable
 application. Run `python3 -m unittest discover -s tests -p test_pd_policy.py`
@@ -23,7 +23,8 @@ The candidate is ch32fun's MIT `examples_x035/usbpd_sink/usbpd.h`, pinned to
 - The parser accepts PS_RDY by message type. Contract completion must also
   check the request state and generation, and require the matching ACCEPT.
 - ADC conversion must use the actual supply/reference and divider tolerances.
-  ILM current-monitor gain is 165–200 µA/A; a nominal-gain conversion alone
+  MX26631 IMON gain is 19–26 µA/A at 0.6–2 A and
+  23–29 µA/A at 2–5 A; a nominal-gain conversion alone
   can underestimate load current. Include gain, resistance and ADC error in
   the trip budget.
 
@@ -45,15 +46,32 @@ protocol error or timeout must drive PB2 low immediately and invalidate the
 request generation. Polling must not delay that action behind USB console
 output. Do not automatically re-arm after a reset or reconnection.
 
-The output budget is the negotiated input current less a conservative reserve
-for the MCU and fixed 3.3 V output. Rev E uses R17 = 4.7 kΩ in parallel with
-R18 = 1.5 kΩ, giving 1,137 Ω and a nominal 2.93 A eFuse threshold. Use this
-resistance for ILM current conversion. The application must pass a qualified
-board/connection limit below the minimum eFuse threshold, including tolerance,
-and never use the old 5 A goal. The current design target is at most 3 A;
-continuous operation remains unqualified. Lower source capability must reduce
-the budget further. An absent 12 V
-PDO is an error. Do not silently substitute another voltage.
+The policy rejects board limits above 3 A and reserves at least 100 mA for the
+board. A 3 A contract therefore permits at most 2.9 A at pin 40 with that reserve.
+Use a larger measured reserve for additional 3.3 V header loads. The caller must
+supply the qualified assembly/contact limit; no continuous rating is assigned yet.
+
+Rev E uses MX26631DL with R17 = 11 kΩ, formula-derived nominal fault threshold
+3.636 A. Its table and formula disagree at 24 kΩ; the ±15% engineering
+screen at 11 kΩ is not a guaranteed bound. Qualify the purchased lot over temperature.
+R25 = 10 kΩ converts the separate IMON output to nominal 0.260 V/A above 2 A. R17 must
+never be used for ADC current conversion. Include minimum monitor gain,
+resistor tolerance/drift, ADC/reference error and filter delay. Calibration below
+0.6 A is required. The fault threshold is deliberately above the 3 A target;
+it does not authorize that current from a weaker PD source.
+
+A separate TPS3701 UV interlock needs about 4.76 V nominal at VBUS to start.
+MX26631 automatically retries after faults. The application must latch PB2 low
+on FAULT, independently of USB traffic, and require an explicit re-arm. Validate
+repeated-retry heating if the MCU stalls before its watchdog resets it. This
+circuit has no hardware latch-off guarantee.
+
+Weak 5 V supplies or cable losses may keep the output off or cause dropout.
+Measure PD_OUT and wait for it to stabilize before enabling an external motor
+driver. The portable policy has no driver-enable or output-ramp feedback hooks;
+implement those in the board application. Use only 5 V for the example 24BYJ48
+motor, with a suitable external driver and local flyback paths. No automatic
+re-arm after faults. An absent 12 V PDO is an error, never substitute a voltage.
 
 Bench validation must include both cable orientations, 3 A and 5 A cables,
 missing voltage steps, charger-only sources, USB data hosts, hard/soft reset,

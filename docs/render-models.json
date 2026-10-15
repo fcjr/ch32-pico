@@ -1,6 +1,6 @@
 {
   "importer": "easyeda2kicad 1.0.1",
-  "retrieved": "2026-10-12",
+  "retrieved": "2026-10-14",
   "models": {
     "SOD-123_L2.7-W1.6-LS3.7-RD-1": {
       "lcsc": "C8598",
@@ -35,12 +35,14 @@
       "offset_y": 0
     },
     "SW-SMD_L3.9-W3.0-P4.45": {
-      "lcsc": "C720477",
-      "source": "https://www.lcsc.com/product-detail/C720477.html",
-      "file": "SW-SMD_L3.9-W2.9-H2.0-LS4.8.wrl",
-      "sha256": "a50e37006d74f9e6a8b7b8a4b8a230b7dd84019b09a90928d3d4b8bac93d79e5",
+      "lcsc": "C720478",
+      "source": "https://www.lcsc.com/product-detail/C720478.html",
+      "file": "SW-SMD_L4.0-W2.9-LS4.8-1.wrl",
+      "sha256": "3232f32218f31b6a18923183c484d7f11b48381b981f25d455d31b54616fd367",
       "rotate_z": 0,
-      "offset_y": 0
+      "offset_y": 0,
+      "retrieved": "2026-10-13T23:55:02.588058+00:00",
+      "note": "TS-1088-AR02516, 2.5 mm height; retained reviewed two-pad land pattern."
     },
     "LQFP-48_7x7mm_P0.5mm": {
       "lcsc": "C29779902",
@@ -106,7 +108,85 @@
       "rotate_z": 0,
       "offset_y": 1.295,
       "note": "Supplier returns a shared AN-family model for AW. Stake and peg Y origin aligned by 1.295 mm; illustration only, exact AW drawing controls manufacture."
+    },
+    "VQFN-24_L4.0-W4.0-P0.50-TL-EP2.7": {
+      "lcsc": "C18197523",
+      "source": "https://www.lcsc.com/product-detail/C18197523.html",
+      "file": "C18197523-QFN-24_L4.0-W4.0-P0.50-TL-EP2.7.wrl",
+      "local_source": "hardware/lib/models/C18197523-QFN-24_L4.0-W4.0-P0.50-TL-EP2.7.wrl",
+      "sha256": "8a9eed9f4892ddda6ef6c122f7c94afd6e472516e4e60bfb08a6052e14b87f13",
+      "rotate_z": 0,
+      "offset_y": 0,
+      "note": "Supplier CAD illustration; package drawing controls assembly."
+    },
+    "SOT-23-6_L2.9-W1.6-P0.95-LS2.8-TL": {
+      "lcsc": "C2653623",
+      "source": "https://www.lcsc.com/product-detail/C2653623.html",
+      "file": "C2653623-SOT-23-6_L2.9-W1.6-H1.5-LS2.8-P0.95.wrl",
+      "sha256": "ac26ad9cc17f87afe099cec72304c76c7f88f290c8ddec321cdbf2e6740e86a0",
+      "rotate_z": 0.0,
+      "offset_y": 0,
+      "retrieved": "2026-10-13",
+      "import_file": "SOT-23-6_L2.9-W1.6-H1.5-LS2.8-P0.95.wrl"
+    },
+    "VSONP-8_L3.3-W3.3-P0.65-BL": {
+      "lcsc": "C134143",
+      "source": "https://www.lcsc.com/product-detail/C134143.html",
+      "file": "VSONP-8_L3.3-W3.3-P0.65-BL.wrl",
+      "sha256": "29e76a5469493743512ddb671fc93b0fc6fc1aa009088a2901c9f9541c6c24c5",
+      "rotate_z": 0.0,
+      "offset_y": 0,
+      "retrieved": "2026-10-13"
+    },
+    "TSOT-23-6_L2.9-W1.6-P0.95-LS2.8-BL": {
+      "lcsc": "C132788",
+      "source": "https://www.lcsc.com/product-detail/C132788.html",
+      "file": "C132788-SOT-23-6_L2.9-W1.6-H1.5-LS2.8-P0.95.wrl",
+      "local_source": "hardware/lib/models/C132788-SOT-23-6_L2.9-W1.6-H1.5-LS2.8-P0.95.wrl",
+      "sha256": "3da95a191588d286e5c8ef4e2d1f8ea807bca93fb0b1a235252b68e1511ec5cb",
+      "rotate_z": 270,
+      "offset_y": 0,
+      "note": "Supplier CAD illustration; package drawing controls assembly."
+    },
+    "WSON-6_L2.0-W2.0-P0.65-BL-EP": {
+      "lcsc": "C523793",
+      "source": "https://www.lcsc.com/product-detail/C523793.html",
+      "file": "WSON-6_L2.0-W2.0-H0.8-P0.65.wrl",
+      "sha256": "296899b409160deff29c39dc3c0f2adf6d1a1feddb4653cee4a22a6e1eab5996",
+      "rotate_z": 270.0,
+      "offset_y": 0,
+      "retrieved": "2026-10-13"
+    },
+    "SOD-123W_L2.7-W1.6-LS3.8-FD": {
+      "lcsc": "C5709679",
+      "source": "https://assets.nexperia.com/documents/data-sheet/PMEG4030ER-Q.pdf",
+      "file": "PMEG4030ER-QX-outline.wrl",
+      "local_source": "hardware/lib/models/PMEG4030ER-QX-outline.wrl",
+      "sha256": "6ed04db7ae7d217a97f65a58dcdabaf7c08c65a2303ee1bf6dbf10725ce54b16",
+      "rotate_z": 0,
+      "offset_y": 0,
+      "note": "Original approximate body/terminal envelope; not supplier 3D model or assembly proof."
+    },
+    "DFN-8_L3.0-W3.0-P0.65-BL": {
+      "lcsc": "C431191",
+      "source": "https://www.lcsc.com/product-detail/C431191.html",
+      "file": "C431191-DFN-8_L3.0-W3.0-H0.7-P0.65.wrl",
+      "local_source": "hardware/lib/models/C431191-DFN-8_L3.0-W3.0-H0.7-P0.65.wrl",
+      "sha256": "a5bda7c8aad447367ce7a07f828d164d7dea080aeb60a033f5e0c0dc069724cd",
+      "rotate_z": 270,
+      "offset_y": 0,
+      "note": "Supplier CAD illustration; package drawing controls assembly."
+    },
+    "SOT-23-3_L2.9-W1.6-P1.90-LS2.8-BR": {
+      "lcsc": "C40912",
+      "source": "https://www.lcsc.com/product-detail/C40912.html",
+      "file": "C40912-SOT-23-3L_L2.9-W1.6-H1.1-LS2.8-P0.95.wrl",
+      "local_source": "hardware/lib/models/C40912-SOT-23-3L_L2.9-W1.6-H1.1-LS2.8-P0.95.wrl",
+      "sha256": "1ae883fdd848a10e526ae21b24f579cb50aab0aad75ef6857588e18a24ad2afa",
+      "rotate_z": 270,
+      "offset_y": 0,
+      "note": "Supplier CAD illustration; package drawing controls assembly."
     }
   },
-  "board_revision": "C"
+  "board_revision": "E"
 }

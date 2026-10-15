@@ -24,7 +24,7 @@ from .sexp import parse,children,one
 from .fabrication import copy_rules
 from .route_cleanup import clean
 from .route_geometry import fingerprint
-from .routing_checks import unpreserved_segments,unpreserved_vias
+from .routing_checks import unpreserved_segments,unpreserved_vias,outside_outline_copper
 from .planes import add_planes
 
 KRT_COMMIT='ad7f24deb8fbffa6c498a09a6ebda46e012c37ff'
@@ -56,6 +56,10 @@ def grade(path):
         'violations':len(data['violations']),'unconnected':len(data['unconnected_items']),
         'violation_types':dict(Counter(v['type'] for v in data['violations']))}
     doc=parse(path.read_text())
+    from .routing_checks import stackup_matches
+    placed=parse((ROOT/'build/ch32-pico-placed.kicad_pcb').read_text())
+    result['stackup_matches_source']=stackup_matches(placed,doc)
+    result['outside_outline_copper']=outside_outline_copper(doc)
     result['via_count']=len(children(doc,'via'))
     result['trace_length_mm']=round(sum(math.dist(
         tuple(map(float,one(t,'start')[1:3])),tuple(map(float,one(t,'end')[1:3])))
@@ -90,8 +94,8 @@ def grade(path):
         except ValueError as error:
             result['power_layout']={'error':str(error)}
             result['power_layout_passes']=False
-    result['passes_connectivity_and_drc']=not (not result['power_layout_passes'] or not result['silkscreen_passes'] or result['violations'] or result['unconnected']
-        or result['via_in_paste'] or result['foreign_tracks_on_ground_layer']
+    result['passes_connectivity_and_drc']=not (not result['stackup_matches_source'] or not result['power_layout_passes'] or not result['silkscreen_passes'] or result['violations'] or result['unconnected']
+        or result['via_in_paste'] or result['foreign_tracks_on_ground_layer'] or result['outside_outline_copper']
         or result['changed_critical_segments'] or result['changed_critical_vias']
         or not result['usb_geometry_passes'])
     return result
@@ -145,7 +149,10 @@ def main():
         raise SystemExit('KiCadRoutingTools has tracked modifications')
     python=a.krt/'.venv/bin/python'
     input_board=out/'input.kicad_pcb'
-    add_planes(seed,input_board)
+    from .mcu_fanout import add_fanout
+    fanout=out/'fanout.kicad_pcb'
+    add_fanout(seed,fanout)
+    add_planes(fanout,input_board)
     seed_grade=grade(input_board)
     manifest['seed']=seed_grade;record()
     # Unfinished pin exits may end in a track or via. Only these two warnings
@@ -197,7 +204,7 @@ def main():
             raise SystemExit('Missing/checksum-mismatched Freerouting 2.5.0 JAR')
         dsn=out/'input.dsn';ses=out/'freerouting.ses';board=out/'freerouting.kicad_pcb'
         raw=out/'freerouting-raw.kicad_pcb'
-        run([a.kicad_python,'-m','hardware.exchange','export',input_board,dsn],out/'dsn.log')
+        run([a.kicad_python,'-m','hardware.exchange','export',input_board,dsn,'--only-locked'],out/'dsn.log')
         configure(dsn)
         layers=','.join(str(layer in a.signal_layers).lower() for layer in ['F.Cu','In1.Cu','In2.Cu','B.Cu'])
         duration=run(['java','-jar',jar,'--user_data_path='+str(out/'freerouting-profile'),
@@ -205,7 +212,7 @@ def main():
             '--router.layers.routable='+layers,'--router.automatic_neckdown=false','--router.fanout.enabled=false',
             '--router.autorouter.max_passes=30','--router.optimizer.max_threads=1',
             '-de',dsn,'-do',ses],out/'freerouting.log')
-        run([a.kicad_python,'-m','hardware.exchange','import',input_board,ses,'--output',raw],out/'ses.log')
+        run([a.kicad_python,'-m','hardware.exchange','import',input_board,ses,'--output',raw,'--only-locked'],out/'ses.log')
         copy_rules(input_board,raw)
         manifest['candidates']['freerouting']={**finish(repair_planes(raw,'freerouting'),board),'seconds':duration};record()
     passed=any(c['passes_connectivity_and_drc'] for c in manifest['candidates'].values())

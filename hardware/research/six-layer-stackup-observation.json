@@ -1,0 +1,15 @@
+{
+  "selection": [
+    "Rigid",
+    "6",
+    "1",
+    "0.5oz",
+    "1oz",
+    "mil"
+  ],
+  "source": "https://jlcpcb.com/pcb-impedance-calculator",
+  "stackup": " JLC06101H-3313(Standard/Finished thickness1.03mm\u00b110%)",
+  "text": "24\nSMT\nJLCPCB\nProducts\nCapabilities\nSupport \nAbout Us \nOrder Now\nSign In\n\nJLCPCB Impedance Calculator\n\nThe JLCPCB Impedance Calculator computes track width values and recommended stack-ups from user-input values of board layer, thickness, copper weight, target impedance, trace spacing (for edge-coupled pairs), and impedance trace to copper gap (coplanar waveguides). Click here to see the user guide of our impedance calculator.\n\n* The first stack-up calculated below is highly recommended as it has lowest cost and quickest turn-around.\n\nBoard Type\nLayers\nPCB Thickness\nInner Copper Weight\nOuter Copper Weight\nUnit\n\nImpedance Configure\n\nWidth/Spacing Complement  New Impedance  Duplicate Impedance  Calculate\nImpedance (\u03a9)\nType\nSignal Layer\nTop Ref\nBottom Ref\nTrace Spacing\uff08mil\uff09\nImpedance trace to copper\uff08mil\uff09\n/\n/\nJLC06101H-3313A(Special/Finished thickness0.95\u00b10.10mm\uff09JLC06101H-7628(Finished thickness0.95\u00b10.10mm)JLC06101H-7628A(SpecialTg170/Finished thickness1.0mm\u00b110%)JLC06101H-7628B(\u7279\u6b8a/\u6210\u54c1\u677f\u539a1.0mm\u00b110%)JLC06101H-1080(Special/Finished thickness0.95\u00b10.10mm)JLC06101H-1080A(Special/Finished thickness0.98\u00b10.10mm)JLC06101H-1080B(Special/Finished thickness0.98\u00b10.10mm)JLC06101H-1080C(Special/Finished thickness1.05mm\u00b110%)JLC06101H-1080D(\u7279\u6b8a/\u6210\u54c1\u677f\u539a0.94mm\u00b110%) JLC06101H-3313(Standard/Finished thickness1.03mm\u00b110%)\nImpedance Tolerance (\u00b1):\n%\nImpedance (\u03a9)\nType\nSignal Layer\nTop Ref\nBottom Ref\nTrace Width\nTrace Spacing\nImpedance trace to copper\n50\nSingle Ended (Non coplanar)\nL\n1\n/\nL\n2\n/\n/\nLayer\nMaterial\nThickness (mil)\nThickness (mm)\nL1\nOuter Copper Weight1oz\n1.38\n0.0350\nPrepreg\n3313 RC57% 4.2mil\n3.91\n0.0994\nL2\nCore\nL3\nInner Copper Weight\n0.25mm H/HOZ without copper\nInner Copper Weight\n0.60\n9.84\n0.60\n0.0152\n0.2500\n0.0152\nPrepreg\n7628, RC 49%, 8.6 mil\n7.98\n0.2028\nL4\nCore\nL5\nInner Copper Weight\n0.25mm H/HOZ without copper\nInner Copper Weight\n0.60\n9.84\n0.60\n0.0152\n0.2500\n0.0152\nPrepreg\n3313 RC57% 4.2mil\n3.91\n0.0994\nL6\nOuter Copper Weight1oz\n1.38\n0.0350\n Welcome back, may I help you? Chat Now",
+  "status": "Selected stack for six-layer Rev E; new fabrication quote and physical qualification required",
+  "observed_at": "2026-10-13"
+}

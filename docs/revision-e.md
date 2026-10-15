@@ -1,47 +1,67 @@
 # Revision E: optional PC7 and board diagnostics
 
-Rev E adds a normally open solder jumper for header pin 35 and exposes the PD
-switch's fault signal on the underside. Eleven additional probe contacts expose
-the remaining internal MCU signals, raw VBUS and ground. Two local ground
-stitching vias connect the USB-end pour to the internal ground plane. It keeps Rev D's regulator-enable
-connection at pin 37, the 21 × 51 mm outline, 40 header positions, castellations
-and edge-aligned USB-C. There are no mounting holes. The fitted BOM remains
-41 parts. The power-path correction below changes the capacitor part and R17.
+The cost-reduced Rev E groups the power circuit beside USB-C and pin 40,
+places RESET and BOOT together at the bottom, and retains LEFT SHIFT LOGICAL
+branding. It keeps the 21 × 51 mm outline, 40 header positions, castellations,
+33 accessible GPIOs and native CH32 USB-PD. All 52 fitted parts remain on the
+front. Four copper layers replace the earlier six-layer checkpoint.
 
-This is a routed prototype, not a manufacturing release. PD/USB application
-firmware, physical power qualification and factory approval remain pending.
-The [Rev D architecture](revision-d.md#selected-architecture) still describes
-the MCU, USB, protected PD output and fixed 3.3 V supply.
+The dated parts-only estimate is $5.69 per device for 20 devices, down from
+$22.88. This excludes fabrication, assembly setup/feeders, attrition, minimum
+purchases, shipping and tax. See the [recorded screen](../hardware/research/cost-down-screen.json).
+The saved layout has zero DRC violations and zero unconnected nets; all 96 tests
+pass. Matching panel and manufacturing exports are generated. No assembled-board current rating,
+USB compliance result or production release exists.
 
 ## Power-path correction
 
-All nine 100 nF capacitors now use Samsung CL05B104KB54PNC,
-[LCSC C307331](https://www.lcsc.com/product-detail/C307331.html), a 50 V X7R
-0402 part. The original C1525 was rated only 16 V despite the 50 V BOM label.
-C5 and C12 see negotiated VBUS; C8 on dVdT requires a rating of at least
-VIN + 5 V. The other six positions also use C307331 to keep one 100 nF BOM row.
+MX26631DL replaces the costly TPS26630 plus separate ideal-diode controller.
+Its BGATE/DRV outputs drive AON7264E Q1 and BSS138-7-F Q2 for reverse blocking.
+The device operates at 4.5–40 V and has 60 V absolute-maximum input/output
+ratings. Absolute maximum is not an operating voltage. MODE and PGTH are
+grounded to retain current-limit fault detection and controlled recovery slew.
 
-R17 is now 4.7 kΩ, C25900, in parallel with the existing 1.5 kΩ R18.
-The effective 1,137 Ω sets a nominal 2.93 A current limit using
-[TI's TPS25947 equation](https://www.ti.com/lit/ds/symlink/tps25947.pdf).
-This replaces the earlier 600 Ω / 5.56 A setting and the 5 A design goal in
-the historical revision notes. IC and resistor tolerances can allow more than
-3 A. This is not a guaranteed 3 A ceiling or a continuous output rating.
+TPS3701 independently pulls SHDN low on low VBUS. It senses upstream of Q1
+so shutdown cannot prevent the sense voltage from reaching its startup threshold.
+R27/R28 are 82.5 kohm / 7.68 kohm, 0.1%, 25 ppm/C. Including a 100 C drift
+allowance and input leakage, startup screens at 4.665–4.883 V and falling
+thresholds at 4.630–4.765 V. A provisional hot-Q1 resistance screen leaves
+about 4.515 V at U3 IN at the upper fault-current screen. Propagation delay,
+fast collapse and transistor heating still require measurement. Weak 5 V sources
+or cable loss can cause dropout; full current from every 5 V cable is not promised.
 
-The locked connector and eFuse copper still needs thermal qualification.
-At 3 A and an assumed hot 45 mΩ on-resistance, the switch alone dissipates
-about 0.405 W. Qualify traces, vias, switch temperature and the actual pin-40
-contact before assigning a load rating. Firmware must use the lower qualified
-limit and allow for control-supply current and current-limit tolerance.
-Current sensing must use the new ILM resistance when converting ADC voltage.
+R17 = 11 kohm gives 3.636 A using the manufacturer's piecewise formula.
+The datasheet's 24 kohm table and formula disagree. The ±15% engineering
+allowance plus resistor tolerance/drift gives 3.001–4.311 A; this is not a
+manufacturer-guaranteed range at 11 kohm. Qualify the purchased lot. R25 is
+10 kohm, 0.1%, giving nominal 0.260 V/A above 2 A. Use the minimum monitor
+gain plus resistor/ADC uncertainty for protection. R17 is never the ADC shunt.
 
-The footprints and copper are unchanged. Circuit checks reject underrated
-high-voltage capacitors, misleading voltage labels and the old ILM network;
-PCB and netlist checks also compare part identity and value with the source.
+MX26631 automatically retries faults. Firmware must latch PD_ENABLE low on
+FAULT and require explicit re-arm, with a watchdog and default-off pull-down.
+Test repeated fault heating if firmware stalls; hardware latch-off is not
+provided. The portable PD policy is tested code, not a complete firmware image.
 
-The [pre-order parts and power review](preorder-review.md) records the current
-MCU shortage and additional startup, bypass, OVLO and transient-protection
-issues. The 2.93 A nominal limit does not resolve those qualification items.
+D5/D6 TVS2200 input/output clamps, D7 PMEG4030ER-QX negative clamp and the
+50 V capacitors remain. C8 is 22 nF, nominal slew 2.29 V/ms and 8.73 ms to 20 V.
+C12 is 4.7 uF/50 V X7R; C14/C16 are 1 uF/50 V. C5 and the separate controller's
+C15 are removed. No 16 V C1525 is fitted. R20/R21 OVLO corners screen at
+21.450–23.751 V. The specified TVS hot surge clamp is 28.35 V, within the
+power-stage voltage envelope but not an arbitrary motor-energy rating.
+
+The high-current path now stays near the USB end. USB VBUS pad escapes use
+0.6 mm traces; local input/output spreads use parallel vias; the back-layer
+output trunk is 1.8 mm with a 1.2 mm neck near pin 40. All are design geometry,
+not a measured ampacity. U3 dissipates up to 0.45 W at 3 A using its 50 milliohm
+resistance bound, plus external FET, copper and contact losses. Off-pad thermal
+vias avoid paid filled/capped via-in-pad; exact-board temperature testing is essential.
+
+The 3 A input-contract target leaves at most 2.9 A at pin 40 after the policy's
+minimum 100 mA board reserve. Higher control/header load requires a larger
+reserve. External motor drivers need local flyback/recirculation. No unknown
+inductive load or sustained regeneration is qualified. R8 plus the divider can
+take about 17.6 seconds to discharge 100 uF from 20 V to 0.8 V; wait for measured
+discharge before changing voltage. See [qualification](power-qualification.md).
 
 ## Pin 35 and SJ1
 
@@ -67,7 +87,7 @@ an additional unrestricted GPIO.
 ## FAULT pad
 
 TP7 is labeled `FAULT`, in the second row of the underside expansion pads.
-It connects to `PD_FAULT_N`: TPS259470L pin 4, CH32X035 PB4 at package pin 24,
+It connects to `PD_FAULT_N`: MX26631 pin 14, CH32X035 PB4 at package pin 24,
 and the existing 10 kΩ pull-up to 3.3 V. The switch's fault indication is active
 low. Use a high-impedance scope or 3.3 V-compatible input to observe it. Do not
 drive it from an external output or directly attach a load. It is a diagnostic
@@ -168,7 +188,7 @@ to board circuitry; exposing them does not make them free GPIOs.
 | TP18 | OSNS | Back | PB1 / ADC9, filtered PD OUT / 11 voltage |
 | TP19 | CC1 | Back | PC14, USB-C CC1 / PD communication |
 | TP20 | CC2 | Back | PC15, USB-C CC2 / PD communication |
-| TP21 | PDEN | Back | PB2 / TPS259470L enable, default-low control signal |
+| TP21 | PDEN | Back | PB2 / eFuse enable interlock, default-low control signal |
 | TP22 | PB3 | Back | MCU side of the application LED resistor R11 |
 | TP23 | D+ | Front | PC17 / USB D+, inline probe contact |
 | TP24 | D- | Front | PC16 / USB D−, inline probe contact |
@@ -194,33 +214,35 @@ All contacts have no paste and add no fitted parts.
 
 ## Layout and verification
 
-The incremental route starts from the hash-checked Rev D board in Git commit
-`23297c1`. It removes the obsolete PC7-to-TP7 traces, adds SJ1, and routes
-GPIO35, PC7 and the new FAULT branch before the diagnostic connections, using
-the pinned KiCadRoutingTools router. The two ground stitches use ordinary
-tented vias; there is no filled/capped via-in-pad.
-All other existing traces and vias must remain identical. Independent KiCad
+The earlier jumper migration started from Rev D in commit `23297c1`.
+The cost-reduced protection design uses a new placement and locked USB/power routing
+seed, followed by the pinned Freerouting and KiCadRoutingTools routers. It uses ordinary
+tented vias; there is no filled/capped via-in-pad. The eFuse exposed pad reaches
+the ground planes through its GND/PGTH copper and adjacent off-pad vias. This
+has less direct heat conduction than an array of vias under the exposed pad;
+the 3 A target requires thermal testing on this exact assembly.
+Independent KiCad
 checks verify connectivity, clearances, critical power/USB geometry, ground
 reference, paste, and the updated silkscreen.
 
-The routed board has 152 vias and 1,445.197 mm of trace
-centerline. Source/PCB checks, regression tests and routed-board DRC
-pass with zero open connections. Panel and export checks must also pass
+The saved validation report records the current via count, trace length,
+source parity and DRC result. Panel and export checks must also pass
 before `just jlcpcb` creates the upload bundle. See [build setup](build.md) for
 the uv/just environments and prerequisites.
 
 ## Generated files
 
 ```sh
-just route-jumper
+just route-power
 just review
 just render
 just jlcpcb
 ```
 
-`just route-jumper` includes schematic, placement and regression checks. It
-retrieves the pinned Rev D checkpoint from Git history, so a full clone with
-that commit is required. `just route` remains available for routing the whole
+`just route-jumper` is retained for the earlier jumper migration from Rev D
+and rejects the current power-component changes.
+`just route-power` reproduces the later power correction from its pinned
+routing checkpoint and runs independent geometry checks. `just route` remains available for routing the whole
 design from its generated seed. Earlier revision generators are retained.
 
 - `hardware/review/ch32-pico.kicad_pcb`: checked Rev E board.
@@ -233,6 +255,18 @@ design from its generated seed. Earlier revision generators are retained.
 
 Use the Rev E files together. The earlier Rev C browser upload and the saved
 Rev D export do not describe SJ1, FAULT or the diagnostic pads. Assembly quantity remains five
-four-up panels, 20 devices, with 164 top-side fitted placements per panel.
+four-up panels, 20 devices, with 208 top-side fitted placements per panel.
 There is no underside assembly: test pads and SJ1 are bare copper features.
 See the [factory review](factory-review.md) for stock, cost and approval limits.
+
+
+## Four-layer routing
+
+The stack is JLC04101H-3313, nominal 1 mm, with 1 oz outer and 0.5 oz inner
+copper. In1.Cu remains ground; In2.Cu carries 3.3 V pours and signals. The
+0.0994 mm front-to-ground spacing is retained. Fitted components remain on
+F.Cu. The checked layout has 193 vias and 1,774.969 mm of trace centerline,
+zero DRC violations and no unconnected nets. Critical copper, USB ground
+reference, pad/net parity and drill-to-paste checks pass. The four-up panel
+and matching manufacturing exports are regenerated; old six-layer artifacts
+are not current manufacturing inputs.

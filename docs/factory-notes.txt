@@ -5,8 +5,8 @@ QUANTITY AND FABRICATION
 Five supplied panels, four identical devices per panel: 20 assembled devices.
 One design, 93 x 71 mm panel, Standard top-side PCBA. Use the supplied panel
 Gerbers, panel BOM and panel CPL together. Do not panelize them again.
-Four layers, 1.0 mm finished thickness, green mask, white silk, ENIG 1 microinch.
-JLC04101H-3313 / Nan Ya NP-155F, outer 1 oz and inner 0.5 oz copper.
+Four layers, nominal 1.0 mm stackup, green mask, white silk, ENIG 1 microinch.
+JLC04101H-3313 / FR-4, exact laminate to be confirmed in the new quote, outer 1 oz and inner 0.5 oz copper.
 Keep the L1-to-L2 dielectric at the specified 0.0994 mm stackup value.
 All vias are 0.45 mm diameter / 0.20 mm drill. No filled/capped via-in-pad.
 Please confirm the quote category against those actual via dimensions.
@@ -29,15 +29,15 @@ Leave rails attached for shipping; protect components during depaneling and
 trim tab remnants flush. No tabs or burrs may remain on castellated sides.
 
 REVISION IDENTIFICATION
-Rev E is marked on the front; header pin 37 is labeled EN on the back.
+Rev E is marked on the back; header pin 37 is labeled EN on the back.
 It connects to regulator U4 pin 2. Header pin 35 is labeled PC7*; its SJ1
 jumper must remain OPEN. TP7 is now FAULT, not PC7. SJ1 has no paste
 apertures and is excluded from BOM/CPL; do not bridge it during assembly.
 Use the Rev E files together; the earlier Rev C Gerber upload is superseded.
 
 ASSEMBLY
-41 fitted parts per device, 164 per panel, 820 across the batch.
-21 BOM rows use 20 distinct LCSC part numbers. Header and test pads are not
+52 fitted parts per device, 208 per panel, 1040 across the batch.
+33 BOM rows use 32 distinct LCSC part numbers. Header and test pads are not
 fitted parts. There is no underside assembly and no paste on underside pads.
 Do not substitute components without an exact-part/package review.
 Check every model against assembly-orientation.svg and its JSON coordinates.
@@ -47,11 +47,16 @@ JLC's model origin, and all angles are normalized to 0-360. These are
 coordinate conversions against JLC's own library frames, not an approval;
 confirm U1, D2, J2 and U4 in the placement preview before assembly.
 D1/D4 pin 1 is cathode; LED D3 pin 2 is cathode. U1 is LQFP48, not QFN48.
-U3 must be TPS259470LRPWR, TI RPW0010A VQFN-HR-10, 2 x 2 mm.
-Preserve its supplied paste geometry from TI drawing 4225183/A: split windows
-on IN/OUT pads 5/6 and reduced corner apertures. TI's example uses a 0.100 mm
-stencil. Please review stencil thickness or local step requirements for U3,
-0402 passives and USB-C together, and include hidden-joint X-ray inspection.
+U3 must be MX26631DL C18197523, QFN24 4 x 4 mm, exposed pad 25 GND.
+U6 is TPS3701DDCR C132788; Q1 AON7264E C431191; Q2 BSS138-7-F C40912.
+U5/C15/C5/R30 are removed. MODE/PGTH ground and BGATE/DRV wiring are intentional.
+D5/D6 are TVS2200DRVR, with IN pins 4-6 and exposed-pad ground.
+D7 is PMEG4030ER-QX C5709679; its band/cathode connects to PD_OUT.
+U3 exposed-pad paste uses four 1.188 mm windows, about 78% coverage.
+This is a provisional engineering aperture, not a Maxin process approval. Review a
+0.125 mm stencil and the actual
+stencil for U3/Q1/D5/D6, 0402 passives and USB-C together.
+Include hidden-joint X-ray inspection. No filled/capped via-in-pad is specified.
 J2 is GT-USB-7010AW, not the similar ASV model. It has SMT contacts, four plated
 shell stakes and two unplated locating holes. Confirm insertion, shell soldering,
 reflow limits and any separate manual-assembly or fixture charge.
@@ -59,7 +64,7 @@ Keep unpopulated header/castellated holes open during shell soldering.
 
 MCU SOURCING
 20 CH32X035C8T6 / C29779902 devices are fitted, plus actual factory attrition.
-JLC and LCSC both reported only two units on 2026-10-13 UTC. No stock reserved.
+The current JLC public snapshot reports two units. No stock is reserved.
 Please provide exact-part replenishment quantity, price and lead time.
 Require silicon supporting hardware I2C and ADC3/ADC7. WCH datasheet v1.7,
 table 2-1 note 3, excludes these functions on specified early lots. Obtain
@@ -71,13 +76,18 @@ QUOTE AND RELEASE
 Return actual charged part quantities/attrition, placement model review,
 production-file review, stencil/USB process confirmation and complete charges,
 including X-ray, handling, fixtures, PCB, assembly, shipping and tax.
-The eFuse limit is about 2.93 A nominal, with tolerance; assembled prototype
-tests must establish the continuous current rating. All nine 100 nF capacitors
-must be 50 V C307331 / CL05B104KB54PNC; do not fit the old 16 V C1525.
-R17 must be 4.7 kΩ C25900, with R18 still 1.5 kΩ C25867.
-Engineering hold: C8 slew/series resistance, C12 output bypass, OVLO margin,
-power transients and ILM layout need review before power qualification.
-See docs/preorder-review.md. No continuous-current rating has been assigned.
+The eFuse threshold is 3.636 A formula-derived nominal, with unqualified tolerance, not a continuous rating.
+Seven 100 nF capacitors use 50 V C307331 / CL05B104KB54PNC.
+C8 is 22 nF 50 V X7R C1532. C12 is 4.7 uF 50 V X7R 1206 C51205.
+Do not fit the old 16 V C1525. R17 is 11 kohm C25749; R18 is removed.
+R25 is 10 kohm 0.1% C190095 for the separate current monitor.
+R20/R21 are 82.5 kohm / 4.75 kohm, 0.1%, C852928 / C851038.
+R27/R28 are 82.5 kohm / 7.68 kohm precision C852928 / C852919; sense upstream VBUS.
+MX26631 auto-retries; application firmware must latch the output off after faults.
+The hardware UV interlock can shut pin 40 off at low input voltage in 5 V mode.
+Prototype thermal, startup, transient and input-inrush qualification remains open.
+Use external drivers with local flyback for motor/coil loads. No unknown motor
+or sustained regeneration rating is assigned. See docs/preorder-review.md.
 No functional production-test program
 or released PD/CDC application firmware exists yet.
 
@@ -85,3 +95,9 @@ Rev E diagnostic contacts TP14-TP24 are bare copper, with NO paste or parts.
 Keep SJ1 open. TP23/TP24 are narrow inline USB contacts on the front.
 TP15 VBUS is an unswitched 5-20 V measurement pad, not a load-current output.
 The two added USB-region ground stitches are tented ordinary 0.45/0.20 mm vias.
+Switch substitution: RESET SW1 and BOOT SW2 use C720478, XUNPU
+TS-1088-AR02516, throughout all panel copies. Button height is 2.5 mm.
+The retained two-pad footprint and CPL rotation are intentional. These are
+nonpolarized momentary switches. Do not substitute the previous C720477
+without resolving its order availability. Confirm C720478 allocation and
+any Extended-part charges in this order.

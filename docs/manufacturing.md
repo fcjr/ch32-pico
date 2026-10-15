@@ -17,7 +17,7 @@ Five panels contain four devices each, for twenty devices total.
 | `hardware/review/ch32-pico.kicad_pcb` | Checked single-board KiCad source |
 | `build/panel-preview/ch32-pico-panel.kicad_pcb` | Generated four-copy KiKit panel |
 
-The fitted BOM estimate is $3.9214 per device at twenty devices, before
+The fitted BOM estimate is $5.6870 per device at twenty devices, before
 attrition, purchase minimums, PCB fabrication, assembly, shipping and tax.
 The latest dated breakdown and stock shortages are in [order review](order-review.md).
 No order has been submitted and no parts are reserved.
@@ -38,7 +38,7 @@ The folder contains:
   outline and separate PTH/NPTH Excellon drill files.
 - `gerbers/`: the individual files and SVG drill maps for inspection.
 - `bom.csv`: exact LCSC identifiers and MPNs, grouped from the electrical source.
-- `cpl.csv`: actual KiCad board placement, filtered to the same 41 fitted parts.
+- `cpl.csv`: actual KiCad board placement, filtered to the same 52 fitted parts.
 - `manifest.json`: board and file hashes, tool version, source hashes, checks
   and open engineering reviews.
 
@@ -72,7 +72,7 @@ this restriction. The panel includes the required rails and fiducials.
 
 `just order-review` checks panel artifact hashes, computes a dated assembly-cost
 scenario and writes a physical pin/polarity guide under `build/order-review/`.
-The JSON guide checks all 164 panel CPL rows and gives anchor coordinates in
+The JSON guide checks all 208 panel CPL rows and gives anchor coordinates in
 both board and panel/CPL conventions. Panel CPL angles apply reviewed JLC
 model-frame deltas (U1/D2 rotation, J2 anchor); JLC preview confirmation is
 still required. See [order review](order-review.md).

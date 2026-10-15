@@ -17,7 +17,7 @@ The route is not a uniformly coupled or length-matched transmission line.
 The explicit traces remain on F.Cu without signal vias, over the In1.Cu
 GND reference. The 0.1537 mm trace width comes from the JLC stackup
 calculation; that calculation does not establish impedance for these fanouts.
-The four-layer stackup remains JLC04101H-3313.
+The four-layer stackup is JLC04101H-3313 with 0.0994 mm L1-to-L2 spacing. The uniform-pair calculation is a geometry screen, not a measured impedance result.
 
 `just usb-review` measures actual copper centerline paths and samples filled
 reference copper at trace centers and edges at no more than 0.05 mm intervals.

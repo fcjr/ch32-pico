@@ -26,9 +26,16 @@ def audit(doc):
     if length>8 or any(one(s,'layer')[1]!='F.Cu' for s in sw):
         raise ValueError('Buck switch copper exceeds its local top-layer budget')
     timing=path_length([s for s in tracks if one(s,'net')[-1]=='PD_DVDT'
-                        and one(s,'layer')[1]=='F.Cu'],pads['U3','7'],pads['C8','1'])
+                        and one(s,'layer')[1]=='F.Cu'],pads['U3','9'],pads['C8','1'])
     if timing>5:raise ValueError('Load-switch timing capacitor is not locally connected')
-    sense=(5.05,13.75)
+    local={}
+    for net,pin,ref,budget in (('PD_ILM','10','R17',3),('PD_IMON','13','R25',4)):
+        distance=path_length([s for s in tracks if one(s,'net')[-1]==net
+                             and one(s,'layer')[1]=='F.Cu'],pads['U3',pin],pads[ref,'1'])
+        if distance>budget:raise ValueError(f'{net} programming/monitor resistor is not locally connected')
+        local[net]=round(distance,3)
+
+    sense=(5.6,23.5)
     if not any(one(v,'net')[-1]=='3V3_OUT' and tuple(map(float,one(v,'at')[1:3]))==sense
                for v in children(doc,'via')):raise ValueError('Missing dedicated feedback via')
     for z in children(doc,'zone'):
@@ -43,7 +50,7 @@ def audit(doc):
                                        tuple(map(float,one(s,'end')[1:3])))
                               for s in tracks if one(s,'net')[-1]==net),3)
     return {'input_capacitor_connections_mm':loops,'switch_copper_total_mm':round(length,3),
-            'load_switch_timing_connection_mm':round(timing,3),
+            'load_switch_timing_connection_mm':round(timing,3),'local_programming_paths_mm':local,
             'supply_trace_totals_mm':totals,'feedback_via_isolated_from_shared_plane':True,
             'passes':True,'limitations':'Geometry only; current, temperature, ripple and EMC require hardware testing'}
 

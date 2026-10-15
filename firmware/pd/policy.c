@@ -16,7 +16,7 @@ static bool voltage_matches(const pd_policy *p,uint16_t mv) {
 uint32_t pd_select(pd_policy *p,const uint32_t *caps,size_t count,
                    uint16_t mv,uint16_t board_limit_ma,uint16_t reserve_ma) {
     pd_invalidate(p); /* switching off is unconditional, even for bad commands */
-    if (!caps || !voltage_allowed(mv) || !board_limit_ma || board_limit_ma>5000)
+    if (!caps || !voltage_allowed(mv) || !board_limit_ma || board_limit_ma>3000 || reserve_ma<100)
         return p->epoch;
     if (count>7) count=7; /* SPR Source_Capabilities has at most seven PDOs */
     for (size_t i=0;i<count;i++) {

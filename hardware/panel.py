@@ -8,6 +8,7 @@ import copy
 import hashlib
 import json
 import subprocess
+import shutil
 from pathlib import Path
 from .library import ROOT,load_library
 from .circuit import COMPONENTS
@@ -33,6 +34,23 @@ OPTIONS={
     'fiducials':'3fid; hoffset: 7mm; voffset: 4.5mm; coppersize: 1mm; opening: 2mm',
     'post':'millradius: 1mm',
 }
+
+
+def validate_gerber_inventory(directory):
+    """Reject stale layer files before packaging a regenerated panel."""
+    jobs=list(directory.glob('*.gbrjob'))
+    if len(jobs)!=1:raise ValueError('Expected one Gerber job')
+    job=json.loads(jobs[0].read_text())
+    copper=[f for f in job['FilesAttributes'] if f['FileFunction'].startswith('Copper,')]
+    expected_layers=len([layer for layer in LAYERS.split(',') if layer.endswith('.Cu')])
+    if job['GeneralSpecs']['LayerNumber']!=expected_layers or len(copper)!=expected_layers:
+        raise ValueError('Gerber copper count differs from current layer contract')
+    expected={f['Path'] for f in job['FilesAttributes']} | {jobs[0].name}
+    expected.update(p.name for p in directory.glob('*.drl'))
+    actual={p.name for p in directory.iterdir() if p.is_file()}
+    if actual!=expected:
+        raise ValueError(f'Unexpected or missing Gerber files: {actual ^ expected}')
+    return {'copper_layers':expected_layers,'files':sorted(actual)}
 
 
 def validate_copies(source,panel):
@@ -188,12 +206,15 @@ def main():
                  'JLC must confirm tab strength, panel handling, castellations and final quote.']}
     if passed:
         report['assembly']=assembly_files(board,out,copies)
-        gerbers=out/'gerbers';gerbers.mkdir(exist_ok=True)
+        gerbers=out/'gerbers'
+        if gerbers.exists():shutil.rmtree(gerbers)
+        gerbers.mkdir()
         subprocess.run(['kicad-cli','pcb','export','gerbers','--layers',LAYERS,'--subtract-soldermask',
             '--check-zones','-o',str(gerbers)+'/',str(board)],check=True)
         subprocess.run(['kicad-cli','pcb','export','drill','--format','excellon','--excellon-separate-th',
             '--excellon-units','mm','--drill-origin','absolute','--excellon-oval-format','route',
             '-o',str(gerbers)+'/',str(board)],check=True)
+        report['gerber_inventory']=validate_gerber_inventory(gerbers)
         with zipfile.ZipFile(out/'ch32-pico-panel-gerbers-PREVIEW.zip','w',zipfile.ZIP_DEFLATED) as archive:
             for path in sorted(gerbers.iterdir()):archive.write(path,path.name)
         report['file_sha256']={str(p.relative_to(out)):hashlib.sha256(p.read_bytes()).hexdigest()

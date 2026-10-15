@@ -43,7 +43,9 @@ def checked_board():
     return board
 
 
-def report():
+def report(*, panels=None):
+    if panels is not None and (type(panels) is not int or panels < 1):
+        raise ValueError('Panel count must be a positive integer')
     source = json.loads((ROOT / 'hardware/procurement-observation.json').read_text())
     policy = json.loads((ROOT / 'hardware/jlc-assembly-policy.json').read_text())
     panel_path = ROOT / 'build/panel-preview'
@@ -62,7 +64,8 @@ def report():
     if not all(lo <= v <= hi for lo, v, hi in zip(policy['standard_panel_minimum_mm'], dimensions,
                                                 policy['standard_panel_maximum_mm'])):
         raise ValueError('Standard PCBA panel dimensions unsupported')
-    boards = panel['total_boards']
+    panel_count = panel['panels'] if panels is None else panels
+    boards = panel_count * panel['boards_per_panel']
     fitted = {c.ref: c for c in COMPONENTS if c.fitted}
     library = load_library()
     counts = Counter(c.part for c in fitted.values())
@@ -109,12 +112,12 @@ def report():
     return {
         'status': 'offline planning scenario; not a quote or order release',
         'observed_utc': source['observed_utc'], 'policy': policy,
-        'panels': panel['panels'], 'boards_per_panel': panel['boards_per_panel'], 'total_boards': boards,
+        'panels': panel_count, 'boards_per_panel': panel['boards_per_panel'], 'total_boards': boards,
         'panel_size_mm': dimensions, 'assembly_service': 'Standard', 'economic_eligible': False,
         'factory_tooling_review': tooling,
         'reason': 'Pico castellations retained; JLC Economic PCBA excludes castellated holes.',
         'source_board_sha256': panel['source_board_sha256'], 'panel_sha256': panel['panel_sha256'],
-        'parts_fitted_only_usd': cost_report(panels=panel['panels'],
+        'parts_fitted_only_usd': cost_report(panels=panel_count,
             boards_per_panel=panel['boards_per_panel'], source=source)['parts_only_usd'],
         'parts_with_provisional_attrition_usd': parts, 'assembly_fee_scenario_usd': fees,
         'partial_batch_scenario_usd': partial, 'partial_per_board_scenario_usd': round(partial / boards, 4),
@@ -142,6 +145,10 @@ def main():
     result = report()
     out = ROOT / 'build/order-review'; out.mkdir(exist_ok=True)
     (out / 'order-review.json').write_text(json.dumps(result, indent=2) + '\n')
+    scenarios = [report(panels=n) for n in (5, 25)]
+    (out / 'batch-scenarios.json').write_text(json.dumps({
+        'status': '20/100-board planning comparison; no order or quantity change',
+        'scenarios': scenarios}, indent=2) + '\n')
     print(f"Standard PCBA required; {result['total_boards']} boards")
     print(f"Partial planning scenario: ${result['partial_batch_scenario_usd']:.2f}/batch; "
           f"${result['partial_per_board_scenario_usd']:.2f}/board BEFORE PCB and other exclusions")

@@ -14,7 +14,7 @@ class PowerLayout(TestCase):
 
     def test_missing_input_connection_rejected(self):
         s=next(s for s in children(self.doc,'segment')
-               if one(s,'net')[-1]=='VIN_SYS' and one(s,'start')[1:3]==['5.8','15.65'])
+               if one(s,'net')[-1]=='VIN_SYS' and one(s,'layer')[1]=='F.Cu')
         self.doc.remove(s)
         with self.assertRaises(ValueError):audit(self.doc)
 
@@ -24,5 +24,5 @@ class PowerLayout(TestCase):
 
     def test_feedback_plane_shortcut_rejected(self):
         self.doc.append(parse('''(zone (net "3V3_OUT") (filled_polygon (layer "In2.Cu")
-            (pts (xy 4 13) (xy 6 13) (xy 6 14.5) (xy 4 14.5))))'''))
+            (pts (xy 5 23) (xy 6.2 23) (xy 6.2 24.1) (xy 5 24.1))))'''))
         with self.assertRaisesRegex(ValueError,'bypasses'):audit(self.doc)

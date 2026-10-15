@@ -26,7 +26,7 @@ class CircuitContract(unittest.TestCase):
         verify_contract()
 
     def test_16v_parts_rejected_on_each_high_voltage_position(self):
-        for ref in ('C1','C5','C8','C12'):
+        for ref in ('C1','C16','C8','C12'):
             with self.subTest(ref=ref), self.assertRaisesRegex(ValueError,ref+': high-voltage'):
                 verify_contract(tuple(replace(c,part='C1525') if c.ref==ref else c for c in COMPONENTS))
 
@@ -44,18 +44,26 @@ class CircuitContract(unittest.TestCase):
             verify_contract((*COMPONENTS,two('R99','C11702','PD_ILM','GND','pd','1k')))
 
     def test_ilm_programming_resistor_cannot_be_miswired(self):
-        with self.assertRaisesRegex(ValueError,'R18.2'):
-            verify_contract(self.altered('R18',{'2':'3V3_OUT'}))
+        with self.assertRaisesRegex(ValueError,'R17.2'):
+            verify_contract(self.altered('R17',{'2':'3V3_OUT'}))
+
+    def test_undervoltage_sense_cannot_deadlock_startup(self):
+        with self.assertRaisesRegex(ValueError,'R27.1'):
+            verify_contract(self.altered('R27',{'1':'PD_INPUT'}))
+
+    def test_current_limit_fault_detection_must_stay_enabled(self):
+        with self.assertRaisesRegex(ValueError,'U3.11'):
+            verify_contract(self.altered('U3',{'11':None}))
 
     def test_exported_part_substitution_rejected(self):
         path=Path('build/ch32-pico.net.xml')
         if not path.exists(): self.skipTest('Run just electrical-check to export the netlist')
         tree=ET.parse(path)
-        cap=next(n for n in tree.findall('./components/comp') if n.attrib['ref']=='C5')
+        cap=next(n for n in tree.findall('./components/comp') if n.attrib['ref']=='C16')
         next(f for f in cap.findall('./fields/field') if f.attrib['name']=='LCSC').text='C1525'
         with tempfile.TemporaryDirectory() as directory:
             broken=Path(directory)/'wrong-part.xml';tree.write(broken)
-            with self.assertRaisesRegex(ValueError,'C5: netlist part/value'):
+            with self.assertRaisesRegex(ValueError,'C16: netlist part/value'):
                 verify_netlist(broken)
 
     def test_shutdown_cannot_be_left_unconnected(self):

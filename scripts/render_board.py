@@ -2,6 +2,7 @@
 # Copyright (c) 2026 ch32-pico contributors
 """Render the checked board using hash-verified, locally cached part models."""
 import hashlib
+import shutil
 import json
 from pathlib import Path
 import subprocess
@@ -19,11 +20,17 @@ def main():
     manifest = json.loads((ROOT/'docs/render-models.json').read_text())
     models = manifest['models']
     cache = ROOT/'build/render/parts.3dshapes'
-    if any(not (cache/m['file']).exists() for m in models.values()):
-        subprocess.run(['easyeda2kicad', '--lcsc_id',
-            *dict.fromkeys(m['lcsc'] for m in models.values()),
-            '--footprint', '--3d', '--use-cache', '--overwrite',
-            '--output', str(ROOT/'build/render/parts')], check=True)
+    cache.mkdir(parents=True,exist_ok=True)
+    for m in models.values():
+        if 'local_source' in m:shutil.copyfile(ROOT/m['local_source'],cache/m['file'])
+    for m in models.values():
+        if (cache/m['file']).exists():continue
+        # Supplier filenames are not unique between different C-codes.
+        imported=ROOT/'build/render'/('source-'+m['lcsc'])
+        subprocess.run(['easyeda2kicad','--lcsc_id',m['lcsc'],'--footprint','--3d',
+            '--use-cache','--overwrite','--output',str(imported)],check=True)
+        shapes=imported.with_suffix('.3dshapes')
+        shutil.copyfile(shapes/m.get('import_file',m['file']),cache/m['file'])
     for m in models.values():
         if hashlib.sha256((cache/m['file']).read_bytes()).hexdigest() != m['sha256']:
             raise ValueError(f"Model changed upstream: {m['file']}. Review before updating its pin.")

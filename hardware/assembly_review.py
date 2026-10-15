@@ -20,7 +20,13 @@ ANCHORS = {
     'D4': ('1', 'Cathode / band, VIN_SYS; anode header VSYS'),
     'D2': ('1', 'Pin 1, USB D+; pin 2 GND and pin 5 fixed 3.3 V'),
     'U1': ('1', 'Pin 1 / dot, PA15; CH32X035C8T6 LQFP48'),
-    'U3': ('1', 'Pin 1, PD_ENABLE; pin 5 VBUS input, pin 6 switched PD_OUT'),
+    'U3': ('1', 'Pin 1, PD_INPUT; OUT pins 17/18; exposed pad 25 GND'),
+    'Q2': ('1', 'Gate PD_DRV; source pin 2 VBUS; drain pin 3 PD_GATE'),
+    'U6': ('1', 'Pin 1 open-drain PD_SHDN; supply pin 5 fixed 3.3 V'),
+    'Q1': ('1', 'Source pins 1-3 VBUS; gate 4; drain pins 5-9 PD_INPUT'),
+    'D5': ('1', 'Pin 1 GND; input pins 4-6 VBUS; exposed pad GND'),
+    'D6': ('1', 'Pin 1 GND; input pins 4-6 PD_OUT; exposed pad GND'),
+    'D7': ('1', 'Cathode / band PD_OUT; anode GND'),
     'U4': ('1', 'Pin 1, 3.3 V feedback; pin 3 VIN_SYS, pin 4 GND'),
     'D3': ('2', 'Cathode, GND; pin 1 is the LED anode'),
     'SW1': ('1', 'Contact 1, PA21 RESET; contact 2 GND'),
@@ -93,7 +99,7 @@ def report():
 def svg_guide(result, doc):
     e = html.escape
     parts = {r['ref']: r for r in result['parts']}
-    svg = ['<svg xmlns="http://www.w3.org/2000/svg" width="1100" height="820" viewBox="0 0 1100 820">',
+    svg = ['<svg xmlns="http://www.w3.org/2000/svg" width="1100" height="1180" viewBox="0 0 1100 1180">',
         '<rect width="1100" height="820" fill="white"/>',
         '<g font-family="sans-serif" fill="#17263c">',
         f'<text x="35" y="36" font-size="24" font-weight="bold">ch32-pico Rev {BOARD_REVISION}: assembly orientation guide</text>',
@@ -140,9 +146,9 @@ def svg_guide(result, doc):
         svg.append(f'<text x="330" y="{top}" font-size="16" font-weight="bold">{ref} · {e(row["mpn"])}</text>')
         svg.append(f'<text x="330" y="{top+19}" font-size="13">{e(note)}</text>')
         svg.append(f'<text x="330" y="{top+36}" font-size="12" fill="#58677a">Pad {pin}: x={x:.4f}, y={y:.4f} · {e(terminal["net"] or "NC")} · KiCad {row["kicad_angle_deg"]:g}° · CPL {row["cpl_rotation_deg"]:g}°</text>')
-    svg += ['<text x="330" y="712" font-size="13">Resistors and ceramic capacitors have no polarity.</text>',
-            f'<text x="330" y="734" font-size="13">Use the JSON companion for all {result["panel_cpl_rows_checked"]} panel placements and anchor coordinates.</text>',
-            '<text x="35" y="783" font-size="12">Compare actual pad numbering and body marks in JLC preview; a red model dot alone is not proof of pin 1.</text>',
+    svg += ['<text x="330" y="1050" font-size="13">Resistors and ceramic capacitors have no polarity.</text>',
+            f'<text x="330" y="1072" font-size="13">Use the JSON companion for all {result["panel_cpl_rows_checked"]} panel placements and anchor coordinates.</text>',
+            '<text x="35" y="1140" font-size="12">Compare actual pad numbering and body marks in JLC preview; a red model dot alone is not proof of pin 1.</text>',
             '</g></svg>']
     return '\n'.join(svg) + '\n'
 

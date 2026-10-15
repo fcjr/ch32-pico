@@ -1,80 +1,89 @@
 # Prototype order review
 
-The current Rev E batch is five supplied panels with four boards each: 20
-boards, 820 fitted components and 20 CH32X035 MCUs. The 93 × 71 mm panel
-preserves the 21 × 51 mm outline, 40 header positions and castellations.
-There are no mounting holes. Assembly uses 41 parts per board, 164 placements
-per panel, all on top. The diagnostic pads and open jumper are not assembled.
+The current batch scenario is five four-up panels, 20 boards. The cost-reduced
+protection stage has 52 top-side fitted parts per board, 208 per panel and
+31 exact part numbers. The 93 x 71 mm panel preserves the 21 x 51 mm board
+outline, 40 header positions and castellations. There are no mounting holes.
 
-Use Standard PCBA. The dated [JLC capability review](factory-review.md) records
-that Economic PCBA does not support castellations. The supplied panel includes
-rails, tooling holes and fiducials. Enter one design, four copies per supplied
-panel and five panels; do not request another four-way panelization.
+Use Standard PCBA; Economic PCBA does not support this castellated layout.
+Enter one design and five supplied panels with four copies each. Do not request
+another four-way panelization.
 
-## Dated cost and stock scenario
+The [pre-order review](preorder-review.md) contains the latest exact-part stock
+snapshot and parts-cost scenario. The exact CH32 is short of the 20-board need.
+No stock is reserved. Older cost totals and 40-part board counts are superseded.
 
-These figures use the saved 2026-10-13 public inventory and fee observations.
-They are planning figures, not a factory quote or stock allocation.
-`just order-review` recalculates them from the current BOM and saved observations;
-`just procurement` separately refreshes public inventory.
+`just jlcpcb` checks the saved current layout and creates matching panel Gerbers,
+BOM, CPL, orientation guide and hash manifest. Extract the outer ZIP and use its
+inner Gerber archive with its matching BOM/CPL. Never mix files from old builds.
+The command fails on stale source or failed routing. The files remain prototype
+review inputs, not a production release.
 
-| Item | Batch USD |
-|---|---:|
-| Parts with provisional attrition | 80.5506 |
-| Standard single-side setup | 25.56 |
-| Single-side stencil | 8.21 |
-| 20 feeder types | 30.60 |
-| SMT lands scenario | 4.928 |
-| Partial total | 149.8486 |
+Confirm every IC pin 1 and diode polarity against the physical orientation guide
+in the supplier preview. U1/D2 require the recorded model-frame rotation delta;
+J2 requires its recorded origin offset. The new imported power footprints use
+their LCSC frames; online model/stencil confirmation is still required. Quote
+hidden-joint X-ray for U3, Q1 and the TVS packages, USB shell assembly, fixtures,
+castellations, actual stackup, all attrition, delivery and tax.
 
-That is $7.49 per board before PCB fabrication, USB manual work, fixtures,
-X-ray inspection, handling, shipping, tax and other exclusions. The fitted BOM
-alone is $3.9214 per board. The complete list of assumptions and exclusions is
-in `build/order-review/order-review.json` and [factory review](factory-review.md).
+No order, payment, stock allocation or supplier message has been submitted.
+Physical power/USB qualification and native board firmware remain open. See the
+[qualification plan](power-qualification.md) and [factory notes](factory-notes.txt).
 
-The scenario uses the larger of fitted quantity plus displayed loss count and
-displayed assembly minimum for each C-code. JLC must confirm actual quantities
-and attrition. Public purchasing minimums are separate from assembly allocation.
+This revision uses four copper layers and front-side fitted assembly.
+Earlier fabrication quotes do not approve the new copper and assembly; request a fresh
+JLC04101H-3313 quote before ordering.
 
-The saved observation reports two C29779902 CH32X035C8T6 MCUs against a need
-for twenty, a shortfall of eighteen. The other nineteen C-codes have sufficient
-reported stock for the provisional quantities. These observations can become
-stale; no components are reserved. Obtain the exact reviewed MCU and qualified
-silicon lot, or validate any replacement before changing the BOM.
+The dated planning scenario is $206.38 for the 20-board batch ($10.32 per
+board), including provisional component attrition and modeled assembly costs
+but excluding PCB fabrication and other quoted services, shipping and tax. It
+is not a supplier quote. Fitted components alone total $113.74 ($5.69 per board).
 
-## Fabrication files and assembly review
 
-```sh
-just jlcpcb
-```
+## Further cost review, 2026-10-15
 
-This checks and generates the full set under `build/jlcpcb/`:
+R20 now shares R27's 82.5 kohm, 0.1%, 25 ppm/C C852928. The OVLO
+screen becomes 21.450–23.751 V; the independent UVLO is unchanged. This
+removes one feeder and saves $1.80 across the provisional 20-board scenario.
+All 52 fitted components, castellations and the existing layout are retained.
 
-- `gerbers.zip`, `bom.csv` and `cpl.csv` are the matching panel upload inputs.
-- `factory-notes.txt` specifies the stackup, castellations, stencil, component
-  lot, polarity and inspection requirements.
-- `assembly-orientation.svg` and `.json` give physical anchors for checking
-  every part model. All 164 panel placements are checked locally.
-- `order-review.json` records quantities, dated costs, shortages and exclusions.
-- `manifest.json` records the board, panel and output hashes.
+| Batch | Panels | Fitted parts per board | Partial parts + assembly per board | Partial batch |
+|---|---:|---:|---:|---:|
+| 20 boards | 5 | $5.6870 | $10.3191 | $206.38 |
+| 100 boards | 25 | $4.6314 | $5.8240 | $582.40 |
 
-`build/ch32-pico-jlcpcb.zip` bundles the entire directory. Extract it first;
-upload only the inner `gerbers.zip` to JLCPCB's PCB form, followed by the BOM
-and CPL at the assembly step. See [manufacturing](manufacturing.md) and
-[build setup](build.md).
+Both use the Oct14 exact fitted-part price snapshot and the same published
+Standard PCBA fee assumptions. The partial totals include provisional attrition,
+setup, stencil, 31 feeders and modeled SMT joints. PCB fabrication, required
+inspection, USB/manual assembly, handling, fixtures, shipping and tax remain
+additional. These are planning scenarios, not quotes. The default batch remains
+20 boards. MCU allocation and prototype qualification remain unresolved;
+100 boards is not an order recommendation before testing.
+`just order-review` writes both scenarios to
+`build/order-review/batch-scenarios.json` without changing panel quantity.
 
-KiCad angles are converted against JLC's own library footprints: U1 (LQFP-48)
-and D2 (SOT-23-6) carry a -90 degree frame delta because KiCad's footprints
-anchor pin 1 top-left while JLC's `…-BL` frames anchor it bottom-left, and J2
-is shifted 1.345 mm to JLC's model origin. The table lives in
-`hardware/jlc_model_frames.py` and the applied values are recorded in the
-orientation JSON. These conversions are not an approval: check IC pin 1,
-diode/LED polarity, USB mouth, switch orientation and centroids in the
-assembly preview, and record any required corrections in source before
-regenerating the files.
+The proposed regulator saving did not survive the 20-board reference-circuit
+cost screen. SCT2332 C509069 is $0.5984 versus the recorded AP63203 $1.0571,
+but its recommended circuit adds three resistor values, a compensation
+capacitor, another output capacitor, and a different inductor. Four feeder
+fees, the extra output capacitor and the priced inductor alone exceed the
+IC saving by $0.0143/board, before pricing the new small passives and extra
+assembly. At 100 boards there is a possible saving below $0.231/board before
+those remaining costs; that alternative has not been laid out or qualified.
+This is a reference-circuit comparison, not an exhaustive optimized design.
+The simpler fixed 3.3 V SCT2323 is stock zero and marked discontinued by JLC;
+SCT2320 and SCT2322 also showed zero stock. AP63203 remains fitted.
 
-No Rev E assembly preview, stock allocation or factory approval has been
-completed. Earlier Rev C browser observations remain historical evidence in
-[factory review](factory-review.md); they do not approve these files. Native
-USB/PD firmware, cable fit, power behavior and thermal qualification still
-require assembled prototypes. No order or payment has been submitted.
+The protection alternatives were reviewed and not adopted. SMBJ22A's specified
+35.5 V clamp exceeds the regulator's 32 V operating and 34 V absolute limits.
+The cheaper TECH PUBLIC TPS3808G01DBVR-TP has stock, but its full-temperature
+threshold, leakage, response and supply-off behavior were not established from
+an authoritative manufacturer specification. TI's similarly named part is not
+its datasheet. TPS3701 and both TVS2200 clamps remain fitted.
+Sources, dated candidate inventory and the calculation are recorded in
+[the second cost screen](../hardware/research/cost-round2.json).
+
+The panel exporter now clears its generated Gerber directory and verifies its
+inventory against the four-layer Gerber job. This removes obsolete In3/In4
+files left by a previous six-layer export. The final ZIP also checks that its
+file list matches the current job before bundling.

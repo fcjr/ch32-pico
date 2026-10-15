@@ -20,3 +20,13 @@ class AssemblyChecks(unittest.TestCase):
 
     def test_escape_via_outside_paste_allowed(self):
         self.assertEqual(via_in_paste(self.board(10.5,11)),[])
+
+
+class ExposedPadTests(unittest.TestCase):
+    def test_paste_window_gap_does_not_allow_ordinary_thermal_via(self):
+        doc=parse('''(kicad_pcb
+            (footprint "QFN" (at 13 38)
+                (property "Reference" "U3")
+                (pad "25" smd rect (at 0 0) (size 2.7 2.7) (layers "F.Cu" "F.Mask")))
+            (via (at 13 38) (size .45) (drill .2)))''')
+        self.assertEqual(via_in_paste(doc)[0]['pad'],'U3.25')

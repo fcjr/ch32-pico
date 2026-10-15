@@ -13,6 +13,8 @@ def main():
     parser.add_argument('board',type=Path)
     parser.add_argument('exchange',type=Path)
     parser.add_argument('--output',type=Path)
+    parser.add_argument('--only-locked',action='store_true',
+                        help='Allow the router to replace unlocked signal copper; preserve locked power/USB geometry')
     args=parser.parse_args()
     app=wx.App(False)
     source=args.board.resolve()
@@ -33,7 +35,8 @@ def main():
     board=k.LoadBoard(str(source))
     # SES is a routing delta: fixed input copper may be omitted. Preserve the
     # exact same input tracks on import that were declared fixed on export.
-    for t in board.GetTracks():t.SetLocked(True)
+    if not args.only_locked:
+        for t in board.GetTracks():t.SetLocked(True)
     if args.action=='export':
         if not k.ExportSpecctraDSN(board,str(args.exchange)):raise SystemExit('DSN export failed')
     else:

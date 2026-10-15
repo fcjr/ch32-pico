@@ -56,6 +56,10 @@ def prepare(doc, placed):
 def main():
     from .design import BOARD_REVISION
     if BOARD_REVISION!='E':raise ValueError('This migration applies to Rev E only')
+    from .circuit import COMPONENTS
+    parts={c.ref:c.part for c in COMPONENTS}
+    if 'R18' not in parts or parts.get('C12')!='C307331':
+        raise ValueError('Historical jumper migration predates the power-layout corrections; use just route-power')
     out=ROOT/'build/routing';out.mkdir(exist_ok=True)
     base=subprocess.check_output(['git','show',f'{BASE_COMMIT}:hardware/review/ch32-pico.kicad_pcb'],cwd=ROOT)
     if hashlib.sha256(base).hexdigest()!=BASE_SHA256:raise ValueError('Rev D checkpoint hash mismatch')

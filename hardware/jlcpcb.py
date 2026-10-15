@@ -35,6 +35,11 @@ def main():
         supply_notice += 'Source exact parts or validate replacements before release.\n'
     source = ROOT / 'build/panel-preview'
     panel = json.loads((source / 'manifest.json').read_text())
+    from .panel import validate_gerber_inventory
+    inventory=validate_gerber_inventory(source/'gerbers')
+    with zipfile.ZipFile(source/'ch32-pico-panel-gerbers-PREVIEW.zip') as archive:
+        if sorted(archive.namelist())!=inventory['files']:
+            raise ValueError('Gerber archive contains stale or missing layers')
     parent = ROOT / 'build'
     destination = parent / 'jlcpcb'
     with tempfile.TemporaryDirectory(prefix='jlcpcb-', dir=parent) as temporary:
@@ -80,8 +85,8 @@ def main():
             'via pricing, castellations and the complete delivered price.\n'
             'The quote form may reset settings when other choices change.\n'
             'Physical USB, PD power, cable fit and native USB firmware qualification remain.\n'
-            'The 2.93 A nominal eFuse threshold is not a qualified continuous current rating.\n'
-            'Power-design review remains open: C8 startup, C12 bypass, OVLO, transients and ILM routing.\n'
+            'The 3.64 A formula-derived nominal eFuse threshold is not a qualified continuous current rating.\n'
+            'Prototype qualification remains open: heat, loaded startup, transients, biased capacitance and low-input shutdown.\n'
             'No purchase, stock reservation or upload is performed by this build.\n')
         from scripts.license_files import copy_notices
         copy_notices(out)

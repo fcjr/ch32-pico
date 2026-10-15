@@ -1,0 +1,155 @@
+{
+  "observed_utc": "2026-10-13T23:55:02.588058+00:00",
+  "selected": "C720478",
+  "replaces": "C720477",
+  "references": [
+    "SW1",
+    "SW2"
+  ],
+  "candidates": {
+    "C720478": {
+      "mpn": "TS-1088-AR02516",
+      "jlc_url": "https://jlcpcb.com/partdetail/C720478",
+      "lcsc_url": "https://www.lcsc.com/product-detail/C720478.html",
+      "jlc_reported_stock": 5962,
+      "jlc_can_presale_number": 5553,
+      "is_buy_component": "1",
+      "minimum_prepurchase": 136,
+      "no_buy_reason": null,
+      "package": "SMD,4x3mm",
+      "price_tiers_usd": [
+        {
+          "minimum": 1,
+          "maximum": 99,
+          "unit_usd": 0.0818
+        },
+        {
+          "minimum": 100,
+          "maximum": 299,
+          "unit_usd": 0.0666
+        },
+        {
+          "minimum": 300,
+          "maximum": 2999,
+          "unit_usd": 0.0591
+        },
+        {
+          "minimum": 3000,
+          "maximum": 5999,
+          "unit_usd": 0.048
+        },
+        {
+          "minimum": 6000,
+          "maximum": 8999,
+          "unit_usd": 0.0434
+        },
+        {
+          "minimum": 9000,
+          "maximum": -1,
+          "unit_usd": 0.0412
+        }
+      ],
+      "displayed_initial_unit_usd": 0.0818,
+      "reported_attrition": 4,
+      "reported_assembly_minimum": 5,
+      "response_sha256": "a5902f074ea3977e0f15b41bee4a57fc2da57e90f6e21632300b2511f3940f8a",
+      "exact_mpn_match": true
+    },
+    "C52175904": {
+      "mpn": "TS-1088-AR02026",
+      "jlc_url": "https://jlcpcb.com/partdetail/C52175904",
+      "lcsc_url": "https://www.lcsc.com/product-detail/C52175904.html",
+      "jlc_reported_stock": 0,
+      "jlc_can_presale_number": 0,
+      "is_buy_component": "1",
+      "minimum_prepurchase": 1,
+      "no_buy_reason": null,
+      "package": "SMD,3.9x3mm",
+      "price_tiers_usd": [
+        {
+          "minimum": 1,
+          "maximum": 9,
+          "unit_usd": 0.1163
+        },
+        {
+          "minimum": 10,
+          "maximum": 29,
+          "unit_usd": 0.1163
+        },
+        {
+          "minimum": 30,
+          "maximum": 199,
+          "unit_usd": 0.1163
+        },
+        {
+          "minimum": 200,
+          "maximum": 499,
+          "unit_usd": 0.0465
+        },
+        {
+          "minimum": 500,
+          "maximum": 999,
+          "unit_usd": 0.0449
+        },
+        {
+          "minimum": 1000,
+          "maximum": -1,
+          "unit_usd": 0.0442
+        }
+      ],
+      "displayed_initial_unit_usd": 0.1163,
+      "reported_attrition": 0,
+      "reported_assembly_minimum": 2,
+      "response_sha256": "bd87b271719f3c8e10a3ef0ef88ce1b24e55b9ddb14ce4f1b4da1e0446efc568",
+      "exact_mpn_match": true
+    }
+  },
+  "original_order_issue": "User order page shows 0 with warnings despite public catalog stock. No order allocation assumed for replacement.",
+  "datasheets": {
+    "C720478": {
+      "url": "https://datasheet.lcsc.com/datasheet/pdf/ffd55a1a147ca16e74f3ceeb6c3d31ba.pdf",
+      "sha256": "c3d53bdb7ea97d7e9f0f5a6385d59e368daf6e27832471966fee82119e6f9e2c"
+    },
+    "C720477": {
+      "url": "https://datasheet.lcsc.com/datasheet/pdf/0475ac02febf455ca9ddcfb380b0df0d.pdf",
+      "sha256": "368d4cc2c26b08cb63e1b67193f671d0860b6d3fb2e6b9f2696ffade401afc30"
+    }
+  },
+  "fit": {
+    "retained_pad_centers_mm": [
+      [
+        -2.18,
+        0
+      ],
+      [
+        2.18,
+        0
+      ]
+    ],
+    "retained_pad_size_mm": [
+      1.23,
+      1.86
+    ],
+    "new_body_mm": [
+      4.0,
+      2.9
+    ],
+    "new_terminal_span_mm": 4.8,
+    "terminal_span_tolerance_mm": 0.3,
+    "terminal_width_mm": 1.3,
+    "nominal_inner_terminal_span_mm": 3.2,
+    "pad_outer_span_mm": 5.59,
+    "pad_inner_gap_mm": 3.13,
+    "pad_side_extension_each_mm": 0.28,
+    "toe_extension_at_max_terminal_span_each_mm": 0.245,
+    "height_original_mm": 2.0,
+    "height_replacement_mm": 2.5,
+    "operating_force_n": 1.6,
+    "voltage_rating_v": 12,
+    "current_rating_ma": 50,
+    "connection": "Two-terminal momentary normally open SPST, nonpolarized. No locating peg for AR variant.",
+    "assessment": "Existing copper accepts replacement terminal envelope; no reroute or CPL rotation change. Supplier landing pattern is reference data, not an exact match to retained pads.",
+    "track_via_fingerprint_unchanged": "cbc548f97c5daf206992f2fb4b1a588ba31e33ea27cd966614bda6097d841a23"
+  },
+  "assembly": "Extended part; order-specific allocation, feeder charges and placement review remain unconfirmed."
+}

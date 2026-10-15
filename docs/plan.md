@@ -43,7 +43,7 @@ circuit source and one checked board checkpoint.
 8. Qualify prototypes for cable fit, rail behavior, USB power states,
    programmer provisioning, flash/readback, reset recovery and header functions.
 
-The current layout uses the checked four-layer JLC04101H-3313 stackup.
+The current layout uses the four-layer JLC04101H-3313 stackup.
 A two-layer version could lower fabrication cost but would need a separate
 routing and ground-return review. Do not advertise current component cost as
 an assembled-board quote or claim untested hardware compatibility.

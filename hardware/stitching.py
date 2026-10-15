@@ -7,7 +7,7 @@ its existing short local ground via. No board-wide fence or switch-node copper.
 from .sexp import parse
 from .schematic import uid
 
-VIAS=((5.3,8.0),(14.5,7.55))
+VIAS=((5.5,7.8),(14.5,7.55))
 
 
 def apply(doc):

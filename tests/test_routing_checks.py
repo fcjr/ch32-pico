@@ -38,3 +38,30 @@ class CriticalVias(unittest.TestCase):
             with self.subTest(changed=changed):
                 self.assertEqual(len(unpreserved_vias(seed,parse(changed))),1)
         self.assertEqual(unpreserved_vias(seed,parse(original)),[])
+
+class OutlineCopper(unittest.TestCase):
+    def test_wholly_outside_copper_rejected(self):
+        from hardware.routing_checks import outside_outline_copper
+        doc=parse('(kicad_pcb (segment (start -1 4) (end -1 8) (width .15) (layer "F.Cu") (net "GND")))')
+        self.assertEqual(len(outside_outline_copper(doc)),1)
+
+    def test_track_width_and_via_annulus_must_fit(self):
+        from hardware.routing_checks import outside_outline_copper
+        doc=parse('(kicad_pcb (segment (start .05 4) (end .05 8) (width .15) (net "GND")) (via (at 20.9 4) (size .45) (net "GND")))')
+        self.assertEqual(len(outside_outline_copper(doc)),2)
+
+    def test_inside_copper_accepted(self):
+        from hardware.routing_checks import outside_outline_copper
+        doc=parse('(kicad_pcb (segment (start .5 4) (end .5 8) (width .15) (net "GND")))')
+        self.assertEqual(outside_outline_copper(doc),[])
+
+
+class StackupContract(unittest.TestCase):
+    def test_missing_or_changed_stack_is_rejected(self):
+        from hardware.routing_checks import stackup_matches
+        board='(kicad_pcb (layers (0 "F.Cu" signal) (2 "B.Cu" signal)) (setup (stackup (layer "F.Cu" (thickness 0.035)))))'
+        source=parse(board)
+        self.assertTrue(stackup_matches(source,source))
+        self.assertFalse(stackup_matches(source,parse(board.replace('0.035','0.018'))))
+        self.assertFalse(stackup_matches(source,parse(board.replace('(stackup (layer "F.Cu" (thickness 0.035)))',''))))
+        self.assertFalse(stackup_matches(source,parse(board.replace('(2 "B.Cu" signal)','(4 "In1.Cu" signal) (2 "B.Cu" signal)'))))

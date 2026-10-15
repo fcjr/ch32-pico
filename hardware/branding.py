@@ -8,20 +8,22 @@ from .sexp import children, one, parse, dump
 
 def artwork():
     nodes = []
-    for label, x, y, size in [('ch32-pico', 10.5, 34.7, 1),
-                              ('LEFT SHIFT', 10.5, 36.2, 1),
-                              ('LOGICAL', 10.5, 37.4, 1),
-                              (f'REV {BOARD_REVISION}', 10.5, 21.8, 1),
-                              ('PDOUT 5-20V',10.5,45.2,1)]:
-        nodes.append(parse(f'''(gr_text "{label}" (at {x} {y}) (layer "F.SilkS")
+    for label, x, y, size, side in [('ch32-pico', 10.5, 27.3, .9, 'B'),
+                              (f'REV {BOARD_REVISION}', 10.5, 28.9, .8, 'B'),
+                              ('LEFT SHIFT', 10.5, 46.5, .8, 'B'),
+                              ('LOGICAL', 10.5, 47.8, .8, 'B'),
+                              ('PDOUT 5-20V',10.5,13.0,.8,'B')]:
+        mirror='(justify mirror)' if side=='B' else ''
+        nodes.append(parse(f'''(gr_text "{label}" (at {x} {y}) (layer "{side}.SilkS")
             (uuid "{uid('brand/text/' + label)}")
-            (effects (font (size {size} {size}) (thickness 0.15))))'''))
-    # Double left-chevron mark from Left Shift Logical's original SVG.
-    for index, x in enumerate((5.5, 6.3)):
-        for half, (a, b) in enumerate((((x, 35.9), (x-.8, 36.7)),
-                                       ((x-.8, 36.7), (x, 37.5)))):
+            (effects (font (size {size} {size}) (thickness 0.15)) {mirror}))'''))
+    # Separate the brand from the center test points. Mirrored geometry reads
+    # as left chevrons beside LOGICAL when viewed from the back.
+    for index, x in enumerate((13.4, 14.0)):
+        for half, (a, b) in enumerate((((x, 47.5), (x+.3, 47.8)),
+                                       ((x+.3, 47.8), (x, 48.1)))):
             nodes.append(parse(f'''(gr_line (start {a[0]} {a[1]}) (end {b[0]} {b[1]})
-                (stroke (width 0.22) (type solid)) (layer "F.SilkS")
+                (stroke (width 0.18) (type solid)) (layer "B.SilkS")
                 (uuid "{uid(f'brand/chevron/{index}/{half}')}"))'''))
     return nodes
 
@@ -30,6 +32,8 @@ def apply(doc):
     """Replace only the managed artwork; repeated builds are idempotent."""
     marks = artwork()
     ids = {one(n, 'uuid')[1] for n in marks}
+    # Remove the previous four-stroke logo when updating an existing board.
+    ids |= {uid(f'brand/chevron/{index}/{half}') for index in range(2) for half in range(2)}
     labels = {'CH32 PICO', 'ch32-pico', 'LEFT SHIFT', 'LOGICAL', 'PDOUT 5-20V'}
     doc[:] = [n for n in doc if not (isinstance(n, list) and n and (
         (n[0] == 'gr_text' and (n[1] in labels or n[1].startswith('REV '))) or

@@ -32,8 +32,30 @@ def verify_contract(components=COMPONENTS):
     require('D2',{2:'GND',5:'3V3_OUT'})
     require('U4',{1:'3V3_OUT',2:'3V3_EN',3:'VIN_SYS',4:'GND',5:'BUCK_SW',6:'BUCK_BST'})
     require('L1',{1:'BUCK_SW',2:'3V3_OUT'})
-    require('U3',{1:'PD_ENABLE',2:'PD_OVLO',4:'PD_FAULT_N',5:'VBUS',6:'PD_OUT',7:'PD_DVDT',8:'GND',9:'PD_ILM'})
-    if c['U3'].part!='C3662793':raise ValueError('Use the reviewed 470L load-switch variant')
+    require('U3',{1:'PD_INPUT',2:'PD_INPUT',3:'PD_GATE',4:'PD_DRV',5:'VBUS',6:'VBUS',7:'PD_OVLO',8:'GND',
+        9:'PD_DVDT',10:'PD_ILM',11:'GND',12:'PD_SHDN',13:'PD_IMON',14:'PD_FAULT_N',
+        15:'GND',17:'PD_OUT',18:'PD_OUT',25:'GND'})
+    if c['U3'].part!='C18197523':raise ValueError('Use the reviewed MX26631DL auto-retry variant')
+    require('Q2',{1:'PD_DRV',2:'VBUS',3:'PD_GATE'})
+    require('Q1',{1:'VBUS',2:'VBUS',3:'VBUS',4:'PD_GATE',5:'PD_INPUT',6:'PD_INPUT',7:'PD_INPUT',8:'PD_INPUT',9:'PD_INPUT'})
+    require('U6',{1:'PD_SHDN',2:'GND',3:'PD_UV_SENSE',4:'GND',5:'3V3_OUT',6:None})
+    for ref,part in (('Q2','C40912'),('Q1','C431191'),('U6','C132788'),('D7','C5709679')):
+        if c[ref].part!=part:raise ValueError(f'{ref}: protection part substitution needs review')
+    require('U3',{16:None,19:None,20:None,21:None,22:None,23:None,24:None})
+    require('R26',{1:'PD_ENABLE',2:'PD_SHDN'})
+    require('R27',{1:'VBUS',2:'PD_UV_SENSE'})
+    require('R28',{1:'PD_UV_SENSE',2:'GND'})
+    require('D7',{1:'PD_OUT',2:'GND'})
+    for ref,part,value in (
+        ('R26','C25900','4.7k'),('R27','C852928','82.5k / 0.1%'),
+        ('R28','C852919','7.68k / 0.1%'),
+        ('R25','C190095','10k / 0.1%'),('R7','C25744','10k')):
+        if (c[ref].part,c[ref].value)!=(part,value):
+            raise ValueError(f'{ref}: protection calculation requires the reviewed resistor')
+
+    for ref,net in (('D5','VBUS'),('D6','PD_OUT')):
+        if c[ref].part!='C523793':raise ValueError(f'{ref}: unreviewed TVS clamp')
+        require(ref,{1:'GND',2:'GND',3:'GND',4:net,5:net,6:net,7:'GND'})
     require('R7',{1:'PD_ENABLE',2:'GND'})
     require('R3',{1:'CC1',2:'GND'});require('R4',{1:'CC2',2:'GND'})
     require('J2',{'A5':'CC1','B5':'CC2','A6':'USB_DP','B6':'USB_DP','A7':'USB_DM','B7':'USB_DM',
@@ -74,9 +96,9 @@ def verify_contract(components=COMPONENTS):
     if shutdown_nodes!={('J1','37'),('U4','2')}:
         raise ValueError('3V3_EN must connect only header 37 and regulator EN, with no VIN pull-up')
     enable_nodes={(x.ref,p) for x in components for p,n in x.nets.items() if n=='PD_ENABLE'}
-    if enable_nodes!={('U1','22'),('U3','1'),('R7','1'),('TP21','1')}:
+    if enable_nodes!={('U1','22'),('R26','1'),('R7','1'),('TP21','1')}:
         raise ValueError('PD_ENABLE must carry control only')
-    for ref in ('C1','C5','C8','C12'):
+    for ref in ('C1','C8','C12','C14','C16'):
         rating=library[c[ref].part].voltage_rating_v
         if rating is None or rating<50:
             raise ValueError(f'{ref}: high-voltage capacitor requires a verified 50 V part')
@@ -85,16 +107,26 @@ def verify_contract(components=COMPONENTS):
             label=re.search(r'/\s*(\d+(?:\.\d+)?)V\b',item.value)
             if label and float(label[1])!=library[item.part].voltage_rating_v:
                 raise ValueError(f'{item.ref}: capacitor value label differs from vendor voltage rating')
-    require('C5',{1:'VBUS',2:'GND'})
     require('C8',{1:'PD_DVDT',2:'GND'})
+    if (c['C8'].part,c['C8'].value)!=('C1532','22nF / 50V'):
+        raise ValueError('C8: use the reviewed 22 nF startup capacitor')
     require('C12',{1:'PD_OUT',2:'GND'})
-    for ref,part,value in (('R17','C25900','4.7k'),('R18','C25867','1.5k')):
+    if (c['C12'].part,c['C12'].value)!=('C51205','4.7uF / 50V'):
+        raise ValueError('C12: use the reviewed 1206 output capacitor with DC-bias evidence')
+    for ref,part,value in (('R20','C852928','82.5k / 0.1%'),('R21','C851038','4.75k / 0.1%')):
+        if (c[ref].part,c[ref].value)!=(part,value):
+            raise ValueError(f'{ref}: OVLO calculation requires the reviewed precision resistor')
+    for ref,part,value in (('R17','C25749','11k'),):
         require(ref,{1:'PD_ILM',2:'GND'})
         if not c[ref].fitted or (c[ref].part,c[ref].value)!=(part,value):
             raise ValueError(f'{ref}: use the reviewed ~3 A ILM network')
     ilm_nodes={(x.ref,p) for x in components for p,n in x.nets.items() if n=='PD_ILM'}
-    if ilm_nodes!={('U3','9'),('R17','1'),('R18','1'),('R24','1')}:
+    if ilm_nodes!={('U3','10'),('R17','1')}:
         raise ValueError('Unreviewed connection to ILM programming network')
+    require('R24',{1:'PD_IMON',2:'CURRENT_SENSE'})
+    require('R25',{1:'PD_IMON',2:'GND'})
+    for ref,a,b in (('C14','PD_INPUT','GND'),('C16','VBUS','GND')):
+        require(ref,{1:a,2:b})
     # Reject accidental direct bypasses of the switch or VSYS isolation diode.
     for x in components:
         nets=set(x.nets.values())

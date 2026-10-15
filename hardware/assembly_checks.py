@@ -3,7 +3,7 @@
 """Conservative drill-to-paste check independent of router manufacturing flags.
 
 An ordinary assembly order must not silently acquire filled/capped via-in-pad.
-Paste rectangles are checked by their bounding boxes, including rounded corners.
+Paste rectangles and designated exposed copper pads are checked by their bounding boxes, including rounded corners.
 This can over-report a corner overlap; it cannot approve one by rounding it away.
 """
 import math
@@ -18,7 +18,8 @@ def via_in_paste(doc):
         angle=math.radians(float(at[3]) if len(at)>3 else 0)
         for pad in children(fp,'pad'):
             layers=one(pad,'layers')[1:]
-            if not any(layer in layers for layer in ('F.Paste','B.Paste','*.Paste')):continue
+            exposed=(ref,pad[1]) in {('U3','25'),('Q1','9'),('D5','7'),('D6','7')}
+            if not exposed and not any(layer in layers for layer in ('F.Paste','B.Paste','*.Paste')):continue
             at=one(pad,'at');x,y=map(float,at[1:3])
             center=(fx+x*math.cos(angle)+y*math.sin(angle),
                     fy-x*math.sin(angle)+y*math.cos(angle))

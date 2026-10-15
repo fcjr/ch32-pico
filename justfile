@@ -49,9 +49,13 @@ route: placement-check
     uv run --locked python scripts/router_dependencies.py
     uv run --locked python -m hardware.routing --kicad-python "{{kicad_python}}"
 
-# Reproduce the current Rev E incremental routing from the Rev D checkpoint.
+# Historical jumper migration; current power layout uses route-power.
 route-jumper: check
     uv run --locked python -m hardware.jumper_routing
+
+# Replay the reviewed Rev E power corrections and independently check them.
+route-power: check
+    uv run --locked python -m hardware.power_routing
 
 # Retained Rev D migration, gated to that revision.
 route-enable: check

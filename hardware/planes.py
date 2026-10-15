@@ -20,7 +20,7 @@ def add_planes(source, output):
     if BOARD_REVISION in ('B','C','D','E'):
         # Additional outer-layer return for the connector/output region.
         # The uninterrupted L2 reference remains the primary USB return.
-        planes.append(('GND','B.Cu',12.0))
+        planes.append(('GND','B.Cu',MECHANICAL.length-.3))
     for net,layer,bottom in planes:
         doc.append(parse(f'''(zone (net "{net}") (layer "{layer}")
           (uuid "{uid('plane/'+net+'/'+layer)}") (hatch edge 0.5)

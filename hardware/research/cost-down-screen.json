@@ -1,0 +1,300 @@
+{
+  "status": "Applied; schematic, four-layer PCB, panel, exports and 96 regression tests pass. Physical qualification and order release remain open.",
+  "user_priority": "Minimize total assembled-board cost, including components, layers, feeders and assembly.",
+  "preserve": [
+    "CH32 internal USB-PD",
+    "3 A design target, subject to prototype qualification",
+    "single-sided fitted assembly",
+    "Pico outline and GPIO access",
+    "RESET and BOOT grouped along bottom edge",
+    "LEFT SHIFT LOGICAL branding"
+  ],
+  "candidate": {
+    "lcsc": "C18197523",
+    "mpn": "MX26631DL",
+    "stock_observation": {
+      "mpn": "MX26631DL",
+      "jlc_url": "https://jlcpcb.com/partdetail/C18197523",
+      "lcsc_url": "https://www.lcsc.com/product-detail/C18197523.html",
+      "jlc_reported_stock": 13645,
+      "jlc_can_presale_number": 13588,
+      "is_buy_component": "1",
+      "minimum_prepurchase": 15,
+      "no_buy_reason": null,
+      "package": "QFN-24(4x4)",
+      "price_tiers_usd": [
+        {
+          "minimum": 1,
+          "maximum": 9,
+          "unit_usd": 0.7619
+        },
+        {
+          "minimum": 10,
+          "maximum": 29,
+          "unit_usd": 0.6167
+        },
+        {
+          "minimum": 30,
+          "maximum": 99,
+          "unit_usd": 0.5449
+        },
+        {
+          "minimum": 100,
+          "maximum": 499,
+          "unit_usd": 0.4731
+        },
+        {
+          "minimum": 500,
+          "maximum": 999,
+          "unit_usd": 0.4307
+        },
+        {
+          "minimum": 1000,
+          "maximum": -1,
+          "unit_usd": 0.4079
+        }
+      ],
+      "displayed_initial_unit_usd": 0.7619,
+      "reported_attrition": 0,
+      "reported_assembly_minimum": 0,
+      "response_sha256": "111826f4e956f27a18d2ac04e2119ac62f41ea8331835b4dbdb814c66161d582",
+      "exact_mpn_match": true
+    },
+    "unit_usd_at_20": 0.6167,
+    "manufacturer_datasheet": "https://www.maxinmicro.com/action/download?file=7",
+    "datasheet_sha256": "fd9c46c2efc06fdaacd254e2199f2180de1ab7429f2c7fea438af065b3080dfe",
+    "datasheet_revision": "V12",
+    "screen": "4.5-40 V operating input; QFN 4x4; integrated current limiting and BGATE/DRV for external reverse-blocking FET circuit.",
+    "potential_savings": "Replaces TPS26630 and separate LM74700 controller. Q1 AON7264E, Q2 BSS138-7-F and TPS3701 supervisor retain reverse-blocking and undervoltage functions.",
+    "unresolved": [
+      "No guaranteed current-limit bound at 11k; qualify purchased lots over temperature.",
+      "Reverse turn-off, unpowered leakage, retry heating and dynamic undervoltage response need bench tests.",
+      "No continuous current, arbitrary inductive energy or USB compliance rating established.",
+      "Firmware transport and board integration remain incomplete.",
+      "JLC order allocation and sustained stock remain unconfirmed."
+    ]
+  },
+  "release": "Prototype review files regenerated for this source. No qualified continuous-current rating or order release.",
+  "previous_bom_usd_per_board_at_20": 22.8766,
+  "previous_four_main_protection_parts_usd_per_board": 18.6081,
+  "current_bom_usd_per_board_at_20": 5.687,
+  "stock_observed_utc": "2026-10-14T05:34:34.405305+00:00",
+  "fitted_parts_per_board": 52,
+  "distinct_fitted_mpns": 31,
+  "main_protection_parts": {
+    "U3": {
+      "lcsc": "C18197523",
+      "mpn": "MX26631DL",
+      "jlc_url": "https://jlcpcb.com/partdetail/C18197523",
+      "lcsc_url": "https://www.lcsc.com/product-detail/C18197523.html",
+      "jlc_reported_stock": 13645,
+      "jlc_can_presale_number": 13588,
+      "is_buy_component": "1",
+      "minimum_prepurchase": 15,
+      "no_buy_reason": null,
+      "package": "QFN-24(4x4)",
+      "price_tiers_usd": [
+        {
+          "minimum": 1,
+          "maximum": 9,
+          "unit_usd": 0.7619
+        },
+        {
+          "minimum": 10,
+          "maximum": 29,
+          "unit_usd": 0.6167
+        },
+        {
+          "minimum": 30,
+          "maximum": 99,
+          "unit_usd": 0.5449
+        },
+        {
+          "minimum": 100,
+          "maximum": 499,
+          "unit_usd": 0.4731
+        },
+        {
+          "minimum": 500,
+          "maximum": 999,
+          "unit_usd": 0.4307
+        },
+        {
+          "minimum": 1000,
+          "maximum": -1,
+          "unit_usd": 0.4079
+        }
+      ],
+      "displayed_initial_unit_usd": 0.7619,
+      "reported_attrition": 0,
+      "reported_assembly_minimum": 0,
+      "response_sha256": "111826f4e956f27a18d2ac04e2119ac62f41ea8331835b4dbdb814c66161d582",
+      "exact_mpn_match": true
+    },
+    "Q1": {
+      "lcsc": "C431191",
+      "mpn": "AON7264E",
+      "jlc_url": "https://jlcpcb.com/partdetail/C431191",
+      "lcsc_url": "https://www.lcsc.com/product-detail/C431191.html",
+      "jlc_reported_stock": 51351,
+      "jlc_can_presale_number": 49983,
+      "is_buy_component": "1",
+      "minimum_prepurchase": 33,
+      "no_buy_reason": null,
+      "package": "DFN-8(3x3)",
+      "price_tiers_usd": [
+        {
+          "minimum": 1,
+          "maximum": 49,
+          "unit_usd": 0.2743
+        },
+        {
+          "minimum": 50,
+          "maximum": 149,
+          "unit_usd": 0.2203
+        },
+        {
+          "minimum": 150,
+          "maximum": 499,
+          "unit_usd": 0.1973
+        },
+        {
+          "minimum": 500,
+          "maximum": 2499,
+          "unit_usd": 0.1684
+        },
+        {
+          "minimum": 2500,
+          "maximum": 4999,
+          "unit_usd": 0.1392
+        },
+        {
+          "minimum": 5000,
+          "maximum": -1,
+          "unit_usd": 0.1314
+        }
+      ],
+      "displayed_initial_unit_usd": 0.2743,
+      "reported_attrition": 0,
+      "reported_assembly_minimum": 5,
+      "response_sha256": "54a57e9c30f824f247e0f04a4b644d62c9e436d44c5b72bf6ed5b22b61187143",
+      "exact_mpn_match": true
+    },
+    "Q2": {
+      "lcsc": "C40912",
+      "mpn": "BSS138-7-F",
+      "jlc_url": "https://jlcpcb.com/partdetail/C40912",
+      "lcsc_url": "https://www.lcsc.com/product-detail/C40912.html",
+      "jlc_reported_stock": 348359,
+      "jlc_can_presale_number": 347650,
+      "is_buy_component": "1",
+      "minimum_prepurchase": 258,
+      "no_buy_reason": null,
+      "package": "SOT-23",
+      "price_tiers_usd": [
+        {
+          "minimum": 1,
+          "maximum": 99,
+          "unit_usd": 0.0443
+        },
+        {
+          "minimum": 100,
+          "maximum": 299,
+          "unit_usd": 0.035
+        },
+        {
+          "minimum": 300,
+          "maximum": 2999,
+          "unit_usd": 0.0302
+        },
+        {
+          "minimum": 3000,
+          "maximum": 5999,
+          "unit_usd": 0.0265
+        },
+        {
+          "minimum": 6000,
+          "maximum": 8999,
+          "unit_usd": 0.0237
+        },
+        {
+          "minimum": 9000,
+          "maximum": -1,
+          "unit_usd": 0.0222
+        }
+      ],
+      "displayed_initial_unit_usd": 0.0443,
+      "reported_attrition": 5,
+      "reported_assembly_minimum": 5,
+      "response_sha256": "6e04ee054bf996c753213eb478d70b11b927ff96db96a0e4d352a98ad62cdfa1",
+      "exact_mpn_match": true
+    },
+    "U6": {
+      "lcsc": "C132788",
+      "mpn": "TPS3701DDCR",
+      "jlc_url": "https://jlcpcb.com/partdetail/C132788",
+      "lcsc_url": "https://www.lcsc.com/product-detail/C132788.html",
+      "jlc_reported_stock": 26635,
+      "jlc_can_presale_number": 26605,
+      "is_buy_component": "1",
+      "minimum_prepurchase": 17,
+      "no_buy_reason": null,
+      "package": "SOT-23-Thin-6",
+      "price_tiers_usd": [
+        {
+          "minimum": 1,
+          "maximum": 9,
+          "unit_usd": 0.6885
+        },
+        {
+          "minimum": 10,
+          "maximum": 29,
+          "unit_usd": 0.5498
+        },
+        {
+          "minimum": 30,
+          "maximum": 99,
+          "unit_usd": 0.4797
+        },
+        {
+          "minimum": 100,
+          "maximum": 499,
+          "unit_usd": 0.4095
+        },
+        {
+          "minimum": 500,
+          "maximum": 999,
+          "unit_usd": 0.3671
+        },
+        {
+          "minimum": 1000,
+          "maximum": -1,
+          "unit_usd": 0.3459
+        }
+      ],
+      "displayed_initial_unit_usd": 0.6885,
+      "reported_attrition": 0,
+      "reported_assembly_minimum": 0,
+      "response_sha256": "7a3f1f3a434ba6a34ebdc9b16b66e516238eb7cff24ff6b0e37d0802d45c9fe0",
+      "exact_mpn_match": true
+    }
+  },
+  "stock_shortfalls_before_attrition": [
+    {
+      "lcsc": "C29779902",
+      "required": 20,
+      "stock": 2
+    }
+  ],
+  "validation": {
+    "erc_violations": 0,
+    "pcb_drc_violations": 0,
+    "unconnected_nets": 0,
+    "regression_tests": 96,
+    "via_in_paste": 0,
+    "panel_copies": 4,
+    "fitted_parts_per_panel": 208,
+    "review_report": "hardware/review/validation.json"
+  },
+  "followup_review": "hardware/research/cost-round2.json"
+}

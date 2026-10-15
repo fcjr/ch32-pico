@@ -20,7 +20,7 @@ void pd_init(pd_policy *p);
 /* Returns a fresh epoch; unsupported voltage/no current budget leaves OFF.
  * caps are the source's received fixed SPR PDOs, not guessed charger ratings.
  * Source is responsible for restricting advertised current to its cable rating.
- * board_limit_ma must be the qualified assembly/connection rating, <= 5000.
+ * board_limit_ma must be the qualified assembly/connection rating, <= 3000. reserve_ma must be at least 100 mA and include all 3V3 loads.
  */
 uint32_t pd_select(pd_policy *p, const uint32_t *caps, size_t count,
                    uint16_t mv, uint16_t board_limit_ma, uint16_t reserve_ma);

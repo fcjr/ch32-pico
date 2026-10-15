@@ -17,13 +17,15 @@ class ManufacturingTests(unittest.TestCase):
             assembly_files(self.positions(directory,lambda rows:None),directory)
             with (directory/'bom.csv').open() as f:
                 by_ref={ref:row for row in csv.DictReader(f) for ref in row['Designator'].split(',')}
-            for ref in ('C4','C5','C6','C8','C9','C10','C11','C12','C13'):
+            for ref in ('C4','C17','C6','C9','C10','C11','C13'):
                 self.assertEqual(by_ref[ref]['LCSC Part #'],'C307331')
                 self.assertEqual(by_ref[ref]['MPN'],'CL05B104KB54PNC')
                 self.assertEqual(by_ref[ref]['Comment'],'100nF / 50V')
-            self.assertEqual(by_ref['R17']['LCSC Part #'],'C25900')
-            self.assertEqual(by_ref['R17']['Comment'],'4.7k')
-            self.assertEqual(by_ref['R18']['Comment'],'1.5k')
+            self.assertEqual(by_ref['C8']['LCSC Part #'],'C1532')
+            self.assertEqual(by_ref['C8']['Comment'],'22nF / 50V')
+            self.assertEqual(by_ref['R17']['LCSC Part #'],'C25749')
+            self.assertEqual(by_ref['R17']['Comment'],'11k')
+            self.assertEqual(by_ref['C12']['LCSC Part #'],'C51205')
 
     def positions(self,directory,mutate):
         rows=[]

@@ -1,6 +1,6 @@
 {
   "status": "routing checked; not released for ordering",
-  "saved_at": "2026-10-18T20:56:51.902433+00:00",
+  "saved_at": "2026-10-18T23:28:24.387050+00:00",
   "engine": "power-corrected",
   "selection": "passing DRC/connectivity, then minimum vias and trace length",
   "checks": {
@@ -11,28 +11,16 @@
     "violation_types": {},
     "stackup_matches_source": true,
     "outside_outline_copper": [],
-    "via_count": 141,
-    "trace_length_mm": 1367.654,
-    "trace_via_geometry_sha256": "0f05f64fd0153974703c5272923c8ce08fd672ae59195b55a27d82edf0779f73",
+    "via_count": 115,
+    "trace_length_mm": 1219.454,
+    "trace_via_geometry_sha256": "3d8551a4e7305c37f32bffe2d55ccbcc308a65aabdff269f3daca13c9658218e",
     "via_in_paste": [],
     "changed_critical_segments": [],
     "changed_critical_vias": [],
-    "foreign_tracks_on_ground_layer": 12,
+    "foreign_tracks_on_ground_layer": 0,
     "ground_plane": {
-      "signal_crossovers": [
-        {
-          "net": "PA17",
-          "length_mm": 7.2336,
-          "width_mm": 0.15,
-          "corridor_mm": [
-            1.5,
-            36.7,
-            8.9,
-            37.2
-          ]
-        }
-      ],
-      "ground_via_count": 20,
+      "signal_crossovers": [],
+      "ground_via_count": 15,
       "all_ground_vias_on_one_fill_polygon": true,
       "passes": true,
       "limitations": "Geometry only; USB reference is checked separately; EMC requires hardware"
@@ -65,14 +53,14 @@
       "paths": {
         "DP": {
           "connector_to_mcu_mm": {
-            "A6": 41.1314,
-            "B6": 38.0514
+            "A6": 35.1314,
+            "B6": 32.0514
           }
         },
         "DM": {
           "connector_to_mcu_mm": {
-            "A7": 38.5857,
-            "B7": 37.5857
+            "A7": 32.5857,
+            "B7": 31.5857
           }
         },
         "BOOT": {
@@ -86,7 +74,7 @@
         "net": "GND",
         "longitudinal_step_max_mm": 0.05,
         "transverse_samples": "trace center and both edges",
-        "sample_count": 4980,
+        "sample_count": 4260,
         "uncovered_sample_count": 0,
         "uncovered_samples": []
       },
@@ -832,11 +820,11 @@
           "side": "F",
           "pad_xy_mm": [
             15.5,
-            28.3
+            22.3
           ],
           "text_xy_mm": [
             17.1,
-            28.45
+            22.45
           ]
         },
         {
@@ -846,11 +834,11 @@
           "side": "F",
           "pad_xy_mm": [
             14.7,
-            28.7
+            22.7
           ],
           "text_xy_mm": [
             15.0,
-            29.4
+            23.4
           ]
         }
       ],
@@ -899,8 +887,8 @@
       "local_return_via_count": 2,
       "local_return_ground_plane_checked": true,
       "supply_trace_totals_mm": {
-        "VSYS": 22.763,
-        "VIN_SYS": 10.125
+        "VSYS": 19.884,
+        "VIN_SYS": 9.586
       },
       "feedback_via_isolated_from_shared_plane": true,
       "passes": true,
@@ -908,7 +896,7 @@
     },
     "passes_connectivity_and_drc": true
   },
-  "board_sha256": "ff2e819a6a37b369b5fdf35f2b539371ccf53709e440340859e0741b41ba754e",
+  "board_sha256": "586bc46b0ea2cba53adf4a2813e5a5e6c9e419d51cf401055581554ba00e4de8",
   "comparison": {
     "status": "four-layer direct-VBUS layout; geometry checked, physical qualification and order release remain open",
     "candidates": {
@@ -920,28 +908,16 @@
         "violation_types": {},
         "stackup_matches_source": true,
         "outside_outline_copper": [],
-        "via_count": 141,
-        "trace_length_mm": 1367.654,
-        "trace_via_geometry_sha256": "0f05f64fd0153974703c5272923c8ce08fd672ae59195b55a27d82edf0779f73",
+        "via_count": 115,
+        "trace_length_mm": 1219.454,
+        "trace_via_geometry_sha256": "3d8551a4e7305c37f32bffe2d55ccbcc308a65aabdff269f3daca13c9658218e",
         "via_in_paste": [],
         "changed_critical_segments": [],
         "changed_critical_vias": [],
-        "foreign_tracks_on_ground_layer": 12,
+        "foreign_tracks_on_ground_layer": 0,
         "ground_plane": {
-          "signal_crossovers": [
-            {
-              "net": "PA17",
-              "length_mm": 7.2336,
-              "width_mm": 0.15,
-              "corridor_mm": [
-                1.5,
-                36.7,
-                8.9,
-                37.2
-              ]
-            }
-          ],
-          "ground_via_count": 20,
+          "signal_crossovers": [],
+          "ground_via_count": 15,
           "all_ground_vias_on_one_fill_polygon": true,
           "passes": true,
           "limitations": "Geometry only; USB reference is checked separately; EMC requires hardware"
@@ -974,14 +950,14 @@
           "paths": {
             "DP": {
               "connector_to_mcu_mm": {
-                "A6": 41.1314,
-                "B6": 38.0514
+                "A6": 35.1314,
+                "B6": 32.0514
               }
             },
             "DM": {
               "connector_to_mcu_mm": {
-                "A7": 38.5857,
-                "B7": 37.5857
+                "A7": 32.5857,
+                "B7": 31.5857
               }
             },
             "BOOT": {
@@ -995,7 +971,7 @@
             "net": "GND",
             "longitudinal_step_max_mm": 0.05,
             "transverse_samples": "trace center and both edges",
-            "sample_count": 4980,
+            "sample_count": 4260,
             "uncovered_sample_count": 0,
             "uncovered_samples": []
           },
@@ -1741,11 +1717,11 @@
               "side": "F",
               "pad_xy_mm": [
                 15.5,
-                28.3
+                22.3
               ],
               "text_xy_mm": [
                 17.1,
-                28.45
+                22.45
               ]
             },
             {
@@ -1755,11 +1731,11 @@
               "side": "F",
               "pad_xy_mm": [
                 14.7,
-                28.7
+                22.7
               ],
               "text_xy_mm": [
                 15.0,
-                29.4
+                23.4
               ]
             }
           ],
@@ -1808,8 +1784,8 @@
           "local_return_via_count": 2,
           "local_return_ground_plane_checked": true,
           "supply_trace_totals_mm": {
-            "VSYS": 22.763,
-            "VIN_SYS": 10.125
+            "VSYS": 19.884,
+            "VIN_SYS": 9.586
           },
           "feedback_via_isolated_from_shared_plane": true,
           "passes": true,

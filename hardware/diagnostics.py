@@ -28,8 +28,8 @@ DIAGNOSTICS = (
     Diagnostic('TP20','CC2','CC2',(10.8,10.2),(10.8,11.65)),
     Diagnostic('TP21','PB2','PB2',(12.3,18.3),(12.3,19.45)),
     Diagnostic('TP22','STATUS_LED','PB3',(14.5,34.2),(14.7,33.3),'B','SMALL_PROBE'),
-    Diagnostic('TP23','USB_DP','D+',(15.5,28.3),(17.1,28.45),'F','USB_PROBE'),
-    Diagnostic('TP24','USB_DM','D-',(14.7,28.7),(15.0,29.4),'F','USB_PROBE'),
+    Diagnostic('TP23','USB_DP','D+',(15.5,22.3),(17.1,22.45),'F','USB_PROBE'),
+    Diagnostic('TP24','USB_DM','D-',(14.7,22.7),(15.0,23.4),'F','USB_PROBE'),
 )
 
 # VBUS needs a leader around the connector locating hole to avoid ambiguity.

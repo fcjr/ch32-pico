@@ -24,7 +24,7 @@ class PowerLayout(TestCase):
 
     def test_feedback_plane_shortcut_rejected(self):
         self.doc.append(parse('''(zone (net "3V3_OUT") (filled_polygon (layer "In2.Cu")
-            (pts (xy 5 23) (xy 6.2 23) (xy 6.2 24.1) (xy 5 24.1))))'''))
+            (pts (xy 5 13) (xy 6.2 13) (xy 6.2 14.1) (xy 5 14.1))))'''))
         with self.assertRaisesRegex(ValueError,'bypasses'):audit(self.doc)
 
     def test_capacitor_and_clamps_have_two_short_wide_ground_returns(self):

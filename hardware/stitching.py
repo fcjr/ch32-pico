@@ -1,15 +1,15 @@
 # SPDX-License-Identifier: MIT
 """GND stitching: ordinary tented through vias, outside paste.
 
-One via joins the connector-region back pour to L2; six more tie the back
-pour to the ground plane across the open middle of the board, where no
-through-hole ground pins or decoupling returns exist. The D5 pair is defined
+One via joins the connector-region back pour to L2; five more tie the back
+pour to the ground plane where no through-hole ground pins or decoupling
+returns exist. The D5 pair is defined
 beside its routes in protection_routes. There is no board-wide fence.
 """
 from .sexp import parse
 from .schematic import uid
 
-VIAS=((14.5,7.55),(3.5,12.5),(11.5,15.0),(11.5,22.0),(13.5,17.0),(14.0,14.0),(17.0,16.5))
+VIAS=((14.5,7.55),(2.0,25.5),(17.0,21.5),(17.0,41.5),(18.0,39.0),(18.0,47.5))
 ROUTES=()
 
 

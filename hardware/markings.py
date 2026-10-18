@@ -24,9 +24,18 @@ SERVICES = (
     ('D3', 'LED', 'LED_A', (0,-1.3), 'PB3 application status LED'),
 )
 
-ALIASES = {'NC':'NC', '3V3_OUT':'3V3', '3V3_EN':'EN', 'PA21':'RST', 'PD_OUT':'PDOUT', 'GPIO35':'PC7*', 'PD_FAULT_N':'FAULT'}
+ALIASES = {'NC':'NC', '3V3_OUT':'3V3', '3V3_EN':'EN', 'PA21':'RST', 'GPIO35':'PC7*'}
 LEGACY = {'PROBE SWIO', 'PROBE', 'RESET', 'DBG', 'SWIO'}
 EXPANSIONS = tuple((f'TP{i}', n) for i,n in enumerate((*EXPANSION_SIGNALS,'GND'),6))
+HEADER_LEADERS = {
+    1: ((7.1,1.37),(7.1,.8),(3.4,.8),(2.85,1.37)),
+    40: ((13.9,3.15),(13.9,.8),(17.73,.8),(18.3,1.37)),
+}
+
+
+def expansion_label_position(ref,x,y):
+    if ref=='TP6':return (14.1,30.9)
+    return (x+.6 if ref=='TP7' else x,y+1.15)
 
 
 def header_legend(pin):
@@ -44,7 +53,7 @@ def header_label_position(pin):
         return 10, y
     if pin.number == 40:
         return 10.5, 3.15
-    return {3:3.9,20:6.5,21:13.8,38:17.1}.get(pin.number,x), y
+    return {20:5.2,21:15.8}.get(pin.number,x), y
 
 
 def text(label, x, y, side, identity, size=.9):
@@ -57,11 +66,13 @@ def text(label, x, y, side, identity, size=.9):
 def apply(doc):
     header_labels = {p.proposed for p in HEADER} | set(ALIASES.values()) | {'-', '3V3', 'EN'} | {f'{p.number} {ALIASES.get(p.proposed,p.proposed)}' for p in HEADER if p.number in (1,20,21,40)}
     header_labels |= {header_legend(p) for p in HEADER}
-    header_labels |= {'1\nPB10', '20\nPA22', '21\nPA6', '40\nPDOUT'}
-    service_labels = LEGACY | {s[1] for s in SERVICES} | set(EXPANSION_SIGNALS) | {'SJ1','PC7','FAULT'} | {d.label for d in DIAGNOSTICS}
+    header_labels |= {'1\nPB10', '20\nPA22', '21\nPA6'}
+    service_labels = LEGACY | {s[1] for s in SERVICES} | set(EXPANSION_SIGNALS) | {'SJ1','PC7'} | {d.label for d in DIAGNOSTICS}
     doc[:] = [n for n in doc if not (isinstance(n,list) and n and n[0]=='gr_text' and
         (n[1] in service_labels or (one(n,'layer')[1]=='B.SilkS' and n[1] in header_labels)))]
     leader_ids={uid('marking/leader/'+ref) for ref in LEADERS}
+    leader_ids|={uid(f'marking/header-leader/{pin}/{i}')
+                 for pin in HEADER_LEADERS for i in range(8)}
     doc[:]=[n for n in doc if not (isinstance(n,list) and n and n[0]=='gr_line'
             and children(n,'uuid') and one(n,'uuid')[1] in leader_ids)]
     for ref,(a,b) in LEADERS.items():
@@ -70,14 +81,19 @@ def apply(doc):
             (uuid "{uid('marking/leader/'+ref)}"))'''))
     for pin in HEADER:
         x,y = header_label_position(pin)
-        doc.append(text(header_legend(pin),x,y,'B.SilkS',f'header/{pin.number}'))
+        doc.append(text(header_legend(pin),x,y,'B.SilkS',f'header/{pin.number}',size=.8))
+    for pin,points in HEADER_LEADERS.items():
+        for i,(a,b) in enumerate(zip(points,points[1:])):
+            doc.append(parse(f'''(gr_line (start {a[0]} {a[1]}) (end {b[0]} {b[1]})
+                (stroke (width .15) (type solid)) (layer "B.SilkS")
+                (uuid "{uid(f'marking/header-leader/{pin}/{i}')}"))'''))
     for ref,label,net,(dx,dy),purpose in SERVICES:
         x,y,*_ = PLACEMENT[ref]
         doc.append(text(label,round(x+dx,4),round(y+dy,4),'F.SilkS',ref,
                          size=.8 if ref in {'TP1','TP2','TP3'} else .9))
     for ref,net in EXPANSIONS:
         x,y,*_ = PLACEMENT[ref]
-        tx,ty=(13.7,31.1) if ref=='TP6' else (x,y+1.15)
+        tx,ty=expansion_label_position(ref,x,y)
         doc.append(text(ALIASES.get(net,net),tx,ty,'B.SilkS',ref,size=.8))
     for d in DIAGNOSTICS:
         doc.append(text(d.label,*d.text_position,d.side+'.SilkS',d.ref,size=.8))
@@ -114,11 +130,10 @@ def audit(doc):
         if 'hide' in n or 'hide' in effects:
             raise ValueError(f'Hidden marking: {n[1]}')
         minimum=.8
-        # 0.8 mm type / 0.15 mm strokes are the smallest reviewed service
-        # legends; the main header labels use 0.9 mm type.
+        # Header and probe legends share 0.8 mm type / 0.15 mm strokes.
         if min(map(float,one(font,'size')[1:]))<minimum or float(one(font,'thickness')[1])<.15:
             raise ValueError(f'Undersized marking: {n[1]}')
-    allowed={s[1] for s in SERVICES}|{'ch32-pico','LEFT SHIFT','LOGICAL',f'REV {BOARD_REVISION}', 'PDOUT 5-20V'}
+    allowed={s[1] for s in SERVICES}|{'ch32-pico','LEFT SHIFT','LOGICAL',f'REV {BOARD_REVISION}', 'VBUS 5-20V'}
     allowed |= {d.label for d in DIAGNOSTICS if d.side=='F'}
     if any(n[1] not in allowed for n in front):raise ValueError('Unknown front legend')
     header=[]
@@ -142,6 +157,14 @@ def audit(doc):
                 raise ValueError(f'Header label/MCU mismatch at pin {pin.number}: U1.{mcu_pin}')
         header.append({'pin':pin.number,'label':matched[0][1],'net':expected,'side':'back',
                        'pad_xy_mm':[px,py]})
+    for pin,points in HEADER_LEADERS.items():
+        for i,(a,b) in enumerate(zip(points,points[1:])):
+            lines=[n for n in children(doc,'gr_line') if children(n,'uuid')
+                   and one(n,'uuid')[1]==uid(f'marking/header-leader/{pin}/{i}')]
+            if (len(lines)!=1 or one(lines[0],'layer')[1]!='B.SilkS'
+                or tuple(map(float,one(lines[0],'start')[1:3]))!=a
+                or tuple(map(float,one(lines[0],'end')[1:3]))!=b):
+                raise ValueError(f'Header leader missing or displaced: {pin}')
     service=[]
     for ref,label,net,offset,purpose in SERVICES:
         matched=[n for n in front if n[1]==label]
@@ -164,8 +187,8 @@ def audit(doc):
     endpoints = {('U1','34'):'SDIO',('U1','37'):'SDCK',('U1','7'):'PA21',
                  ('U1','48'):'3V3_OUT',('U1','47'):'GND',('SW1','2'):'GND',
                  ('U1','23'):'STATUS_LED',('R11','1'):'STATUS_LED',
-                 ('R11','2'):'LED_A',('D3','2'):'GND',('U3','17'):'PD_OUT',('U3','14'):'PD_FAULT_N',('U1','24'):'PD_FAULT_N',
-                 ('R9','1'):'PD_FAULT_N',('R9','2'):'3V3_OUT',('U1','19'):'PC7'}
+                 ('R11','2'):'LED_A',('D3','2'):'GND',('J2','A4B9'):'VBUS',('U1','24'):'PB4',
+                 ('U1','19'):'PC7'}
     for (ref,pin),net in endpoints.items():
         pad=next(p for p in children(fps[ref],'pad') if p[1]==pin)
         if one(pad,'net')[-1]!=net:raise ValueError(f'Wrong marked-function endpoint: {ref}.{pin}')
@@ -177,12 +200,15 @@ def audit(doc):
     expansion=[]
     for ref,net in EXPANSIONS:
         fp=fps[ref];pad=one(fp,'pad');x,y=pads[ref,'1']
-        label_xy=(13.7,31.1) if ref=='TP6' else (x,y+1.15)
+        label_xy=expansion_label_position(ref,x,y)
         labels=[n for n in back if n[1]==ALIASES.get(net,net) and
                 math.dist(tuple(map(float,one(n,'at')[1:3])),label_xy)<.01]
         if len(labels)!=1 or one(fp,'layer')[1]!='B.Cu' or 'B.Mask' not in one(pad,'layers')[1:]:
             raise ValueError(f'Incorrect back expansion label/pad: {ref}')
         if one(pad,'net')[-1]!=net:raise ValueError(f'Expansion net mismatch: {ref}')
+        same_side=[r for r,fp in fps.items() if r.startswith('TP') and one(fp,'layer')[1]=='B.Cu']
+        nearest=min(same_side,key=lambda r:math.dist(label_xy,pads[r,'1']))
+        if nearest!=ref:raise ValueError(f'Ambiguous expansion label: {ref} is nearer {nearest}')
         if net in TARGET_PINS:
             mp=next(p for p in children(fps['U1'],'pad') if p[1]==str(TARGET_PINS[net]))
             if one(mp,'net')[-1]!=net:raise ValueError(f'Expansion MCU mismatch: {ref}')
@@ -210,9 +236,9 @@ def audit(doc):
                 raise ValueError(f'Diagnostic leader missing or displaced: {d.ref}')
             anchor=b
         else:anchor=d.text_position
-        same_side=[p for p in DIAGNOSTICS if p.side==d.side]
-        nearest=min(same_side,key=lambda p:math.dist(anchor,p.position))
-        if nearest.ref!=d.ref:raise ValueError(f'Ambiguous diagnostic label: {d.ref}')
+        same_side=[r for r,fp in fps.items() if r.startswith('TP') and one(fp,'layer')[1]==d.side+'.Cu']
+        nearest=min(same_side,key=lambda r:math.dist(anchor,pads[r,'1']))
+        if nearest!=d.ref:raise ValueError(f'Ambiguous diagnostic label: {d.ref} is nearer {nearest}')
         diagnostic.append({'ref':d.ref,'label':d.label,'net':d.net,'side':d.side,
                            'pad_xy_mm':list(d.position),'text_xy_mm':list(d.text_position)})
     sj=fps['SJ1'];x,y,*_=map(float,one(sj,'at')[1:])

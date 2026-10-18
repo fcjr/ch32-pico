@@ -47,16 +47,17 @@ def main():
         'engine':engine,'selection':'passing DRC/connectivity, then minimum vias and trace length',
         'checks':saved,'board_sha256':hashlib.sha256(board.read_bytes()).hexdigest(),
         'comparison':comparison,'usb_mechanical_fit':usb_fit(parse(board.read_text())), 'open_reviews':[
-            'Cost-reduced MX26631 protection stage, 3 A input target and top-side-only assembly require assembled-board qualification; 3.64 A nominal eFuse threshold is not a continuous current rating',
+            'Pin 40 is unswitched USB VBUS with no on-board current limit or reverse blocking; 3 A target and top-side-only assembly require assembled-board qualification',
+            'Hot-plug ringing at 20 V must be scoped at U4 to confirm the D5 clamp keeps VBUS below the 32 V regulator limit',
             'Inductive loads require an external driver and local suppression; 5 V 24BYJ48 example is not rated for higher PD voltages',
-            'Biased capacitance, input inrush, loaded startup and 5 V cable-loss shutdown require measurements; nominal startup threshold is 4.76 V',
-            'Current PCB/assembly quote, MCU stock and 20-device allocation (docs/revision-e.md)',
+            'Carrier capacitance inrush and PD voltage transitions require measurements with representative sources',
+            'Current PCB/assembly quote, MCU stock and 20-device allocation (docs/design.md)',
             'Measured USB performance; nonuniform connector/package fanouts (docs/usb-routing.md)',
-            'Physical USB cable, overhang and locating-peg fit (docs/revision-e.md)',
+            'Physical USB cable, overhang and locating-peg fit (docs/design.md)',
             'Pin 37 shutdown/restart, released EN voltage, back-power and loaded PD shutdown timing',
-            'Power copper/contact temperature, current-limit tolerance, discharge, backfeed and fixed 3.3 V load budget; reserve at least 100 mA from the negotiated input current',
+            'Power copper/contact temperature, source short-circuit behavior, backfeed and fixed 3.3 V load budget; reserve at least 100 mA from the negotiated input current',
             'Native USB ISP/recovery, open PD/CDC firmware integration, reset/detach handling and watchdog',
-            'JLC IC/diode polarity and stencil review, provisional 0.125 mm stencil with 78 percent exposed-pad paste coverage; supplier process approval pending, order quantity/attrition']}
+            'JLC IC/diode polarity and stencil review, provisional 0.125 mm stencil for the D5 exposed pad; supplier process approval pending, order quantity/attrition']}
     (directory/'validation.json').write_text(json.dumps(report,indent=2)+'\n')
     for name,layers,extra in [('front','F.Cu,F.SilkS,Edge.Cuts',[]),
                               ('back','B.Cu,B.SilkS,Edge.Cuts',['--mirror']),

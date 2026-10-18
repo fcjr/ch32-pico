@@ -22,7 +22,7 @@ Panel rigidity and the tab details still need JLC's manufacturing review.
 exclude castellated holes from Economic PCBA. This board therefore requires
 **Standard PCBA**, regardless of the small prototype quantity. The panel has
 rails and fiducials and exceeds Standard's 70 x 70 mm minimum by 1 mm in its
-short dimension; the original nominal 70 mm panel was too close to that limit.
+short dimension.
 Individual boards keep their original dimensions and no mounting holes.
 Milled slots and mousebites preserve the castellated sides.
 Enter one design repeated four times per customer-supplied panel,
@@ -31,7 +31,7 @@ do not ask JLC to repeat them four times again. The five-panel batch contains
 20 copies of every single-board BOM item, plus assembly attrition.
 
 The generated `build/panel-preview/` includes the KiCad panel, front SVG,
-Gerber ZIP, drills, 32-row BOM, 208-row CPL and a hash manifest. Export requires zero DRC
+Gerber ZIP, drills, 19-row BOM, 104-row CPL and a hash manifest. Export requires zero DRC
 violations and zero open connections. Each copy's pads, net assignments,
 component rotations and trace/via geometry are checked against the source
 board before and after zone fill. JLC's assembly model rotations remain pending.

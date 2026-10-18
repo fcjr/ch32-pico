@@ -2,7 +2,7 @@
 
 ## Files for the five-panel prototype
 
-Run `just jlcpcb` from the repository root. It checks the current Rev E design,
+Run `just jlcpcb` from the repository root. It checks the design,
 builds the panel and assembles the files below. See [build setup](build.md).
 
 Five panels contain four devices each, for twenty devices total.
@@ -17,7 +17,7 @@ Five panels contain four devices each, for twenty devices total.
 | `hardware/review/ch32-pico.kicad_pcb` | Checked single-board KiCad source |
 | `build/panel-preview/ch32-pico-panel.kicad_pcb` | Generated four-copy KiKit panel |
 
-The fitted BOM estimate is $5.6870 per device at twenty devices, before
+The fitted BOM estimate is $3.2146 per device at twenty devices, before
 attrition, purchase minimums, PCB fabrication, assembly, shipping and tax.
 The latest dated breakdown and stock shortages are in [order review](order-review.md).
 No order has been submitted and no parts are reserved.
@@ -38,7 +38,7 @@ The folder contains:
   outline and separate PTH/NPTH Excellon drill files.
 - `gerbers/`: the individual files and SVG drill maps for inspection.
 - `bom.csv`: exact LCSC identifiers and MPNs, grouped from the electrical source.
-- `cpl.csv`: actual KiCad board placement, filtered to the same 52 fitted parts.
+- `cpl.csv`: actual KiCad board placement, filtered to the same 26 fitted parts.
 - `manifest.json`: board and file hashes, tool version, source hashes, checks
   and open engineering reviews.
 
@@ -85,7 +85,7 @@ physical fit. Programming and power validation require assembled prototypes.
 
 For the requested five-panel batch, use `just panel-preview` and the files in
 `build/panel-preview`, described in [panelization](panelization.md). Each panel
-contains four boards. The current circuit is described in [Rev E](revision-e.md); no preview is released for ordering.
+contains four boards. The circuit is described in the [design notes](design.md); no preview is released for ordering.
 
 Generated upload files are Git-ignored under `build/`. The checked PCB, design
 sources and locked tools are committed. Keep a copy of the exact bundle used

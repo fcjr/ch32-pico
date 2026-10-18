@@ -127,7 +127,7 @@ def report(*, panels=None):
         'conditional_fixtures_usd': policy['conditional_two_rigid_fixtures_usd'],
         'not_in_partial_total': ['PCB fabrication including castellations and ENIG',
             'Actual JLC joint counting, USB insertion/shell soldering and fixtures',
-            'Required X-ray inspection of U3 hidden joints, packing, handling/panel/storage/review fees, shipping and tax',
+            'Required X-ray inspection of D5 hidden joints, packing, handling/panel/storage/review fees, shipping and tax',
             'Actual sourcing quote, purchase minimums and order-specific attrition'],
         'attrition_assumption': 'max(fitted quantity + displayed loss count, displayed assembly minimum), per C-code per batch',
         'attrition_verified_for_order': False, 'assembly_rotations_verified': False,

@@ -18,7 +18,7 @@ def escape(pin,points):
     # Give the router an explicit internal-layer endpoint at each escape.
     # A bare through via at the end of a front-layer stub otherwise leaves
     # some multipoint searches confined to the crowded front-layer pocket.
-    if net=='CURRENT_SENSE':return
+    if net=='PA3':return
     x,y=points[-1]
     if pin<=12: end=(x,y+(.4 if y>30.3 else -.4))
     elif pin<=24: end=(x+.35,y)
@@ -62,7 +62,10 @@ from .design import MECHANICAL
 header=next(c.nets for c in COMPONENTS if c.ref=='J1')
 for pin in range(1,41):
     net=header[str(pin)]
-    if net in ('GND','3V3_OUT','PD_OUT','VSYS') or net is None:continue
+    if net in ('GND','3V3_OUT','VBUS','VSYS') or net is None:continue
+    # The local D5 ground-via pair occupies these straight exits.
+    # Route from the plated contact around the returns instead of seeding a short.
+    if net in ('PA8','PA11'):continue
     x,y=MECHANICAL.position(pin)
     ROUTES.append(('In2.Cu',net,.15,[(x,y),(2.9 if x<10 else 18.1,y)]))
 

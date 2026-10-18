@@ -11,6 +11,6 @@ class Branding(TestCase):
         first=dump(doc)
         apply(doc)
         self.assertEqual(dump(doc),first)
-        self.assertEqual([n[1] for n in children(doc,'gr_text')].count('PDOUT 5-20V'),1)
+        self.assertEqual([n[1] for n in children(doc,'gr_text')].count('VBUS 5-20V'),1)
         ids=[one(n,'uuid')[1] for n in artwork()]
         self.assertEqual(len(ids),len(set(ids)))

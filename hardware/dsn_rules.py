@@ -7,9 +7,9 @@ from .design import MECHANICAL
 
 # Short plane taps must fit 0402 and fine-pitch component pads. The scripted regulator
 # paths remain wider. VBUS/VSYS current and drop still need release review.
-# High-current VBUS/PD_OUT trunks are locked in the revision-specific critical_routes module; these
+# High-current VBUS trunks are locked in the revision-specific critical_routes module; these
 # widths apply only to sense/control-supply branches added by the router.
-POWER_WIDTHS={'GND':.15,'3V3_OUT':.15,'VSYS':.25,'VBUS':.25,'PD_INPUT':.25,'PD_OUT':.25,'VIN_SYS':.35}
+POWER_WIDTHS={'GND':.15,'3V3_OUT':.15,'VSYS':.25,'VBUS':.25,'VIN_SYS':.35}
 
 
 def configure(path):

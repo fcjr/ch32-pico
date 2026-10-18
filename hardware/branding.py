@@ -12,7 +12,7 @@ def artwork():
                               (f'REV {BOARD_REVISION}', 10.5, 28.9, .8, 'B'),
                               ('LEFT SHIFT', 10.5, 46.5, .8, 'B'),
                               ('LOGICAL', 10.5, 47.8, .8, 'B'),
-                              ('PDOUT 5-20V',10.5,13.0,.8,'B')]:
+                              ('VBUS 5-20V',10.5,13.0,.8,'B')]:
         mirror='(justify mirror)' if side=='B' else ''
         nodes.append(parse(f'''(gr_text "{label}" (at {x} {y}) (layer "{side}.SilkS")
             (uuid "{uid('brand/text/' + label)}")
@@ -32,9 +32,9 @@ def apply(doc):
     """Replace only the managed artwork; repeated builds are idempotent."""
     marks = artwork()
     ids = {one(n, 'uuid')[1] for n in marks}
-    # Remove the previous four-stroke logo when updating an existing board.
+    # Replace any existing logo strokes when updating a saved board.
     ids |= {uid(f'brand/chevron/{index}/{half}') for index in range(2) for half in range(2)}
-    labels = {'CH32 PICO', 'ch32-pico', 'LEFT SHIFT', 'LOGICAL', 'PDOUT 5-20V'}
+    labels = {'ch32-pico', 'LEFT SHIFT', 'LOGICAL', 'VBUS 5-20V'}
     doc[:] = [n for n in doc if not (isinstance(n, list) and n and (
         (n[0] == 'gr_text' and (n[1] in labels or n[1].startswith('REV '))) or
         (n[0] == 'gr_line' and children(n, 'uuid') and one(n, 'uuid')[1] in ids)))]

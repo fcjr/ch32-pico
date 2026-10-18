@@ -1,23 +1,43 @@
 {
   "status": "routing checked; not released for ordering",
-  "saved_at": "2026-10-15T04:56:35.924219+00:00",
-  "engine": "ground-stitches",
+  "saved_at": "2026-10-18T20:56:51.902433+00:00",
+  "engine": "power-corrected",
   "selection": "passing DRC/connectivity, then minimum vias and trace length",
   "checks": {
-    "physical_components": 78,
+    "physical_components": 52,
     "source_pad_net_parity": true,
     "violations": 0,
     "unconnected": 0,
     "violation_types": {},
     "stackup_matches_source": true,
     "outside_outline_copper": [],
-    "via_count": 197,
-    "trace_length_mm": 1777.845,
-    "trace_via_geometry_sha256": "9dadbe9f6396f8503c973f3da1ee040630f79cd0678ed20f979a9a651d7a70f3",
+    "via_count": 141,
+    "trace_length_mm": 1367.654,
+    "trace_via_geometry_sha256": "0f05f64fd0153974703c5272923c8ce08fd672ae59195b55a27d82edf0779f73",
     "via_in_paste": [],
     "changed_critical_segments": [],
     "changed_critical_vias": [],
-    "foreign_tracks_on_ground_layer": 0,
+    "foreign_tracks_on_ground_layer": 12,
+    "ground_plane": {
+      "signal_crossovers": [
+        {
+          "net": "PA17",
+          "length_mm": 7.2336,
+          "width_mm": 0.15,
+          "corridor_mm": [
+            1.5,
+            36.7,
+            8.9,
+            37.2
+          ]
+        }
+      ],
+      "ground_via_count": 20,
+      "all_ground_vias_on_one_fill_polygon": true,
+      "passes": true,
+      "limitations": "Geometry only; USB reference is checked separately; EMC requires hardware"
+    },
+    "ground_plane_passes": true,
     "usb_geometry": {
       "status": "geometry audit; impedance and USB performance not certified",
       "probe_contacts": [
@@ -472,8 +492,8 @@
         },
         {
           "pin": 40,
-          "label": "40 PDOUT",
-          "net": "PD_OUT",
+          "label": "40 VBUS",
+          "net": "VBUS",
           "side": "back",
           "pad_xy_mm": [
             21.0,
@@ -615,7 +635,7 @@
         },
         {
           "ref": "TP7",
-          "net": "PD_FAULT_N",
+          "net": "PB4",
           "side": "back",
           "pad_xy_mm": [
             8.0,
@@ -681,8 +701,8 @@
       "diagnostic_labels": [
         {
           "ref": "TP14",
-          "label": "ISNS",
-          "net": "CURRENT_SENSE",
+          "label": "PA3",
+          "net": "PA3",
           "side": "B",
           "pad_xy_mm": [
             9.4,
@@ -737,16 +757,16 @@
         },
         {
           "ref": "TP18",
-          "label": "OSNS",
-          "net": "PDOUT_SENSE",
+          "label": "PB1",
+          "net": "PB1",
           "side": "B",
           "pad_xy_mm": [
             14.2,
             25.6
           ],
           "text_xy_mm": [
-            11.5,
-            25.6
+            13.0,
+            24.45
           ]
         },
         {
@@ -760,7 +780,7 @@
           ],
           "text_xy_mm": [
             8,
-            11.8
+            11.65
           ]
         },
         {
@@ -774,13 +794,13 @@
           ],
           "text_xy_mm": [
             10.8,
-            11.35
+            11.65
           ]
         },
         {
           "ref": "TP21",
-          "label": "PDEN",
-          "net": "PD_ENABLE",
+          "label": "PB2",
+          "net": "PB2",
           "side": "B",
           "pad_xy_mm": [
             12.3,
@@ -802,7 +822,7 @@
           ],
           "text_xy_mm": [
             14.7,
-            33.05
+            33.3
           ]
         },
         {
@@ -854,62 +874,32 @@
       },
       "switch_copper_total_mm": 5.066,
       "local_ground_returns": {
-        "C12": [
-          {
-            "via_mm": [
-              14.85,
-              14.025
-            ],
-            "path_mm": 1.556
-          },
-          {
-            "via_mm": [
-              15.3,
-              14.025
-            ],
-            "path_mm": 1.106
-          }
-        ],
         "D5": [
           {
             "via_mm": [
-              15.7,
-              2.8
+              2.9,
+              8.7
             ],
-            "path_mm": 1.4
+            "path_mm": 1.55
           },
           {
             "via_mm": [
-              15.7,
-              3.4
+              2.9,
+              9.3
             ],
-            "path_mm": 2.0
-          }
-        ],
-        "D6": [
-          {
-            "via_mm": [
-              15.1,
-              6.0
-            ],
-            "path_mm": 2.0
-          },
-          {
-            "via_mm": [
-              15.7,
-              6.0
-            ],
-            "path_mm": 1.4
+            "path_mm": 1.55
           }
         ]
       },
-      "load_switch_timing_connection_mm": 1.07,
-      "local_programming_paths_mm": {
-        "PD_ILM": 1.867,
-        "PD_IMON": 1.627
+      "vbus_connections": {
+        "input_clamp_mm": 4.2345,
+        "header_pin40_trunk_mm": 12.6374,
+        "header_pin40_front_feed_mm": 11.4206
       },
+      "local_return_via_count": 2,
+      "local_return_ground_plane_checked": true,
       "supply_trace_totals_mm": {
-        "VSYS": 24.753,
+        "VSYS": 22.763,
         "VIN_SYS": 10.125
       },
       "feedback_via_isolated_from_shared_plane": true,
@@ -918,25 +908,45 @@
     },
     "passes_connectivity_and_drc": true
   },
-  "board_sha256": "573829585a27255d5599ead0b1403acd19374fdac6bdd73410b1e6e3b0589a78",
+  "board_sha256": "ff2e819a6a37b369b5fdf35f2b539371ccf53709e440340859e0741b41ba754e",
   "comparison": {
-    "status": "Targeted ground stitching",
+    "status": "four-layer direct-VBUS layout; geometry checked, physical qualification and order release remain open",
     "candidates": {
-      "ground-stitches": {
-        "physical_components": 78,
+      "power-corrected": {
+        "physical_components": 52,
         "source_pad_net_parity": true,
         "violations": 0,
         "unconnected": 0,
         "violation_types": {},
         "stackup_matches_source": true,
         "outside_outline_copper": [],
-        "via_count": 197,
-        "trace_length_mm": 1777.845,
-        "trace_via_geometry_sha256": "9dadbe9f6396f8503c973f3da1ee040630f79cd0678ed20f979a9a651d7a70f3",
+        "via_count": 141,
+        "trace_length_mm": 1367.654,
+        "trace_via_geometry_sha256": "0f05f64fd0153974703c5272923c8ce08fd672ae59195b55a27d82edf0779f73",
         "via_in_paste": [],
         "changed_critical_segments": [],
         "changed_critical_vias": [],
-        "foreign_tracks_on_ground_layer": 0,
+        "foreign_tracks_on_ground_layer": 12,
+        "ground_plane": {
+          "signal_crossovers": [
+            {
+              "net": "PA17",
+              "length_mm": 7.2336,
+              "width_mm": 0.15,
+              "corridor_mm": [
+                1.5,
+                36.7,
+                8.9,
+                37.2
+              ]
+            }
+          ],
+          "ground_via_count": 20,
+          "all_ground_vias_on_one_fill_polygon": true,
+          "passes": true,
+          "limitations": "Geometry only; USB reference is checked separately; EMC requires hardware"
+        },
+        "ground_plane_passes": true,
         "usb_geometry": {
           "status": "geometry audit; impedance and USB performance not certified",
           "probe_contacts": [
@@ -1391,8 +1401,8 @@
             },
             {
               "pin": 40,
-              "label": "40 PDOUT",
-              "net": "PD_OUT",
+              "label": "40 VBUS",
+              "net": "VBUS",
               "side": "back",
               "pad_xy_mm": [
                 21.0,
@@ -1534,7 +1544,7 @@
             },
             {
               "ref": "TP7",
-              "net": "PD_FAULT_N",
+              "net": "PB4",
               "side": "back",
               "pad_xy_mm": [
                 8.0,
@@ -1600,8 +1610,8 @@
           "diagnostic_labels": [
             {
               "ref": "TP14",
-              "label": "ISNS",
-              "net": "CURRENT_SENSE",
+              "label": "PA3",
+              "net": "PA3",
               "side": "B",
               "pad_xy_mm": [
                 9.4,
@@ -1656,16 +1666,16 @@
             },
             {
               "ref": "TP18",
-              "label": "OSNS",
-              "net": "PDOUT_SENSE",
+              "label": "PB1",
+              "net": "PB1",
               "side": "B",
               "pad_xy_mm": [
                 14.2,
                 25.6
               ],
               "text_xy_mm": [
-                11.5,
-                25.6
+                13.0,
+                24.45
               ]
             },
             {
@@ -1679,7 +1689,7 @@
               ],
               "text_xy_mm": [
                 8,
-                11.8
+                11.65
               ]
             },
             {
@@ -1693,13 +1703,13 @@
               ],
               "text_xy_mm": [
                 10.8,
-                11.35
+                11.65
               ]
             },
             {
               "ref": "TP21",
-              "label": "PDEN",
-              "net": "PD_ENABLE",
+              "label": "PB2",
+              "net": "PB2",
               "side": "B",
               "pad_xy_mm": [
                 12.3,
@@ -1721,7 +1731,7 @@
               ],
               "text_xy_mm": [
                 14.7,
-                33.05
+                33.3
               ]
             },
             {
@@ -1773,62 +1783,32 @@
           },
           "switch_copper_total_mm": 5.066,
           "local_ground_returns": {
-            "C12": [
-              {
-                "via_mm": [
-                  14.85,
-                  14.025
-                ],
-                "path_mm": 1.556
-              },
-              {
-                "via_mm": [
-                  15.3,
-                  14.025
-                ],
-                "path_mm": 1.106
-              }
-            ],
             "D5": [
               {
                 "via_mm": [
-                  15.7,
-                  2.8
+                  2.9,
+                  8.7
                 ],
-                "path_mm": 1.4
+                "path_mm": 1.55
               },
               {
                 "via_mm": [
-                  15.7,
-                  3.4
+                  2.9,
+                  9.3
                 ],
-                "path_mm": 2.0
-              }
-            ],
-            "D6": [
-              {
-                "via_mm": [
-                  15.1,
-                  6.0
-                ],
-                "path_mm": 2.0
-              },
-              {
-                "via_mm": [
-                  15.7,
-                  6.0
-                ],
-                "path_mm": 1.4
+                "path_mm": 1.55
               }
             ]
           },
-          "load_switch_timing_connection_mm": 1.07,
-          "local_programming_paths_mm": {
-            "PD_ILM": 1.867,
-            "PD_IMON": 1.627
+          "vbus_connections": {
+            "input_clamp_mm": 4.2345,
+            "header_pin40_trunk_mm": 12.6374,
+            "header_pin40_front_feed_mm": 11.4206
           },
+          "local_return_via_count": 2,
+          "local_return_ground_plane_checked": true,
           "supply_trace_totals_mm": {
-            "VSYS": 24.753,
+            "VSYS": 22.763,
             "VIN_SYS": 10.125
           },
           "feedback_via_isolated_from_shared_plane": true,
@@ -1858,15 +1838,16 @@
     "physical_fit_tested": false
   },
   "open_reviews": [
-    "Cost-reduced MX26631 protection stage, 3 A input target and top-side-only assembly require assembled-board qualification; 3.64 A nominal eFuse threshold is not a continuous current rating",
+    "Pin 40 is unswitched USB VBUS with no on-board current limit or reverse blocking; 3 A target and top-side-only assembly require assembled-board qualification",
+    "Hot-plug ringing at 20 V must be scoped at U4 to confirm the D5 clamp keeps VBUS below the 32 V regulator limit",
     "Inductive loads require an external driver and local suppression; 5 V 24BYJ48 example is not rated for higher PD voltages",
-    "Biased capacitance, input inrush, loaded startup and 5 V cable-loss shutdown require measurements; nominal startup threshold is 4.76 V",
-    "Current PCB/assembly quote, MCU stock and 20-device allocation (docs/revision-e.md)",
+    "Carrier capacitance inrush and PD voltage transitions require measurements with representative sources",
+    "Current PCB/assembly quote, MCU stock and 20-device allocation (docs/design.md)",
     "Measured USB performance; nonuniform connector/package fanouts (docs/usb-routing.md)",
-    "Physical USB cable, overhang and locating-peg fit (docs/revision-e.md)",
+    "Physical USB cable, overhang and locating-peg fit (docs/design.md)",
     "Pin 37 shutdown/restart, released EN voltage, back-power and loaded PD shutdown timing",
-    "Power copper/contact temperature, current-limit tolerance, discharge, backfeed and fixed 3.3 V load budget; reserve at least 100 mA from the negotiated input current",
+    "Power copper/contact temperature, source short-circuit behavior, backfeed and fixed 3.3 V load budget; reserve at least 100 mA from the negotiated input current",
     "Native USB ISP/recovery, open PD/CDC firmware integration, reset/detach handling and watchdog",
-    "JLC IC/diode polarity and stencil review, provisional 0.125 mm stencil with 78 percent exposed-pad paste coverage; supplier process approval pending, order quantity/attrition"
+    "JLC IC/diode polarity and stencil review, provisional 0.125 mm stencil for the D5 exposed pad; supplier process approval pending, order quantity/attrition"
   ]
 }

@@ -12,7 +12,7 @@ from hardware.verify_placement import verify_board
 class ReleaseRevision(TestCase):
     def test_saved_board_cannot_keep_old_part_or_value(self):
         original=Path('hardware/review/ch32-pico.kicad_pcb').read_text()
-        for ref,field,value in (('C16','LCSC Part','C1525'),('R17','Value','1k')):
+        for ref,field,value in (('C1','LCSC Part','C1525'),('R1','Value','1k')):
             with self.subTest(ref=ref), TemporaryDirectory() as directory:
                 doc=parse(original)
                 fp=next(fp for fp in children(doc,'footprint') if any(

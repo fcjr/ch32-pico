@@ -9,18 +9,16 @@ from .sexp import parse, children, dump
 from .schematic import uid
 from .fabrication import copy_rules
 from .design import MECHANICAL
-from .design import BOARD_REVISION
 
 
 def add_planes(source, output):
     doc=parse(source.read_text())
     if any(not children(z,'keepout') for z in children(doc,'zone')):
         raise ValueError('Plane input already contains copper zones')
-    planes=[('GND','In1.Cu',MECHANICAL.length-.3),('3V3_OUT','In2.Cu',MECHANICAL.length-.3)]
-    if BOARD_REVISION in ('B','C','D','E'):
-        # Additional outer-layer return for the connector/output region.
-        # The uninterrupted L2 reference remains the primary USB return.
-        planes.append(('GND','B.Cu',MECHANICAL.length-.3))
+    # The back pour is an additional return for the connector/output region.
+    # The uninterrupted L2 reference remains the primary USB return.
+    planes=[('GND','In1.Cu',MECHANICAL.length-.3),('3V3_OUT','In2.Cu',MECHANICAL.length-.3),
+            ('GND','B.Cu',MECHANICAL.length-.3)]
     for net,layer,bottom in planes:
         doc.append(parse(f'''(zone (net "{net}") (layer "{layer}")
           (uuid "{uid('plane/'+net+'/'+layer)}") (hatch edge 0.5)

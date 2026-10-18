@@ -4,6 +4,7 @@
 import hashlib
 import shutil
 import json
+import re
 from pathlib import Path
 import subprocess
 import sys
@@ -31,9 +32,23 @@ def main():
             '--use-cache','--overwrite','--output',str(imported)],check=True)
         shapes=imported.with_suffix('.3dshapes')
         shutil.copyfile(shapes/m.get('import_file',m['file']),cache/m['file'])
-    for m in models.values():
+    render_models = {}
+    opaque_models = []
+    for name, m in models.items():
         if hashlib.sha256((cache/m['file']).read_bytes()).hexdigest() != m['sha256']:
             raise ValueError(f"Model changed upstream: {m['file']}. Review before updating its pin.")
+        render_models[name] = cache/m['file']
+        if m.get('force_opaque', False):
+            # Keep the hash-pinned supplier file intact. Some imported solid
+            # parts have transparent materials that expose the PCB beneath.
+            corrected, count = re.subn(r'\btransparency\s+[0-9.eE+-]+',
+                                       'transparency 0.0', render_models[name].read_text())
+            if not count:
+                raise ValueError(f"No material transparency fields in {m['file']}")
+            render_models[name] = cache/'opaque'/m['file']
+            render_models[name].parent.mkdir(exist_ok=True)
+            render_models[name].write_text(corrected)
+            opaque_models.append(m['file'])
     source = ROOT/'hardware/review/ch32-pico.kicad_pcb'
     checked = json.loads((source.parent/'validation.json').read_text())
     source_hash = hashlib.sha256(source.read_bytes()).hexdigest()
@@ -50,7 +65,7 @@ def main():
             continue
         m = models[name]
         fp[:] = [n for n in fp if not (isinstance(n,list) and n[0]=='model')]
-        fp.append(parse(f'''(model "{cache/m['file']}"
+        fp.append(parse(f'''(model "{render_models[name]}"
             (offset (xyz 0 {m['offset_y']} 0)) (scale (xyz 1 1 1))
             (rotate (xyz 0 0 {m['rotate_z']})))'''))
         count += 1
@@ -86,6 +101,7 @@ def main():
     (out/'render.json').write_text(json.dumps({
         'source_board_sha256':source_hash, 'models_manifest':'../render-models.json',
         'fitted_models':count, 'tool':subprocess.check_output(['kicad-cli','version'],text=True).strip(),
+        'opaque_models':opaque_models,
         'purpose':'CAD illustration, not proof of physical or assembly fit',
         'silkscreen':'KiCad SVG strokes in disposable render copy', 'silkscreen_strokes':silk_strokes,
     },indent=2)+'\n')

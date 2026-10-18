@@ -49,18 +49,9 @@ route: placement-check
     uv run --locked python scripts/router_dependencies.py
     uv run --locked python -m hardware.routing --kicad-python "{{kicad_python}}"
 
-# Historical jumper migration; current power layout uses route-power.
-route-jumper: check
-    uv run --locked python -m hardware.jumper_routing
-
-# Replay the reviewed Rev E power corrections and independently check them.
+# Replay the reviewed layout from its pinned checkpoint and independently check it.
 route-power: check
     uv run --locked python -m hardware.power_routing
-
-# Retained Rev D migration, gated to that revision.
-route-enable: check
-    uv run --locked python scripts/router_dependencies.py
-    uv run --locked python -m hardware.enable_routing
 
 # Check and save the routed board and layer previews in hardware/review/.
 review:
@@ -97,18 +88,3 @@ power-review:
 
 usb-review:
     uv run --locked python -m hardware.usb_review
-
-# Retained Rev A tools; revision guards prevent use on the X035 board.
-dependencies:
-    uv run --locked python scripts/lowcost_firmware.py
-
-firmware: lowcost-firmware
-
-lowcost-firmware:
-    uv run --locked python scripts/lowcost_firmware.py
-
-lowcost-review:
-    uv run --locked python scripts/lowcost_review.py
-
-target-demo:
-    uv run --locked python scripts/target_demo.py

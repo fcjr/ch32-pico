@@ -71,6 +71,13 @@ def grade(path):
     result['changed_critical_vias']=unpreserved_vias(seed,doc)
     result['foreign_tracks_on_ground_layer']=sum(1 for t in children(doc,'segment')
         if one(t,'layer')[1]=='In1.Cu' and one(t,'net')[-1]!='GND')
+    from .ground_review import audit as ground_audit
+    try:
+        result['ground_plane']=ground_audit(doc)
+        result['ground_plane_passes']=True
+    except ValueError as error:
+        result['ground_plane']={'error':str(error)}
+        result['ground_plane_passes']=False
     from .usb_review import report as usb_report
     try:
         result['usb_geometry']=usb_report(path)
@@ -85,17 +92,15 @@ def grade(path):
     except ValueError as error:
         result['silkscreen']={'error':str(error)}
         result['silkscreen_passes']=False
-    from .design import BOARD_REVISION
+    from .power_layout import audit as power_audit
     result['power_layout_passes']=True
-    if BOARD_REVISION in ('C','D','E'):
-        from .power_layout import audit as power_audit
-        try:
-            result['power_layout']=power_audit(doc)
-        except ValueError as error:
-            result['power_layout']={'error':str(error)}
-            result['power_layout_passes']=False
+    try:
+        result['power_layout']=power_audit(doc)
+    except ValueError as error:
+        result['power_layout']={'error':str(error)}
+        result['power_layout_passes']=False
     result['passes_connectivity_and_drc']=not (not result['stackup_matches_source'] or not result['power_layout_passes'] or not result['silkscreen_passes'] or result['violations'] or result['unconnected']
-        or result['via_in_paste'] or result['foreign_tracks_on_ground_layer'] or result['outside_outline_copper']
+        or result['via_in_paste'] or not result['ground_plane_passes'] or result['outside_outline_copper']
         or result['changed_critical_segments'] or result['changed_critical_vias']
         or not result['usb_geometry_passes'])
     return result

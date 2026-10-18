@@ -25,8 +25,8 @@ class AssemblyChecks(unittest.TestCase):
 class ExposedPadTests(unittest.TestCase):
     def test_paste_window_gap_does_not_allow_ordinary_thermal_via(self):
         doc=parse('''(kicad_pcb
-            (footprint "QFN" (at 13 38)
-                (property "Reference" "U3")
-                (pad "25" smd rect (at 0 0) (size 2.7 2.7) (layers "F.Cu" "F.Mask")))
-            (via (at 13 38) (size .45) (drill .2)))''')
-        self.assertEqual(via_in_paste(doc)[0]['pad'],'U3.25')
+            (footprint "WSON" (at 4 9)
+                (property "Reference" "D5")
+                (pad "7" smd rect (at 0 0) (size 0.9 1.6) (layers "F.Cu" "F.Mask")))
+            (via (at 4 9) (size .45) (drill .2)))''')
+        self.assertEqual(via_in_paste(doc)[0]['pad'],'D5.7')

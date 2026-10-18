@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-"""Replay the reviewed Rev E power-layout delta, then run independent checks.
+"""Replay the reviewed layout delta over its pinned base, then run independent checks.
 
 The delta includes the pinned router's copper and manual DRC corrections.
 It is a deterministic layout checkpoint, not a claim of thermal qualification.
@@ -57,7 +57,7 @@ def main():
     if args.capture:
         before,after=entries(normalized(base)),entries(normalized(args.capture.read_text()))
         patch={'base_commit':BASE,'base_path':BASE_PATH,'base_sha256':digest(base),
-               'status':'four-layer cost-reduced protection layout; geometry checked, physical qualification and order release remain open',
+               'status':'four-layer direct-VBUS layout; geometry checked, physical qualification and order release remain open',
                'remove':dict(before-after),'add':dict(after-before)}
         PATCH.write_text(json.dumps(patch,indent=2)+'\n')
         assert entries(apply_delta(base,patch))==after

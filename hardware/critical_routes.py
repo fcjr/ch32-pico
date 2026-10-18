@@ -1,92 +1,58 @@
 # SPDX-License-Identifier: MIT
-# Copyright (c) 2026 ch32-pico contributors
-"""Explicit USB and local supply paths; independent DRC checks every output."""
+"""Locked USB, supply and VBUS copper; independent DRC checks every output."""
 import math
 from .library import ROOT
+from .sexp import parse, dump
 from .schematic import uid
-from .sexp import parse,children,dump
 from .fabrication import copy_rules
+from .protection_routes import ROUTES, VIAS, route, pad
 
-# Net, width in mm, polyline. USB is low-speed, 1.5 Mbit/s.
-# Spread the two under-ESD traces by 0.10 mm locally so a 0.45/0.20 mm
-# VBUS via keeps clearance and the sampled L2 return under both trace edges.
-ROUTES = [
- ('PA1',.15,[(7.6375,32.975),(9.5,32.975)]),
- ('PD0',.15,[(7.6375,34.925),(9.5,34.925)]),
- ('PC0',.15,[(7.6375,36.225),(9.5,36.225)]),
- ('3V3_OUT',.25,[(19.39,11.53),(18.63,11.53),(18.0,10.9)]),
- ('USB_DP',.1537,[(9.75,8.575),(9.75,7.6),(10.75,7.6),(10.75,8.575)]),
- ('USB_DM',.1537,[(10.25,8.575),(10.25,9.5),(11.25,9.5),(11.25,8.575)]),
- ('USB_DP',.1537,[(9.75,8.575),(9.75,9.85),(10.1,10.2),(10.1,10.345)]),
- ('USB_DM',.1537,[(11.25,9.5),(11.1,9.65),(11.1,10.345)]),
- ('USB_DP',.1537,[(10.1,10.345),(10.1,10.7),(10.0,10.8),(10.0,11.4),(10.1,11.5),(10.1,11.955),(10.1,12.3),(7.6375,14.7625),(7.6375,15.17)]),
- ('USB_DM',.1537,[(11.1,10.345),(11.1,10.7),(11.2,10.8),(11.2,11.4),(11.1,11.5),(11.1,11.955),(11.1,12.3),(13.3625,14.5625),(13.3625,15.17)]),
- ('PROBE_DP',.15,[(7.6375,16.03),(7.6375,17.075)]),
- ('PROBE_DM',.15,[(13.3625,16.03),(13.3625,17.075)]),
- ('GND',.15,[(10.6,11.955),(10.6,13.25)]),
- ('VBUS',.15,[(10.6,10.345),(10.6,11.06)]),
- ('3V3_OUT',.25,[(7.6375,22.275),(6.32,22.275)]),
- ('GND',.25,[(5.48,22.275),(4.7,22.275)]),
- ('TARGET_3V3',.25,[(7.6375,35.575),(6.32,35.575)]),
- ('TARGET_3V3',.25,[(6.32,34.3),(6.5,34.3),(6.5,35.575)]),
- ('GND',.25,[(5.48,35.575),(4.7,35.575)]),
- ('GND',.25,[(5.48,34.3),(4.7,34.3)]),
- ('3V3_OUT',.25,[(6.05,41.85),(4.92,41.85)]),
- ('VSYS',.25,[(6.05,44.15),(4.92,44.15)]),
- ('TARGET_3V3',.25,[(12.55,41.85),(11.42,41.85)]),
- ('VSYS',.25,[(12.55,44.15),(11.42,44.15)]),
-]
-VIAS = [('PD0',9.5,34.925),('PC0',9.5,36.225),('3V3_OUT',18.0,10.9),('GND',4.7,22.275),('GND',4.7,35.575),('GND',4.7,34.3),
-        ('GND',10.6,13.25),('VBUS',10.6,11.06)]
-from .design import BOARD_REVISION
-PROTECTED_NETS = ({'USB_DP','USB_DM','BUCK_SW','BUCK_BST','VBUS','PD_OUT','3V3_OUT','GND'}
-                  if BOARD_REVISION in ('B','C','D','E') else {name for name, _, _ in ROUTES})
+# Nets whose routed copper cleanup must never prune.
+PROTECTED_NETS = {'USB_DP','USB_DM','BUCK_SW','BUCK_BST','VBUS','3V3_OUT','GND'}
 
+# USB connector duplicates, ESD pass-through, and paired front-layer trunk.
+route('USB_DP',.1537,(9.75,7.09),(9.75,6.05),(10.75,6.05),(10.75,7.09))
+route('USB_DM',.1537,(10.25,7.09),(10.25,7.95),(11.25,7.95),(11.25,7.09))
+route('USB_DP',.1537,(9.75,7.09),(9.75,8.55),(10.6,9.4),(12.4,9.4),(13.05,9.4125),(13.05,11.6875),(13.05,12.6),(17.7,12.6),(17.7,27.95),(17.35,28.3),(9.9,28.3),(9.25,28.95),pad('U1','33'))
+route('USB_DM',.1537,(11.25,7.95),(12,7.95),(12,8.4),(14.95,8.4),(14.95,9.4125),(14.95,11.6875),(18.0536,11.5),(18.0536,28.3036),(17.6572,28.7),(10.2,28.7),(9.75,29.05),pad('U1','32'))
+route('USB_DP',.1537,(11.7,9.4),pad('R12','1'))
+route('GND',.25,pad('D2','2'),(13.6,10.55));VIAS.append(('GND',13.6,10.55))
+route('3V3_OUT',.2,pad('D2','5'),(14.4,10.55));VIAS.append(('3V3_OUT',14.4,10.55))
+# MCU local decoupling follows the package position.
+route('3V3_OUT',.25,pad('U1','48'),pad('C6','1'))
+route('GND',.25,pad('C6','2'),(4.18,36.25),(5.2,36.25),pad('U1','47'))
+route('GND',.25,pad('C7','2'),(4.18,34.3),(4.7,34.3))
+VIAS.extend([('GND',5.2,36.25),('GND',4.7,34.3)])
+# Fixed regulator input loop, bootstrap and switching node are all local F.Cu.
+route('VIN_SYS',.6,pad('U4','3'),(5.21,26.64),pad('C1','1'))
+route('GND',.6,pad('U4','4'),(8.39,26.64),pad('C1','2'))
+route('GND',.4,pad('C1','2'),(8.9,27.14),(8.9,26.0));VIAS.extend([('GND',8.9,26.0),('GND',8.9,26.5)])
+route('BUCK_SW',.6,pad('U4','5'),(10.0,25.3),pad('L1','1'))
+route('BUCK_SW',.25,(9,25.3),(9,23.9),(8.2,23.1),pad('C4','2'))
+route('BUCK_BST',.25,pad('U4','6'),(7.38,23.73),pad('C4','1'))
+route('3V3_OUT',.8,pad('L1','2'),(15.2,25.75),pad('C2','1'))
+route('3V3_OUT',.8,(15.2,25.75),pad('C3','1'))
+for ref,y in [('C2',23.2),('C3',26.1)]:
+ x,py=pad(ref,'2');route('GND',.4,(x,py),(x,y));VIAS.append(('GND',x,y))
+route('3V3_OUT',.2,pad('U4','1'),(5.6,23.5));VIAS.append(('3V3_OUT',5.6,23.5))
+route('3V3_OUT',.25,pad('L1','2'),(15.6,25.8));VIAS.append(('3V3_OUT',15.6,25.8))
+route('3V3_OUT',.2,(5.6,23.5),(5.6,24.6),(15.6,24.6),(15.6,25.8),layer='B.Cu')
+route('VIN_SYS',.35,pad('D1','1'),(4.2,25.1),(4.4,25.4),(4.4,26.4),pad('C1','1'))
 
 def main():
-    from .design import BOARD_REVISION
-    if BOARD_REVISION in ('C','D','E'):
-        from .critical_routes_c import main as rev_c
-        return rev_c()
-    if BOARD_REVISION == 'B':
-        from .critical_routes_b import main as rev_b
-        return rev_b()
-    if BOARD_REVISION != 'A':
-        raise SystemExit('No critical routing seed for this revision')
-    import wx
-    import pcbnew as k
-    from .pcb import point
-    app=wx.App(False)
     source=ROOT/'build/ch32-pico-placed.kicad_pcb'
     out=ROOT/'build/ch32-pico-seed.kicad_pcb'
-    board=k.LoadBoard(str(source))
-    if board is None: raise ValueError(f'Cannot load {source}')
-    nets=board.GetNetsByName()
-    for name,width,points in ROUTES:
-        for a,b in zip(points,points[1:]):
-            t=k.PCB_TRACK(board);t.SetStart(point(*a));t.SetEnd(point(*b))
-            t.SetWidth(round(width*1e6));t.SetLayer(k.F_Cu);t.SetNet(nets[name]);t.SetLocked(True);board.Add(t)
-    for name,x,y in VIAS:
-        v=k.PCB_VIA(board);v.SetPosition(point(x,y))
-        v.SetWidth(450000);v.SetDrill(200000)
-        v.SetViaType(k.VIATYPE_THROUGH);v.SetLayerPair(k.F_Cu,k.B_Cu)
-        v.SetNet(nets[name]);v.SetLocked(True);board.Add(v)
-    k.SaveBoard(str(out),board)
-    doc=parse(out.read_text())
-    for kind in ('segment','via'):
-        nodes=children(doc,kind)
-        for node in nodes:
-            node[:]=[v for v in node if not (isinstance(v,list) and v[0]=='uuid')]
-        nodes.sort(key=dump)
-        doc[:]=[v for v in doc if not (isinstance(v,list) and v[0]==kind)]
-        for i,node in enumerate(nodes):
-            node.append(['uuid',uid(f'critical/{kind}/{i}')]);doc.append(node)
-    # A via's antipad must not cut into the L2 reference directly below USB.
-    # Half-band 0.28 = max trace half-width 0.07685 + plane clearance 0.20,
-    # rounded up. Keepout applies to via copper; its annulus adds more margin.
-    for i,(name,width,points) in enumerate(ROUTES):
-        if name not in {'USB_DP','USB_DM','PROBE_DP','PROBE_DM'}:continue
+    doc=parse(source.read_text())
+    for i,(layer,net,width,points) in enumerate(ROUTES):
         for j,(a,b) in enumerate(zip(points,points[1:])):
+            # GPIO/control pin escapes may be pruned if the router reaches
+            # the pad another way. USB and power trunk geometry stay locked.
+            optional=net in {'CC1','BOOT_PULLUP'}
+            lock='' if optional else '(locked yes)'
+            doc.append(parse(f'''(segment (start {a[0]} {a[1]}) (end {b[0]} {b[1]})
+                (width {width}) (layer "{layer}") (net "{net}") {lock}
+                (uuid "{uid(f'critical/route/{i}/{j}')}"))'''))
+            if net not in {'USB_DP','USB_DM'}:continue
             length=math.dist(a,b);ux,uy=(b[0]-a[0])/length,(b[1]-a[1])/length
             r=.28
             polygon=[(a[0]-ux*r-uy*r,a[1]-uy*r+ux*r),
@@ -94,16 +60,30 @@ def main():
                      (b[0]+ux*r+uy*r,b[1]+uy*r-ux*r),
                      (a[0]-ux*r+uy*r,a[1]-uy*r-ux*r)]
             pts=' '.join(f'(xy {x:.6f} {y:.6f})' for x,y in polygon)
-            doc.append(parse(f'''(zone (net 0) (net_name "") (layer "In1.Cu")
-                (uuid "{uid(f'usb-return-keepout/{i}/{j}')}") (hatch edge 0.5)
+            doc.append(parse(f'''(zone (net "") (layer "In1.Cu")
+                (uuid "{uid(f'critical/usb-return/{i}/{j}')}") (hatch edge 0.5)
                 (connect_pads (clearance 0)) (min_thickness 0.1)
                 (keepout (tracks allowed) (vias not_allowed) (pads allowed)
                     (copperpour allowed) (footprints allowed))
                 (fill (thermal_gap 0.3) (thermal_bridge_width 0.3))
                 (polygon (pts {pts})))'''))
+    for i,(net,x,y) in enumerate(VIAS):
+        lock='' if net in {'CC1','BOOT_PULLUP'} else '(locked yes)'
+        doc.append(parse(f'''(via (at {x} {y}) (size .45) (drill .2)
+          (layers "F.Cu" "B.Cu") (net "{net}") {lock}
+          (uuid "{uid(f'critical/via/{i}')}"))'''))
+    # Prevent the shared 3V3 plane from bypassing the dedicated FB sense trace.
+    doc.append(parse(f'''(zone (net "") (layer "In2.Cu")
+        (uuid "{uid('critical/feedback-plane-isolation')}") (hatch edge 0.5)
+        (connect_pads (clearance 0)) (min_thickness 0.1)
+        (keepout (tracks allowed) (vias allowed) (pads allowed) (copperpour not_allowed) (footprints allowed))
+        (fill (thermal_gap 0.3) (thermal_bridge_width 0.3))
+        (polygon (pts (xy 5.0 22.9) (xy 6.2 22.9) (xy 6.2 24.1) (xy 5.0 24.1))))'''))
+    from .stitching import apply as stitch
+    stitch(doc)
     out.write_text(dump(doc)+'\n')
     copy_rules(source,out)
-    print(f'Wrote {len(ROUTES)} critical polylines to {out}')
+    print(f'Wrote critical copper to {out}; thermal qualification pending')
 
 
 if __name__=='__main__':main()

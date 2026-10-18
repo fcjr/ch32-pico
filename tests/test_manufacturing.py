@@ -11,21 +11,21 @@ from hardware.placement import PLACEMENT
 
 
 class ManufacturingTests(unittest.TestCase):
-    def test_bom_has_50v_caps_and_reduced_current_limit(self):
+    def test_bom_has_50v_caps_and_input_clamp(self):
         with tempfile.TemporaryDirectory() as d:
             directory=Path(d)
             assembly_files(self.positions(directory,lambda rows:None),directory)
             with (directory/'bom.csv').open() as f:
                 by_ref={ref:row for row in csv.DictReader(f) for ref in row['Designator'].split(',')}
-            for ref in ('C4','C17','C6','C9','C10','C11','C13'):
+            for ref in ('C4','C6','C9','C11'):
                 self.assertEqual(by_ref[ref]['LCSC Part #'],'C307331')
                 self.assertEqual(by_ref[ref]['MPN'],'CL05B104KB54PNC')
                 self.assertEqual(by_ref[ref]['Comment'],'100nF / 50V')
-            self.assertEqual(by_ref['C8']['LCSC Part #'],'C1532')
-            self.assertEqual(by_ref['C8']['Comment'],'22nF / 50V')
-            self.assertEqual(by_ref['R17']['LCSC Part #'],'C25749')
-            self.assertEqual(by_ref['R17']['Comment'],'11k')
-            self.assertEqual(by_ref['C12']['LCSC Part #'],'C51205')
+            self.assertEqual(by_ref['C1']['LCSC Part #'],'C13585')
+            self.assertEqual(by_ref['C1']['Comment'],'10uF / 50V')
+            self.assertEqual(by_ref['D5']['LCSC Part #'],'C523793')
+            for ref in ('U3','Q1','U6','D6','C12'):
+                self.assertNotIn(ref,by_ref)
 
     def positions(self,directory,mutate):
         rows=[]

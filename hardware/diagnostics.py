@@ -19,15 +19,15 @@ class Diagnostic:
 
 
 DIAGNOSTICS = (
-    Diagnostic('TP14','CURRENT_SENSE','ISNS',(9.4,32.2),(9.4,30.9)),
+    Diagnostic('TP14','PA3','PA3',(9.4,32.2),(9.4,30.9)),
     Diagnostic('TP15','VBUS','VBUS',(8.6,4.9),(9,7.3)),
     Diagnostic('TP16','GND','GND',(11.3,4.4),(11,5.9)),
     Diagnostic('TP17','VBUS_SENSE','VSNS',(8,21.6),(8,22.75)),
-    Diagnostic('TP18','PDOUT_SENSE','OSNS',(14.2,25.6),(11.5,25.6)),
-    Diagnostic('TP19','CC1','CC1',(8,10.6),(8,11.8)),
-    Diagnostic('TP20','CC2','CC2',(10.8,10.2),(10.8,11.35)),
-    Diagnostic('TP21','PD_ENABLE','PDEN',(12.3,18.3),(12.3,19.45)),
-    Diagnostic('TP22','STATUS_LED','PB3',(14.5,34.2),(14.7,33.05),'B','SMALL_PROBE'),
+    Diagnostic('TP18','PB1','PB1',(14.2,25.6),(13.0,24.45)),
+    Diagnostic('TP19','CC1','CC1',(8,10.6),(8,11.65)),
+    Diagnostic('TP20','CC2','CC2',(10.8,10.2),(10.8,11.65)),
+    Diagnostic('TP21','PB2','PB2',(12.3,18.3),(12.3,19.45)),
+    Diagnostic('TP22','STATUS_LED','PB3',(14.5,34.2),(14.7,33.3),'B','SMALL_PROBE'),
     Diagnostic('TP23','USB_DP','D+',(15.5,28.3),(17.1,28.45),'F','USB_PROBE'),
     Diagnostic('TP24','USB_DM','D-',(14.7,28.7),(15.0,29.4),'F','USB_PROBE'),
 )

@@ -23,8 +23,8 @@ def verify_contract(components=COMPONENTS):
                 raise ValueError(f'Contract violation: {ref}.{pin} must be {net}')
     from .design import INTERNAL_SIGNALS, MCU_PART, EXPANSION_SIGNALS, validate
     validate()
-    if c['U1'].part != MCU_PART or any(x.part=='C5187096' for x in components):
-        raise ValueError('The X035 design requires one X035 and no V003 programmer')
+    if c['U1'].part != MCU_PART:
+        raise ValueError('U1 must be the reviewed CH32X035C8T6')
     require('U1',{47:'GND',48:'3V3_OUT',7:'PA21',32:'USB_DM',33:'USB_DP',
                   34:'SDIO',37:'SDCK',38:'CC1',39:'CC2'})
     require('D1',{1:'VIN_SYS',2:'VBUS'})
@@ -32,31 +32,10 @@ def verify_contract(components=COMPONENTS):
     require('D2',{2:'GND',5:'3V3_OUT'})
     require('U4',{1:'3V3_OUT',2:'3V3_EN',3:'VIN_SYS',4:'GND',5:'BUCK_SW',6:'BUCK_BST'})
     require('L1',{1:'BUCK_SW',2:'3V3_OUT'})
-    require('U3',{1:'PD_INPUT',2:'PD_INPUT',3:'PD_GATE',4:'PD_DRV',5:'VBUS',6:'VBUS',7:'PD_OVLO',8:'GND',
-        9:'PD_DVDT',10:'PD_ILM',11:'GND',12:'PD_SHDN',13:'PD_IMON',14:'PD_FAULT_N',
-        15:'GND',17:'PD_OUT',18:'PD_OUT',25:'GND'})
-    if c['U3'].part!='C18197523':raise ValueError('Use the reviewed MX26631DL auto-retry variant')
-    require('Q2',{1:'PD_DRV',2:'VBUS',3:'PD_GATE'})
-    require('Q1',{1:'VBUS',2:'VBUS',3:'VBUS',4:'PD_GATE',5:'PD_INPUT',6:'PD_INPUT',7:'PD_INPUT',8:'PD_INPUT',9:'PD_INPUT'})
-    require('U6',{1:'PD_SHDN',2:'GND',3:'PD_UV_SENSE',4:'GND',5:'3V3_OUT',6:None})
-    for ref,part in (('Q2','C40912'),('Q1','C431191'),('U6','C132788'),('D7','C5709679')):
-        if c[ref].part!=part:raise ValueError(f'{ref}: protection part substitution needs review')
-    require('U3',{16:None,19:None,20:None,21:None,22:None,23:None,24:None})
-    require('R26',{1:'PD_ENABLE',2:'PD_SHDN'})
-    require('R27',{1:'VBUS',2:'PD_UV_SENSE'})
-    require('R28',{1:'PD_UV_SENSE',2:'GND'})
-    require('D7',{1:'PD_OUT',2:'GND'})
-    for ref,part,value in (
-        ('R26','C25900','4.7k'),('R27','C852928','82.5k / 0.1%'),
-        ('R28','C852919','7.68k / 0.1%'),
-        ('R25','C190095','10k / 0.1%'),('R7','C25744','10k')):
-        if (c[ref].part,c[ref].value)!=(part,value):
-            raise ValueError(f'{ref}: protection calculation requires the reviewed resistor')
-
-    for ref,net in (('D5','VBUS'),('D6','PD_OUT')):
-        if c[ref].part!='C523793':raise ValueError(f'{ref}: unreviewed TVS clamp')
-        require(ref,{1:'GND',2:'GND',3:'GND',4:net,5:net,6:net,7:'GND'})
-    require('R7',{1:'PD_ENABLE',2:'GND'})
+    # Pin 40 is direct VBUS. The input clamp is the only part on the PD path.
+    if c['D5'].part!='C523793':raise ValueError('D5: unreviewed TVS clamp')
+    require('D5',{1:'GND',2:'GND',3:'GND',4:'VBUS',5:'VBUS',6:'VBUS',7:'GND'})
+    require('R1',{1:'VBUS',2:'VBUS_SENSE'});require('R2',{1:'VBUS_SENSE',2:'GND'})
     require('R3',{1:'CC1',2:'GND'});require('R4',{1:'CC2',2:'GND'})
     require('J2',{'A5':'CC1','B5':'CC2','A6':'USB_DP','B6':'USB_DP','A7':'USB_DM','B7':'USB_DM',
                   'A4B9':'VBUS','B4A9':'VBUS'})
@@ -73,11 +52,10 @@ def verify_contract(components=COMPONENTS):
         require(d.ref,{1:d.net})
         if c[d.ref].fitted:raise ValueError('Diagnostic pads must be bare copper')
     require('SJ1',{1:'GPIO35',2:'PC7'})
-    require('U1',{19:'PC7',24:'PD_FAULT_N'})
-    require('R9',{1:'PD_FAULT_N',2:'3V3_OUT'})
+    require('U1',{19:'PC7',24:'PB4'})
     pc7_nodes={(x.ref,p) for x in components for p,n in x.nets.items() if n=='PC7'}
     if pc7_nodes!={('U1','19'),('SJ1','2')}:
-        raise ValueError('PC7 must connect only MCU and SJ1; TP7 is FAULT')
+        raise ValueError('PC7 must connect only MCU and SJ1; TP7 is PB4')
     if c['SJ1'].fitted:
         raise ValueError('SJ1 must remain a bare, normally open copper jumper')
     jumper_nodes={(x.ref,p) for x in components for p,n in x.nets.items() if n=='GPIO35'}
@@ -90,48 +68,25 @@ def verify_contract(components=COMPONENTS):
     require('SW1',{1:'PA21',2:'GND'})
     require('SW2',{1:'BOOT_PULLUP',2:'3V3_OUT'})
     require('R12',{1:'USB_DP',2:'BOOT_PULLUP'})
-    for net in ('VBUS','PD_OUT','VIN_SYS','VSYS'):
+    for net in ('VBUS','VIN_SYS','VSYS'):
         if net in c['U1'].nets.values():raise ValueError('High-voltage net connected directly to MCU')
     shutdown_nodes={(x.ref,p) for x in components for p,n in x.nets.items() if n=='3V3_EN'}
     if shutdown_nodes!={('J1','37'),('U4','2')}:
         raise ValueError('3V3_EN must connect only header 37 and regulator EN, with no VIN pull-up')
-    enable_nodes={(x.ref,p) for x in components for p,n in x.nets.items() if n=='PD_ENABLE'}
-    if enable_nodes!={('U1','22'),('R26','1'),('R7','1'),('TP21','1')}:
-        raise ValueError('PD_ENABLE must carry control only')
-    for ref in ('C1','C8','C12','C14','C16'):
-        rating=library[c[ref].part].voltage_rating_v
-        if rating is None or rating<50:
-            raise ValueError(f'{ref}: high-voltage capacitor requires a verified 50 V part')
+    if [p.proposed for p in HEADER if p.number==40]!=['VBUS']:
+        raise ValueError('Header pin 40 must be direct USB VBUS')
+    rating=library[c['C1'].part].voltage_rating_v
+    if rating is None or rating<50:
+        raise ValueError('C1: high-voltage capacitor requires a verified 50 V part')
     for item in components:
         if item.ref.startswith('C'):
             label=re.search(r'/\s*(\d+(?:\.\d+)?)V\b',item.value)
             if label and float(label[1])!=library[item.part].voltage_rating_v:
                 raise ValueError(f'{item.ref}: capacitor value label differs from vendor voltage rating')
-    require('C8',{1:'PD_DVDT',2:'GND'})
-    if (c['C8'].part,c['C8'].value)!=('C1532','22nF / 50V'):
-        raise ValueError('C8: use the reviewed 22 nF startup capacitor')
-    require('C12',{1:'PD_OUT',2:'GND'})
-    if (c['C12'].part,c['C12'].value)!=('C51205','4.7uF / 50V'):
-        raise ValueError('C12: use the reviewed 1206 output capacitor with DC-bias evidence')
-    for ref,part,value in (('R20','C852928','82.5k / 0.1%'),('R21','C851038','4.75k / 0.1%')):
-        if (c[ref].part,c[ref].value)!=(part,value):
-            raise ValueError(f'{ref}: OVLO calculation requires the reviewed precision resistor')
-    for ref,part,value in (('R17','C25749','11k'),):
-        require(ref,{1:'PD_ILM',2:'GND'})
-        if not c[ref].fitted or (c[ref].part,c[ref].value)!=(part,value):
-            raise ValueError(f'{ref}: use the reviewed ~3 A ILM network')
-    ilm_nodes={(x.ref,p) for x in components for p,n in x.nets.items() if n=='PD_ILM'}
-    if ilm_nodes!={('U3','10'),('R17','1')}:
-        raise ValueError('Unreviewed connection to ILM programming network')
-    require('R24',{1:'PD_IMON',2:'CURRENT_SENSE'})
-    require('R25',{1:'PD_IMON',2:'GND'})
-    for ref,a,b in (('C14','PD_INPUT','GND'),('C16','VBUS','GND')):
-        require(ref,{1:a,2:b})
-    # Reject accidental direct bypasses of the switch or VSYS isolation diode.
+    # Reject accidental direct bypasses of the VSYS isolation diode.
     for x in components:
         nets=set(x.nets.values())
-        if {'VBUS','PD_OUT'}<=nets and x.ref!='U3':raise ValueError('Bypassed PD load switch')
-        if 'VSYS' in nets and nets & {'VBUS','PD_OUT'} and x.ref!='J1':
+        if 'VSYS' in nets and 'VBUS' in nets and x.ref!='J1':
             raise ValueError('HV backfeed to VSYS')
 
 

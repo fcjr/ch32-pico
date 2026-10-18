@@ -1,7 +1,7 @@
 # Build and routing
 
 The project uses `uv` for Python environments and `just` for commands.
-`just jlcpcb` generates the current Rev E fabrication bundle from the checked
+`just jlcpcb` generates the fabrication bundle from the checked
 board. It does not reroute the design, submit an order or reserve parts.
 
 ## Tools and environments
@@ -55,9 +55,9 @@ There are 40 header holes and 40 castellations, and no mounting holes.
 Placement checks may report open connections. Routed-board and panel checks
 require zero open connections and zero DRC violations.
 
-## Routing a revision
+## Routing
 
-To reproduce the current checked Rev E power layout:
+To reproduce the checked layout:
 
 ```sh
 just route-power
@@ -67,13 +67,9 @@ just jlcpcb
 ```
 
 `route-power` retrieves the hash-pinned PCB at commit `461bf67` and applies
-the saved, reviewed power-layout changes. It then runs independent geometry,
+the saved, reviewed layout changes. It then runs independent geometry,
 connectivity and source-parity checks. A clone containing that commit is
 required. This reproduces the layout; it does not qualify its current rating.
-
-The historical `route-jumper` workflow added the open PC7 jumper, FAULT and
-diagnostic contacts to Rev D. It rejects the current power-component changes.
-Use its historical checkout to reproduce that earlier migration.
 
 For a new placement or a broader routing change, `just route` compares the
 pinned KiCadRoutingTools and Freerouting engines from the generated seed.
@@ -99,14 +95,18 @@ and B.Cu signals. The USB pair stays entirely on F.Cu. Its two probe contacts
 expose existing trace copper without adding branches or vias. Independent gates
 check source/PCB parity, critical geometry, USB ground reference, paste
 clearance and the power layout. Ground stitches use ordinary
-tented 0.45/0.20 mm vias. C12 and each surge clamp must reach at least two
-local ground vias within 2.5 mm through top copper at least 0.4 mm wide. These checks do not establish USB or thermal compliance.
+tented 0.45/0.20 mm vias. The surge clamp must reach at least two local
+ground vias within 2.5 mm through top copper at least 0.4 mm wide, and pin 40
+must keep both its 1.2 mm bottom trunk and its front-layer feed. These checks
+do not establish USB or thermal compliance.
 
 ## Rendering
 
 `just render` uses locked Pillow and easyeda2kicad dependencies. Missing supplier
 models download into ignored `build/render/`, then must match the committed
-[model hashes](render-models.json). Models attach only to a disposable render
+[model hashes](render-models.json). The switch model's imported materials are
+fully transparent. Its manifest entry requests an opaque render copy, preserving
+the original cached model and its hash. Models attach only to a disposable render
 copy of the PCB. The render copy uses KiCad SVG plot strokes for silkscreen
 to avoid intermittent missing glyphs in the macOS 3D text renderer. The checked
 PCB keeps editable text, and fabrication exports use it directly. KiCad renders both sides, and Pillow combines them into
@@ -130,13 +130,8 @@ using those files. All `build/` files are ignored by Git. Commit sources, tool
 locks and the checked board; attach an exact bundle to a tagged release when
 preparing a fabrication release.
 
-## Retained firmware generation
-
-The Rev A programmer and target-demo generators remain available through
-`just lowcost-firmware` and `just target-demo`, but reject the current X035
-revision. Their archived CH32FUN integration still invokes its upstream Make
-rules internally. The root Makefile has been replaced by `justfile`; existing
-generation code and historical revision tools remain in the repo.
+## Firmware
 
 The X035 PD/USB application and assembled-board qualification remain pending.
-See [Rev E](revision-e.md) for current behavior and limitations.
+`firmware/pd/` holds the portable PD sink policy and its tests. See the
+[design notes](design.md) for current behavior and limitations.

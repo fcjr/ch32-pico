@@ -1,13 +1,14 @@
 /* SPDX-License-Identifier: MIT */
 #include "policy.h"
 
-void pd_init(pd_policy *p) { *p=(pd_policy){.state=PD_OFF}; }
-void pd_invalidate(pd_policy *p) {
-    uint32_t next=p->epoch+1;
-    *p=(pd_policy){.state=PD_OFF,.epoch=next};
+void pd_init(pd_policy *p,uint16_t carrier_max_mv) {
+    *p=(pd_policy){.state=PD_OFF,.carrier_max_mv=carrier_max_mv};
 }
-static bool voltage_allowed(uint16_t mv) {
-    return mv==5000 || mv==9000 || mv==12000 || mv==15000 || mv==20000;
+void pd_invalidate(pd_policy *p) {
+    *p=(pd_policy){.state=PD_OFF,.epoch=p->epoch+1,.carrier_max_mv=p->carrier_max_mv};
+}
+static bool voltage_allowed(const pd_policy *p,uint16_t mv) {
+    return (mv==5000 || mv==9000 || mv==12000 || mv==15000 || mv==20000) && mv<=p->carrier_max_mv;
 }
 static bool voltage_matches(const pd_policy *p,uint16_t mv) {
     return p->target_mv && (uint32_t)mv*100>=p->target_mv*95u
@@ -15,8 +16,8 @@ static bool voltage_matches(const pd_policy *p,uint16_t mv) {
 }
 uint32_t pd_select(pd_policy *p,const uint32_t *caps,size_t count,
                    uint16_t mv,uint16_t board_limit_ma,uint16_t reserve_ma) {
-    pd_invalidate(p); /* switching off is unconditional, even for bad commands */
-    if (!caps || !voltage_allowed(mv) || !board_limit_ma || board_limit_ma>3000 || reserve_ma<100)
+    pd_invalidate(p); /* a bad command still abandons the previous contract */
+    if (!caps || !voltage_allowed(p,mv) || !board_limit_ma || board_limit_ma>3000 || reserve_ma<100)
         return p->epoch;
     if (count>7) count=7; /* SPR Source_Capabilities has at most seven PDOs */
     for (size_t i=0;i<count;i++) {
@@ -28,12 +29,12 @@ uint32_t pd_select(pd_policy *p,const uint32_t *caps,size_t count,
         ma=(ma/10u)*10u; /* fixed-PDO RDO current has 10 mA resolution */
         if (ma<=reserve_ma || ma<=p->contract_ma) continue;
         p->target_mv=mv;p->contract_ma=ma;p->load_budget_ma=ma-reserve_ma;
-        p->pdo_position=(uint8_t)i+1;p->state=PD_WAIT_DISCHARGE;
+        p->pdo_position=(uint8_t)i+1;p->state=PD_REQUEST;
     }
     return p->epoch;
 }
-bool pd_can_request(pd_policy *p,uint16_t measured_output_mv) {
-    if (p->state!=PD_WAIT_DISCHARGE || measured_output_mv>800) return false;
+bool pd_can_request(pd_policy *p) {
+    if (p->state!=PD_REQUEST) return false;
     p->state=PD_WAIT_ACCEPT;return true;
 }
 bool pd_accepted(pd_policy *p,uint32_t epoch) {
@@ -45,14 +46,9 @@ bool pd_ready(pd_policy *p,uint32_t epoch,uint16_t measured_vbus_mv) {
         return false;
     p->state=PD_READY;return true;
 }
-bool pd_arm(pd_policy *p,uint16_t measured_vbus_mv,bool fault_n) {
-    p->gate=p->state==PD_READY && voltage_matches(p,measured_vbus_mv) && fault_n;
-    if (!fault_n) p->state=PD_FAULT;
-    return p->gate;
+void pd_monitor(pd_policy *p,bool attached,uint16_t vbus_mv) {
+    if (!attached || (p->state==PD_READY && !voltage_matches(p,vbus_mv))) pd_invalidate(p);
 }
-void pd_monitor(pd_policy *p,bool attached,bool fault_n,uint16_t vbus_mv,uint16_t output_ma) {
-    if (!attached) { pd_invalidate(p);return; }
-    if (!fault_n || (p->gate && (!voltage_matches(p,vbus_mv) || output_ma>p->load_budget_ma))) {
-        p->gate=false;p->state=PD_FAULT;
-    }
+uint16_t pd_expected_mv(const pd_policy *p) {
+    return p->state==PD_READY ? p->target_mv : 5000;
 }

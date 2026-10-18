@@ -1,28 +1,25 @@
 # SPDX-License-Identifier: MIT
-"""Rev E local GND stitching, ordinary tented through vias without paste.
+"""GND stitching: ordinary tented through vias, outside paste.
 
-Two vias join the connector-region back pour to L2. Two more shorten C12's
-ground return, and one supplements each surge clamp's existing ground via.
-All sit outside paste; there is no board-wide fence or switch-node copper.
+One via joins the connector-region back pour to L2; six more tie the back
+pour to the ground plane across the open middle of the board, where no
+through-hole ground pins or decoupling returns exist. The D5 pair is defined
+beside its routes in protection_routes. There is no board-wide fence.
 """
 from .sexp import parse
 from .schematic import uid
 
-VIAS=((5.5,7.8),(14.5,7.55),(14.85,14.025),(15.3,14.025),(15.7,3.4),(15.1,6.0))
-ROUTES=(
-    (.4,((16.4,13.91),(15.3,14.025),(14.85,14.025))),
-    (.4,((15.7,2.8),(15.7,3.4))),
-    (.4,((15.7,6.0),(15.1,6.0))),
-)
+VIAS=((14.5,7.55),(3.5,12.5),(11.5,15.0),(11.5,22.0),(13.5,17.0),(14.0,14.0),(17.0,16.5))
+ROUTES=()
 
 
 def apply(doc):
     for i,(x,y) in enumerate(VIAS):
         doc.append(parse(f'''(via (at {x} {y}) (size .45) (drill .2)
             (layers "F.Cu" "B.Cu") (net "GND") (locked yes)
-            (tenting front back) (uuid "{uid(f'reve/stitch/{i}')}"))'''))
+            (tenting front back) (uuid "{uid(f'stitch/via/{i}')}"))'''))
     for i,(width,points) in enumerate(ROUTES):
         for j,(a,b) in enumerate(zip(points,points[1:])):
             doc.append(parse(f'''(segment (start {a[0]} {a[1]}) (end {b[0]} {b[1]})
                 (width {width}) (layer "F.Cu") (net "GND") (locked yes)
-                (uuid "{uid(f'reve/stitch-route/{i}/{j}')}"))'''))
+                (uuid "{uid(f'stitch/route/{i}/{j}')}"))'''))

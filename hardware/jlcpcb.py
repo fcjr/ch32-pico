@@ -80,12 +80,12 @@ def main():
             'Confirm all charged quantities and attrition in the factory quote.\n\n'
             'Read factory-notes.txt for stencil, silicon-lot, rail and polarity requirements.\n'
             'Enable Confirm Production file and Confirm Parts Placement in the quote.\n'
-            'Include U3 hidden-joint X-ray inspection in the complete price.\n\n'
+            'Include D5 hidden-joint X-ray inspection in the complete price.\n\n'
             'Confirm rail/tab handling, hybrid USB assembly, actual stackup,\n'
             'via pricing, castellations and the complete delivered price.\n'
             'The quote form may reset settings when other choices change.\n'
             'Physical USB, PD power, cable fit and native USB firmware qualification remain.\n'
-            'The 3.64 A formula-derived nominal eFuse threshold is not a qualified continuous current rating.\n'
+            'Pin 40 is unswitched USB VBUS; no continuous current rating is qualified.\n'
             'Prototype qualification remains open: heat, loaded startup, transients, biased capacitance and low-input shutdown.\n'
             'No purchase, stock reservation or upload is performed by this build.\n')
         from scripts.license_files import copy_notices

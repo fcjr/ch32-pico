@@ -1,9 +1,12 @@
 {
-  "source_board_sha256": "573829585a27255d5599ead0b1403acd19374fdac6bdd73410b1e6e3b0589a78",
+  "source_board_sha256": "ff2e819a6a37b369b5fdf35f2b539371ccf53709e440340859e0741b41ba754e",
   "models_manifest": "../render-models.json",
-  "fitted_models": 52,
+  "fitted_models": 26,
   "tool": "10.0.6",
+  "opaque_models": [
+    "SW-SMD_L4.0-W2.9-LS4.8-1.wrl"
+  ],
   "purpose": "CAD illustration, not proof of physical or assembly fit",
   "silkscreen": "KiCad SVG strokes in disposable render copy",
-  "silkscreen_strokes": 2728
+  "silkscreen_strokes": 2712
 }

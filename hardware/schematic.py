@@ -131,7 +131,7 @@ def generate(*,components=COMPONENTS,sections=SECTIONS,out=OUT,
           f'(title_block (title "ch32-pico development board") (rev "{BOARD_REVISION} - prototype"))',
           '(lib_symbols)',text(subtitle,25.4,22.86,2),
           text('Electrical draft. Not a fabrication release.',25.4,30.48),
-          text('USB-C CC -> CH32X035; VBUS -> load switch -> header 40',25.4,38.1),
+          text('USB-C CC -> CH32X035; VBUS -> header 40',25.4,38.1),
           text(f'Python source: {source}. See docs/compatibility.md.',25.4,45.72)]
     for index,(section,title) in enumerate(SECTIONS.items()):
         sheetid=uid('sheet/'+section)

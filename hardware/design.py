@@ -10,7 +10,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-BOARD_REVISION = 'E'
+BOARD_REVISION = 'A'
 
 
 @dataclass(frozen=True)
@@ -48,16 +48,16 @@ class HeaderPin:
 
 MECHANICAL = Mechanical()
 
-# Rev B separates the negotiated USB rail from Pico carrier power pins.
+# Pin 40 follows USB VBUS directly, like the Pico: 5 V until PD negotiates more.
 MCU_PART = 'C29779902'
 MCU_MPN = 'CH32X035C8T6'
 POWER_REQUIREMENTS = {
-    "topology": "fixed-3v3-buck-and-switched-pd-vbus",
+    "topology": "fixed-3v3-buck-and-direct-pd-vbus",
     "vsys_min_v": 4.3, "vsys_max_v": 5.5, "output_v": 3.3,
     "header_current_goal_ma": 50, "usb_backfeed_allowed": False,
     "pd_voltage_steps_v": (5, 9, 12, 15, 20),
     "pd_output_current_goal_ma": 3000,
-    "pd_output_location": "Pico pin 40, replaces fixed 5 V VBUS",
+    "pd_output_location": "Pico pin 40, unswitched USB VBUS; 5 V until PD negotiates higher",
 }
 
 # WCH CH32X035 datasheet, LQFP48 pin diagram and table 2-1.
@@ -67,15 +67,13 @@ TARGET_PINS = dict(zip(
      'PB8 PB9 PB10 PB11 PC16 PC17 PC18 PB12 PB13 PC19 PC14 PC15 '
      'PA8 PA9 PA10 PA11 PA12 PA13 PA14 VSS VDD').split(),range(1,49)))
 
-# Unpopulated underside expansion pads: six free GPIOs and the PD fault signal.
-EXPANSION_SIGNALS = ('PC6', 'PD_FAULT_N', 'PB5', 'PB8', 'PB9', 'PB12', 'PB13')
+# Unpopulated underside expansion pads: seven free GPIOs.
+EXPANSION_SIGNALS = ('PC6', 'PB4', 'PB5', 'PB8', 'PB9', 'PB12', 'PB13')
 
-# Pins reserved for USB, PD, recovery and board power control.
+# Pins reserved for USB, PD, recovery and board status.
 INTERNAL_SIGNALS = {
     'PC16':'USB_DM', 'PC17':'USB_DP', 'PC14':'CC1', 'PC15':'CC2',
-    'PC18':'SDIO', 'PC19':'SDCK', 'PB0':'VBUS_SENSE',
-    'PB1':'PDOUT_SENSE', 'PB2':'PD_ENABLE', 'PB3':'STATUS_LED',
-    'PB4':'PD_FAULT_N', 'PA3':'CURRENT_SENSE',
+    'PC18':'SDIO', 'PC19':'SDCK', 'PB0':'VBUS_SENSE', 'PB3':'STATUS_LED',
 }
 
 HEADER = tuple(HeaderPin(*row) for row in (
@@ -117,8 +115,8 @@ HEADER = tuple(HeaderPin(*row) for row in (
     (36, "3V3_OUT", "3V3_OUT", "Fixed 3.3 V output; prototype load rating pending"),
     (37, "3V3_EN", "3V3_EN", "Pull low to shut down 3.3 V; release for automatic startup"),
     (38, "GND", "GND", "Ground"),
-    (39, "VSYS", "VSYS", "4.3-5.5 V input only; diode-isolated from PD VBUS"),
-    (40, "VBUS", "PD_OUT", "Switched negotiated 5-20 V output; incompatible with fixed-5V Pico carriers"),
+    (39, "VSYS", "VSYS", "4.3-5.5 V input only; diode-isolated from VBUS"),
+    (40, "VBUS", "VBUS", "USB VBUS, 5 V by default; follows any higher PD contract firmware requests"),
 ))
 
 
@@ -129,7 +127,7 @@ def validate() -> None:
     if len(set(signals)) != len(signals) or len(signals)!=27:
         raise ValueError("Require 26 distinct GPIOs and one reset input")
     if set(signals) & set(INTERNAL_SIGNALS):
-        raise ValueError("Board controls, USB, PD and debug must not share header GPIO")
+        raise ValueError("Board status, USB, PD and debug must not share header GPIO")
     if any(p.proposed!='GND' for p in HEADER if p.pico in {'GND','AGND'}):
         raise ValueError("Pico ground positions must remain ground")
     if HEADER[34].proposed != 'GPIO35':

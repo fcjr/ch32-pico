@@ -14,9 +14,9 @@ class CircuitContract(unittest.TestCase):
     def altered(self,ref,changes):
         return tuple(replace(c,nets={**c.nets,**changes}) if c.ref==ref else c for c in COMPONENTS)
 
-    def test_current_probe_cannot_bypass_filter(self):
+    def test_gpio_probe_pad_cannot_be_miswired_to_vbus(self):
         with self.assertRaisesRegex(ValueError,'TP14.1'):
-            verify_contract(self.altered('TP14',{'1':'PD_ILM'}))
+            verify_contract(self.altered('TP14',{'1':'VBUS'}))
 
     def test_voltage_probe_cannot_be_miswired_to_raw_vbus(self):
         with self.assertRaisesRegex(ValueError,'TP17.1'):
@@ -26,7 +26,7 @@ class CircuitContract(unittest.TestCase):
         verify_contract()
 
     def test_16v_parts_rejected_on_each_high_voltage_position(self):
-        for ref in ('C1','C16','C8','C12'):
+        for ref in ('C1',):
             with self.subTest(ref=ref), self.assertRaisesRegex(ValueError,ref+': high-voltage'):
                 verify_contract(tuple(replace(c,part='C1525') if c.ref==ref else c for c in COMPONENTS))
 
@@ -34,36 +34,23 @@ class CircuitContract(unittest.TestCase):
         with self.assertRaisesRegex(ValueError,'C6: capacitor value label'):
             verify_contract(tuple(replace(c,part='C1525') if c.ref=='C6' else c for c in COMPONENTS))
 
-    def test_original_600_ohm_current_limit_is_rejected(self):
-        with self.assertRaisesRegex(ValueError,'R17: use the reviewed'):
-            verify_contract(tuple(replace(c,part='C11702',value='1k') if c.ref=='R17' else c for c in COMPONENTS))
+    def test_clamp_must_stay_on_vbus(self):
+        with self.assertRaisesRegex(ValueError,'D5.4'):
+            verify_contract(self.altered('D5',{'4':'VSYS','5':'VSYS','6':'VSYS'}))
 
-    def test_extra_ilm_shunt_is_rejected(self):
-        from hardware.circuit import two
-        with self.assertRaisesRegex(ValueError,'Unreviewed connection to ILM'):
-            verify_contract((*COMPONENTS,two('R99','C11702','PD_ILM','GND','pd','1k')))
-
-    def test_ilm_programming_resistor_cannot_be_miswired(self):
-        with self.assertRaisesRegex(ValueError,'R17.2'):
-            verify_contract(self.altered('R17',{'2':'3V3_OUT'}))
-
-    def test_undervoltage_sense_cannot_deadlock_startup(self):
-        with self.assertRaisesRegex(ValueError,'R27.1'):
-            verify_contract(self.altered('R27',{'1':'PD_INPUT'}))
-
-    def test_current_limit_fault_detection_must_stay_enabled(self):
-        with self.assertRaisesRegex(ValueError,'U3.11'):
-            verify_contract(self.altered('U3',{'11':None}))
+    def test_header_40_must_be_direct_vbus(self):
+        with self.assertRaisesRegex(ValueError,'J1.40'):
+            verify_contract(self.altered('J1',{'40':'VSYS'}))
 
     def test_exported_part_substitution_rejected(self):
         path=Path('build/ch32-pico.net.xml')
         if not path.exists(): self.skipTest('Run just electrical-check to export the netlist')
         tree=ET.parse(path)
-        cap=next(n for n in tree.findall('./components/comp') if n.attrib['ref']=='C16')
+        cap=next(n for n in tree.findall('./components/comp') if n.attrib['ref']=='C1')
         next(f for f in cap.findall('./fields/field') if f.attrib['name']=='LCSC').text='C1525'
         with tempfile.TemporaryDirectory() as directory:
             broken=Path(directory)/'wrong-part.xml';tree.write(broken)
-            with self.assertRaisesRegex(ValueError,'C16: netlist part/value'):
+            with self.assertRaisesRegex(ValueError,'C1: netlist part/value'):
                 verify_netlist(broken)
 
     def test_shutdown_cannot_be_left_unconnected(self):
@@ -95,7 +82,7 @@ class CircuitContract(unittest.TestCase):
         with self.assertRaisesRegex(ValueError,'U1.32'):
             verify_contract(self.altered('U1',{'32':'USB_DP','33':'USB_DM'}))
 
-    def test_fault_pad_cannot_retain_old_pc7_connection(self):
+    def test_pb4_pad_cannot_retain_old_pc7_connection(self):
         with self.assertRaisesRegex(ValueError,'TP7.1'):
             verify_contract(self.altered('TP7',{'1':'PC7'}))
 

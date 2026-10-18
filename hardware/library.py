@@ -75,7 +75,7 @@ def load_library():
                 elif code=='C82942':
                     electrical={'1':'power_in','2':'power_in','3':'input',
                                 '4':'passive','5':'power_out'}[number]
-                elif code in {'C15999','C7519'}:
+                elif code=='C7519':
                     name={'1':'IO1','2':'GND','3':'IO2','4':'IO2','5':'VBUS','6':'IO1'}[number]
                     electrical='power_in' if number in {'2','5'} else 'passive'
                 pins.append(Pin(number,name,electrical))

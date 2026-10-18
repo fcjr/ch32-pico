@@ -2,7 +2,7 @@
 # Copyright (c) 2026 ch32-pico contributors
 """Generate a mechanical KiCad template and proposed pinout, without pcbnew.
 
-No target/programmer circuit or routing is emitted by this mechanical-only generator. Stable UUIDs and no timestamps keep generated files reproducible.
+No circuit or routing is emitted by this mechanical-only generator. Stable UUIDs and no timestamps keep generated files reproducible.
 """
 
 import csv

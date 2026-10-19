@@ -5,10 +5,13 @@ for programmable USB Power Delivery. Built by Left Shift Logical around the
 CH32X035, in a familiar 21 × 51 mm Pico-sized board.
 
 **Prototype layout complete.** The fitted parts estimate is about $3.21 per
-board at a quantity of 20. Power components sit by USB-C, the two buttons sit
-together at the bottom, and the layout uses four copper layers with front-side
-assembly. PCB, assembly, attrition and shipping costs are additional. The
-renders below show the checked four-layer layout.
+board at a quantity of 20. The 3.3 V regulator sits directly under the USB-C
+connector beside the header pins it serves, the MCU is centred on the GPIO
+rows, and RESET and BOOT share the bottom edge. The four-layer board has an
+unbroken ground plane, a one-piece 3.3 V pour with a locked 0.6 mm supply
+trunk, two independent VBUS feeds to pin 40 and 27 ground stitching vias,
+all with front-side assembly. PCB, assembly, attrition and shipping costs are
+additional. The renders below show the checked layout.
 
 ![ch32-pico Rev A, front and back](docs/images/ch32-pico.png)
 
@@ -43,7 +46,8 @@ release to enable. See the
 [shutdown notes](docs/design.md#shutdown-control) for driver requirements.
 
 **Rev A is a prototype in development.** The schematic and routed board pass
-electrical and layout checks, with all 102 regression tests passing. USB-PD
+DRC with zero violations and zero open connections, the power, USB-reference,
+ground-plane and silkscreen audits, and all 102 regression tests. USB-PD
 application firmware, USB serial and assembled-board testing, including
 shutdown and restart, are still ahead; the continuous output-current rating
 is not yet qualified. The hardware target is 3 A, with the board supply

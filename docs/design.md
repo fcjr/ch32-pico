@@ -6,7 +6,7 @@ USB-C, RESET and BOOT sit together at the bottom, and the back carries LEFT
 SHIFT LOGICAL branding. All 29 fitted parts are on the front. The board has
 four copper layers and exposes 37 GPIOs.
 
-The dated parts-only estimate is $2.36 per device for 20 devices. This
+The dated parts-only estimate is $2.30 per device for 20 devices. This
 excludes fabrication, assembly setup/feeders, attrition, minimum purchases,
 shipping and tax. The saved layout has zero DRC violations and zero
 unconnected nets, and all regression tests pass. Matching panel and

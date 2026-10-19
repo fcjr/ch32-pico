@@ -82,7 +82,8 @@ Diagnostic contacts TP14-TP24 are bare copper, with NO paste or parts.
 Keep SJ1 open. TP23/TP24 are narrow inline USB contacts on the front.
 TP15 VBUS is a 5-20 V measurement pad, not a load-current output.
 Ground stitches are tented ordinary 0.45/0.20 mm vias.
-RESET SW1 and BOOT SW2 use C720477, XUNPU TS-1088-AR02016 (Basic),
-throughout all panel copies. Button height is 2.0 mm. The two-pad footprint
-and CPL rotation are intentional. These are nonpolarized momentary switches.
-C720478 (2.5 mm) is the only approved substitute; it uses the same copper.
+RESET SW1 and BOOT SW2 use C49234124, hanxia HX 3x4x2-2P-1.6N, throughout
+all panel copies. Button height is 2.0 mm. The two-pad footprint and CPL
+rotation are intentional. These are nonpolarized momentary switches. XUNPU
+TS-1088-AR02016 (C720477) and TS-1088-AR02516 (C720478, 2.5 mm) are the only
+approved substitutes; they use the same copper.

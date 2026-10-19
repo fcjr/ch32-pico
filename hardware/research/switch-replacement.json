@@ -1,7 +1,7 @@
 {
   "observed_utc": "2026-10-13T23:55:02.588058+00:00",
-  "selected": "C720477",
-  "replaces": "C720478",
+  "selected": "C49234124",
+  "replaces": "C720477",
   "references": [
     "SW1",
     "SW2"
@@ -152,6 +152,6 @@
     "track_via_fingerprint_unchanged": "cbc548f97c5daf206992f2fb4b1a588ba31e33ea27cd966614bda6097d841a23"
   },
   "assembly": "Extended part; order-specific allocation, feeder charges and placement review remain unconfirmed.",
-  "reselected_utc": "2026-10-18",
-  "reselection_reason": "C720478 showed no stock on the JLC order page; C720477 is Basic with 623,880 reported units and the same land pattern (2.0 mm height)."
+  "reselected_utc": "2026-10-19",
+  "reselection_reason": "Both XUNPU TS-1088 variants showed no stock on the JLC order page while the catalogue reported stock. hanxia HX 3x4x2-2P-1.6N (197,128 reported) uses 1.3 x 1.7 mm pads at +/-2.16 mm, within the retained land pattern; 2.0 mm height, 1.6 N."
 }

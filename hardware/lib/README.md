@@ -35,11 +35,12 @@ value labels.
   [C307331](https://www.lcsc.com/product-detail/C307331.html), verified as
   50 V, X7R, ±10%, 0402. The 10 µF buck input capacitor is CL31A106KBHNNNE,
   C13585, 50 V 1206. Output capacitors are CL21A226MPQNNNE, C29277, 10 V 0805.
-- RESET and BOOT use XUNPU TS-1088-AR02016, C720477, a JLC Basic part, on
-  its `SW-SMD_L3.9-W3.0-P4.45` land pattern: pads span 5.59 mm overall with
-  a 3.13 mm inner gap and 1.86 mm width. The AR variant has no locating peg,
-  is 2.0 mm high and has 1.6 N force. The 2.5 mm TS-1088-AR02516 (C720478)
-  fits the same copper if it is the one in stock; see
+- RESET and BOOT use hanxia HX 3x4x2-2P-1.6N, C49234124, a 4 × 3 mm two-pad
+  tactile switch, 2.0 mm high, 1.6 N. It sits on the reviewed
+  `SW-SMD_L3.9-W3.0-P4.45` land pattern: pads span 5.59 mm overall with a
+  3.13 mm inner gap and 1.86 mm width, which also covers its own 1.3 × 1.7 mm
+  pads at ±2.16 mm. The XUNPU TS-1088-AR02016/AR02516 (C720477/C720478) fit
+  the same copper and are the approved substitutes; see
   `hardware/research/switch-replacement.json`.
 - 0402 resistors and the 0603 LED use the generic imported lands.
 

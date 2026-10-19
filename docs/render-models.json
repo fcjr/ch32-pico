@@ -35,15 +35,15 @@
       "offset_y": 0
     },
     "SW-SMD_L3.9-W3.0-P4.45": {
-      "lcsc": "C720478",
-      "source": "https://www.lcsc.com/product-detail/C720478.html",
-      "file": "SW-SMD_L4.0-W2.9-LS4.8-1.wrl",
-      "sha256": "3232f32218f31b6a18923183c484d7f11b48381b981f25d455d31b54616fd367",
+      "lcsc": "C49234124",
+      "source": "https://www.lcsc.com/product-detail/C49234124.html",
+      "file": "KEY-SMD_L4.0-W3.0-LS4.9-1.wrl",
+      "sha256": "99ccb368e77a081af8fba27d8e9958aae9c9bc464eb144fbf264b69486eb59e6",
       "rotate_z": 0,
       "offset_y": 0,
-      "retrieved": "2026-10-13T23:55:02.588058+00:00",
+      "retrieved": "2026-10-19",
       "force_opaque": true,
-      "note": "TS-1088-AR02516, 2.5 mm height; retained reviewed two-pad land pattern. Imported WRL sets every material to transparency 1.0; render a separate opaque copy so the board does not show through the switch."
+      "note": "HX 3x4x2-2P-1.6N, 2 mm height, on the reviewed two-pad land pattern; rendered opaque in case the imported materials are transparent."
     },
     "LQFP-48_7x7mm_P0.5mm": {
       "lcsc": "C29779902",

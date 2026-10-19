@@ -75,8 +75,8 @@ COMPONENTS = (
     two('R11','C11702','STATUS_LED','LED_A','target','1k'),
     two('D3','C2286','LED_A','GND','target','RED / STATUS'),
     two('R12','C25900','USB_DP','BOOT_PULLUP','target','4.7k','WCH reference download-button pull-up'),
-    two('SW1','C720477','PA21','GND','target','RESET'),
-    two('SW2','C720477','BOOT_PULLUP','3V3_OUT','target','BOOT','Hold during power-up, release before USB ISP'),
+    two('SW1','C49234124','PA21','GND','target','RESET'),
+    two('SW2','C49234124','BOOT_PULLUP','3V3_OUT','target','BOOT','Hold during power-up, release before USB ISP'),
     Component('J1','PICO_HEADER',{str(p.number):None if p.proposed=='NC' else p.proposed for p in HEADER},'header','PICO 40-PIN','Pin 40 is USB VBUS: 5 V by default, higher only after PD negotiation',False),
     Component('SJ1','SOLDER_JUMPER',{'1':'GPIO35','2':'PC7'},'header','PC7 OPTION','Normally open; user solder bridge connects header 35 to PC7. No factory paste or assembly.',False),
     *(Component(f'TP{i}','TESTPAD',{'1':n},'header',n,'SDI recovery / measurement pad',False)

@@ -1,7 +1,7 @@
 {
   "status": "routing checked; not released for ordering",
-  "saved_at": "2026-10-19T01:33:07.753740+00:00",
-  "engine": "power-corrected",
+  "saved_at": "2026-10-19T01:49:55.609647+00:00",
+  "engine": "freerouting",
   "selection": "passing DRC/connectivity, then minimum vias and trace length",
   "checks": {
     "physical_components": 55,
@@ -897,11 +897,11 @@
     },
     "passes_connectivity_and_drc": true
   },
-  "board_sha256": "9efa28547b76a02b2cc0a2aa438b9ea57005674908ba544dd57d900d60792a91",
+  "board_sha256": "669a2a9b31d92184186a2f91cd57189836f199b4530d7a241abc7ff23b4224c6",
   "comparison": {
-    "status": "four-layer direct-VBUS layout; geometry checked, physical qualification and order release remain open",
+    "status": "passed",
     "candidates": {
-      "power-corrected": {
+      "freerouting": {
         "physical_components": 55,
         "source_pad_net_parity": true,
         "violations": 0,

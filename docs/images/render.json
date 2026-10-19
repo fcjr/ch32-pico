@@ -1,10 +1,10 @@
 {
-  "source_board_sha256": "9efa28547b76a02b2cc0a2aa438b9ea57005674908ba544dd57d900d60792a91",
+  "source_board_sha256": "669a2a9b31d92184186a2f91cd57189836f199b4530d7a241abc7ff23b4224c6",
   "models_manifest": "../render-models.json",
   "fitted_models": 29,
   "tool": "10.0.6",
   "opaque_models": [
-    "SW-SMD_L4.0-W2.9-LS4.8-1.wrl"
+    "KEY-SMD_L4.0-W3.0-LS4.9-1.wrl"
   ],
   "purpose": "CAD illustration, not proof of physical or assembly fit",
   "silkscreen": "KiCad SVG strokes in disposable render copy",

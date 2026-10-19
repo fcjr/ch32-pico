@@ -1,6 +1,6 @@
 # Parts and factory review
 
-The board has 29 fitted parts, 20 part numbers and a $2.36 parts-only
+The board has 29 fitted parts, 20 part numbers and a $2.30 parts-only
 estimate at 20 boards. Pin 40 is direct USB VBUS. The
 [pre-order review](preorder-review.md) contains the 2026-10-19 stock table and
 cost assumptions. Every part shows stock for the batch; none is reserved.
@@ -29,10 +29,11 @@ in [WCH datasheet v1.7, table 2-1 note 3](https://akizukidenshi.com/goodsaffix/C
 affects functions used on this board. Catalogue stock does not identify the lot.
 The factory must provide lot identification; bring-up must exercise those functions.
 
-Both buttons use C720477 / TS-1088-AR02016, a Basic part with no feeder
-charge. The 2.5 mm C720478 variant fits the same copper and was out of stock
-at order time. The [switch review](../hardware/research/switch-replacement.json)
-records dimensions, stock and sources for both.
+Both buttons use C49234124 / hanxia HX 3x4x2-2P-1.6N (Extended). The XUNPU
+TS-1088 parts that share this land pattern, C720477 and C720478, both showed
+no stock on the order page despite catalogue stock, so they are listed as
+substitutes only. The [switch review](../hardware/research/switch-replacement.json)
+records dimensions, stock and sources.
 
 ## Fabrication and assembly findings
 
@@ -66,7 +67,7 @@ and [Standard PCBA fiducial guidance](https://jlcpcb.com/help/article/how-to-add
 
 ## Costs
 
-The dated planning scenario is $118.39 for the 20-board batch ($5.92 per
+The dated planning scenario is $117.21 for the 20-board batch ($5.86 per
 board), including provisional component attrition and modeled assembly costs
 but excluding PCB fabrication and other quoted services, shipping and tax. See
 [order review](order-review.md). The

@@ -1,7 +1,7 @@
 {
   "status": "routing checked; not released for ordering",
-  "saved_at": "2026-10-19T01:54:27.783487+00:00",
-  "engine": "freerouting",
+  "saved_at": "2026-10-19T02:32:31.702021+00:00",
+  "engine": "power-corrected",
   "selection": "passing DRC/connectivity, then minimum vias and trace length",
   "checks": {
     "physical_components": 55,
@@ -11,16 +11,16 @@
     "violation_types": {},
     "stackup_matches_source": true,
     "outside_outline_copper": [],
-    "via_count": 131,
-    "trace_length_mm": 1266.899,
-    "trace_via_geometry_sha256": "841d564e4f3c9f9a9b26c8c7e469cfd360ac631ce05b3ee05f2776d6bae26a38",
+    "via_count": 137,
+    "trace_length_mm": 1325.798,
+    "trace_via_geometry_sha256": "549008b46d4f6f4a4e5f96e74be8b1468d032aaaddbd594e2bf8743f21bac8a3",
     "via_in_paste": [],
     "changed_critical_segments": [],
     "changed_critical_vias": [],
     "foreign_tracks_on_ground_layer": 0,
     "ground_plane": {
       "signal_crossovers": [],
-      "ground_via_count": 27,
+      "ground_via_count": 24,
       "all_ground_vias_on_one_fill_polygon": true,
       "passes": true,
       "limitations": "Geometry only; USB reference is checked separately; EMC requires hardware"
@@ -53,14 +53,14 @@
       "paths": {
         "DP": {
           "connector_to_mcu_mm": {
-            "A6": 35.1314,
-            "B6": 32.0514
+            "A6": 35.6314,
+            "B6": 32.5514
           }
         },
         "DM": {
           "connector_to_mcu_mm": {
-            "A7": 32.5857,
-            "B7": 31.5857
+            "A7": 33.0853,
+            "B7": 32.0853
           }
         },
         "BOOT": {
@@ -74,7 +74,7 @@
         "net": "GND",
         "longitudinal_step_max_mm": 0.05,
         "transverse_samples": "trace center and both edges",
-        "sample_count": 4260,
+        "sample_count": 4320,
         "uncovered_sample_count": 0,
         "uncovered_samples": []
       },
@@ -869,27 +869,27 @@
               2.9,
               8.7
             ],
-            "path_mm": 1.55
+            "path_mm": 1.4511
           },
           {
             "via_mm": [
               2.9,
               9.3
             ],
-            "path_mm": 1.55
+            "path_mm": 1.4378
           }
         ]
       },
       "vbus_connections": {
-        "input_clamp_mm": 4.2345,
+        "input_clamp_mm": 4.337,
         "header_pin40_trunk_mm": 12.6374,
         "header_pin40_front_feed_mm": 11.4206
       },
       "local_return_via_count": 2,
       "local_return_ground_plane_checked": true,
       "supply_trace_totals_mm": {
-        "VSYS": 19.861,
-        "VIN_SYS": 16.752
+        "VSYS": 20.441,
+        "VIN_SYS": 16.552
       },
       "feedback_via_isolated_from_shared_plane": true,
       "passes": true,
@@ -897,11 +897,11 @@
     },
     "passes_connectivity_and_drc": true
   },
-  "board_sha256": "46e10bd0db5a0370f130badabdc7543831a8e7f08b7b338c71a129a4bad039d2",
+  "board_sha256": "218d38060497b31e9f0781a0368b84c82d227bac101be89a94924977eb4c3faa",
   "comparison": {
-    "status": "passed",
+    "status": "four-layer direct-VBUS layout; geometry checked, physical qualification and order release remain open",
     "candidates": {
-      "freerouting": {
+      "power-corrected": {
         "physical_components": 55,
         "source_pad_net_parity": true,
         "violations": 0,
@@ -909,16 +909,16 @@
         "violation_types": {},
         "stackup_matches_source": true,
         "outside_outline_copper": [],
-        "via_count": 131,
-        "trace_length_mm": 1266.899,
-        "trace_via_geometry_sha256": "841d564e4f3c9f9a9b26c8c7e469cfd360ac631ce05b3ee05f2776d6bae26a38",
+        "via_count": 137,
+        "trace_length_mm": 1325.798,
+        "trace_via_geometry_sha256": "549008b46d4f6f4a4e5f96e74be8b1468d032aaaddbd594e2bf8743f21bac8a3",
         "via_in_paste": [],
         "changed_critical_segments": [],
         "changed_critical_vias": [],
         "foreign_tracks_on_ground_layer": 0,
         "ground_plane": {
           "signal_crossovers": [],
-          "ground_via_count": 27,
+          "ground_via_count": 24,
           "all_ground_vias_on_one_fill_polygon": true,
           "passes": true,
           "limitations": "Geometry only; USB reference is checked separately; EMC requires hardware"
@@ -951,14 +951,14 @@
           "paths": {
             "DP": {
               "connector_to_mcu_mm": {
-                "A6": 35.1314,
-                "B6": 32.0514
+                "A6": 35.6314,
+                "B6": 32.5514
               }
             },
             "DM": {
               "connector_to_mcu_mm": {
-                "A7": 32.5857,
-                "B7": 31.5857
+                "A7": 33.0853,
+                "B7": 32.0853
               }
             },
             "BOOT": {
@@ -972,7 +972,7 @@
             "net": "GND",
             "longitudinal_step_max_mm": 0.05,
             "transverse_samples": "trace center and both edges",
-            "sample_count": 4260,
+            "sample_count": 4320,
             "uncovered_sample_count": 0,
             "uncovered_samples": []
           },
@@ -1767,27 +1767,27 @@
                   2.9,
                   8.7
                 ],
-                "path_mm": 1.55
+                "path_mm": 1.4511
               },
               {
                 "via_mm": [
                   2.9,
                   9.3
                 ],
-                "path_mm": 1.55
+                "path_mm": 1.4378
               }
             ]
           },
           "vbus_connections": {
-            "input_clamp_mm": 4.2345,
+            "input_clamp_mm": 4.337,
             "header_pin40_trunk_mm": 12.6374,
             "header_pin40_front_feed_mm": 11.4206
           },
           "local_return_via_count": 2,
           "local_return_ground_plane_checked": true,
           "supply_trace_totals_mm": {
-            "VSYS": 19.861,
-            "VIN_SYS": 16.752
+            "VSYS": 20.441,
+            "VIN_SYS": 16.552
           },
           "feedback_via_isolated_from_shared_plane": true,
           "passes": true,

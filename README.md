@@ -43,7 +43,7 @@ PD voltage alone.
 | Pin | On a Pico | Here |
 |---|---|---|
 | 35 | ADC_VREF | Not connected until you bridge solder jumper SJ1 (front, below the chip); then it's PC7 |
-| 37 | 3V3_EN | Pull low to switch the 3.3 V regulator off |
+| 37 | 3V3_EN | Ground it to switch the 3.3 V regulator off. Released, it sits at the input voltage (up to 20 V) through 100 kΩ, so drive it with a switch or an open-drain output, never a logic input |
 | 40 | VBUS, 5 V | VBUS, 5 V or whatever PD voltage you negotiate |
 
 The GPIO labels on the back use the chip's own names (PA0, PB10, …), not Pico
@@ -68,8 +68,8 @@ just jlcpcb
 
 That checks the design and produces the Gerbers, BOM and placement file for a
 JLCPCB order of twenty boards. See [build instructions](docs/build.md) and the
-[manufacturing notes](docs/manufacturing.md) for details and the parts that
-are hard to source right now.
+[manufacturing notes](docs/manufacturing.md) for details, and the
+[parts review](docs/factory-review.md) for stock and cost at the last check.
 
 ## Learn more
 

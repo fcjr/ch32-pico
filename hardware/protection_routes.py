@@ -46,7 +46,7 @@ route('VBUS',.8,(12.2,4.4),(16.5,4.4),(18.0,2.9),(19.39,1.37))
 route('VBUS',1.6,(6.6,8.65),(6.0,10.1),layer='B.Cu')
 bank('VBUS',(5.5,5.95),(10.0,10.55))
 route('VBUS',.5,(5.5,10.0),(5.5,10.55),(5.95,10.55))
-route('VBUS',.5,(5.5,10.55),(5.5,11.0),(4.1,11.15),pad('D1','2'))
+route('VBUS',.5,(5.5,10.55),(5.5,11.1),(4.1,11.3),pad('D1','2'))
 # VBUS sense divider taps the front trunk beside the connector.
 route('VBUS',.3,(16.3,4.4),pad('R1','1'))
 # The clamp sits at the USB breakout, ahead of every other VBUS load.

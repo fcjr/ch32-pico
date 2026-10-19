@@ -15,8 +15,34 @@ from .sexp import parse,children,one
 from .mechanical_checks import usb_fit
 
 
+def courtyard_gaps(doc,minimum=0.2):
+    """Fitted parts must keep a visible gap between courtyards for assembly."""
+    fitted={c.ref for c in COMPONENTS if c.fitted}
+    boxes={}
+    for fp in children(doc,'footprint'):
+        ref=next(p[2] for p in children(fp,'property') if p[1]=='Reference')
+        if ref not in fitted:continue
+        at=one(fp,'at');fx,fy=map(float,at[1:3]);a=math.radians(float(at[3]) if len(at)>3 else 0)
+        pts=[]
+        for n in fp:
+            if isinstance(n,list) and n[0]=='fp_line' and one(n,'layer')[1]=='F.CrtYd':
+                for k in ('start','end'):
+                    x,y=map(float,one(n,k)[1:3]);pts.append((fx+x*math.cos(a)+y*math.sin(a),fy-x*math.sin(a)+y*math.cos(a)))
+        if pts:boxes[ref]=(min(p[0] for p in pts),min(p[1] for p in pts),max(p[0] for p in pts),max(p[1] for p in pts))
+    tight=[]
+    refs=sorted(boxes)
+    for i,a in enumerate(refs):
+        for b in refs[i+1:]:
+            ba,bb=boxes[a],boxes[b]
+            gap=math.hypot(max(bb[0]-ba[2],ba[0]-bb[2],0),max(bb[1]-ba[3],ba[1]-bb[3],0))
+            if gap<minimum:tight.append((a,b,round(gap,3)))
+    if tight:raise ValueError(f'Courtyards closer than {minimum} mm: {tight}')
+    return len(boxes)
+
+
 def verify_board(path):
     doc=parse(path.read_text())
+    courtyard_gaps(doc)
     wanted={c.ref:c for c in COMPONENTS if not c.ref.startswith('#')}
     library=load_library()
     observed={}

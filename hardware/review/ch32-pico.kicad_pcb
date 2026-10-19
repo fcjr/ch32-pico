@@ -11149,36 +11149,6 @@
 		(embedded_fonts no)
 	)
 	(gr_line
-		(start 3.4 0.8)
-		(end 2.85 1.37)
-		(stroke
-			(width 0.15)
-			(type solid)
-		)
-		(layer "B.SilkS")
-		(uuid "d68e1778-87d3-5893-a478-7bf21615dc69")
-	)
-	(gr_line
-		(start 7.1 0.8)
-		(end 3.4 0.8)
-		(stroke
-			(width 0.15)
-			(type solid)
-		)
-		(layer "B.SilkS")
-		(uuid "659754fb-ff74-55f7-9196-f0861c64fd8b")
-	)
-	(gr_line
-		(start 7.1 1.37)
-		(end 7.1 0.8)
-		(stroke
-			(width 0.15)
-			(type solid)
-		)
-		(layer "B.SilkS")
-		(uuid "df5723b6-eab3-5878-9ec6-c85580630a46")
-	)
-	(gr_line
 		(start 8.9 6.5)
 		(end 8.7 5.65)
 		(stroke
@@ -11209,26 +11179,6 @@
 		(uuid "e9d56b52-f682-50bb-a240-7138c4e68cbf")
 	)
 	(gr_line
-		(start 13.9 0.8)
-		(end 17.73 0.8)
-		(stroke
-			(width 0.15)
-			(type solid)
-		)
-		(layer "B.SilkS")
-		(uuid "e84590bb-7066-54ef-a6b7-4329713dfe6e")
-	)
-	(gr_line
-		(start 13.9 3.15)
-		(end 13.9 0.8)
-		(stroke
-			(width 0.15)
-			(type solid)
-		)
-		(layer "B.SilkS")
-		(uuid "79ada59b-5272-506a-8068-f99dbcf71c07")
-	)
-	(gr_line
 		(start 14 47.5)
 		(end 14.3 47.8)
 		(stroke
@@ -11247,16 +11197,6 @@
 		)
 		(layer "B.SilkS")
 		(uuid "82c4d9d1-eefd-5f31-b38b-d740c28e64b7")
-	)
-	(gr_line
-		(start 17.73 0.8)
-		(end 18.3 1.37)
-		(stroke
-			(width 0.15)
-			(type solid)
-		)
-		(layer "B.SilkS")
-		(uuid "25f1a529-7550-5bf9-b706-d2f68b8f9fe6")
 	)
 	(gr_line
 		(start 0 0)
@@ -11417,6 +11357,30 @@
 				(size 0.9 0.9)
 				(thickness 0.15)
 			)
+		)
+	)
+	(gr_text "PB10"
+		(at 4.05 1.37 0)
+		(layer "B.SilkS")
+		(uuid "36ecb1ec-dfaf-5724-8a53-24ff47c4a202")
+		(effects
+			(font
+				(size 0.8 0.7)
+				(thickness 0.15)
+			)
+			(justify mirror)
+		)
+	)
+	(gr_text "VBUS"
+		(at 16.95 1.37 0)
+		(layer "B.SilkS")
+		(uuid "261440a1-4e98-50e7-8160-556ec981239c")
+		(effects
+			(font
+				(size 0.8 0.7)
+				(thickness 0.15)
+			)
+			(justify mirror)
 		)
 	)
 	(gr_text "GND"
@@ -11635,10 +11599,34 @@
 			(justify mirror)
 		)
 	)
-	(gr_text "20 PA22"
-		(at 5.2 49.63 0)
+	(gr_text "PA22"
+		(at 4.4 49.63 0)
 		(layer "B.SilkS")
 		(uuid "51fc40a7-e7c9-55b8-b688-0b4b26a28b73")
+		(effects
+			(font
+				(size 0.8 0.8)
+				(thickness 0.15)
+			)
+			(justify mirror)
+		)
+	)
+	(gr_text "20"
+		(at 7 49.63 0)
+		(layer "B.SilkS")
+		(uuid "a3264c63-7b42-5865-89e9-3ee5c4c8e7d6")
+		(effects
+			(font
+				(size 0.8 0.8)
+				(thickness 0.15)
+			)
+			(justify mirror)
+		)
+	)
+	(gr_text "1"
+		(at 7.25 1.37 0)
+		(layer "B.SilkS")
+		(uuid "564184a4-a5b2-506c-be0e-b36e52415799")
 		(effects
 			(font
 				(size 0.8 0.8)
@@ -11719,34 +11707,10 @@
 			(justify mirror)
 		)
 	)
-	(gr_text "1 PB10"
-		(at 10 1.37 0)
-		(layer "B.SilkS")
-		(uuid "36ecb1ec-dfaf-5724-8a53-24ff47c4a202")
-		(effects
-			(font
-				(size 0.8 0.8)
-				(thickness 0.15)
-			)
-			(justify mirror)
-		)
-	)
 	(gr_text "VSNS"
 		(at 10 17.2 0)
 		(layer "B.SilkS")
 		(uuid "3b4b087b-dbfc-5191-82ab-bf8793c2b6a0")
-		(effects
-			(font
-				(size 0.8 0.8)
-				(thickness 0.15)
-			)
-			(justify mirror)
-		)
-	)
-	(gr_text "40 VBUS"
-		(at 10.5 3.15 0)
-		(layer "B.SilkS")
-		(uuid "261440a1-4e98-50e7-8160-556ec981239c")
 		(effects
 			(font
 				(size 0.8 0.8)
@@ -11899,6 +11863,18 @@
 			(justify mirror)
 		)
 	)
+	(gr_text "40"
+		(at 13.4 1.37 0)
+		(layer "B.SilkS")
+		(uuid "9f95769f-3601-50fe-a5dc-210508391675")
+		(effects
+			(font
+				(size 0.8 0.8)
+				(thickness 0.15)
+			)
+			(justify mirror)
+		)
+	)
 	(gr_text "PC6"
 		(at 14.1 30.9 0)
 		(layer "B.SilkS")
@@ -11911,10 +11887,10 @@
 			(justify mirror)
 		)
 	)
-	(gr_text "PB3"
-		(at 14.85 33.2 0)
+	(gr_text "21"
+		(at 14.35 49.63 0)
 		(layer "B.SilkS")
-		(uuid "c383825f-9e56-5723-a30e-acfb4fad035f")
+		(uuid "facb34c3-b029-542e-932a-ad78c87dffd0")
 		(effects
 			(font
 				(size 0.8 0.8)
@@ -11923,10 +11899,10 @@
 			(justify mirror)
 		)
 	)
-	(gr_text "21 PA6"
-		(at 15.8 49.63 0)
+	(gr_text "PB3"
+		(at 14.85 33.2 0)
 		(layer "B.SilkS")
-		(uuid "aedba105-d8eb-5c0d-8170-f16c1d9a7a09")
+		(uuid "c383825f-9e56-5723-a30e-acfb4fad035f")
 		(effects
 			(font
 				(size 0.8 0.8)
@@ -12131,6 +12107,18 @@
 		(at 16.6 47.09 0)
 		(layer "B.SilkS")
 		(uuid "9b333a56-3069-59a1-810c-55dfd9075058")
+		(effects
+			(font
+				(size 0.8 0.8)
+				(thickness 0.15)
+			)
+			(justify mirror)
+		)
+	)
+	(gr_text "PA6"
+		(at 16.6 49.63 0)
+		(layer "B.SilkS")
+		(uuid "aedba105-d8eb-5c0d-8170-f16c1d9a7a09")
 		(effects
 			(font
 				(size 0.8 0.8)

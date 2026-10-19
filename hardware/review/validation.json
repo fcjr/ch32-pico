@@ -1,6 +1,6 @@
 {
   "status": "routing checked; not released for ordering",
-  "saved_at": "2026-10-19T03:03:31.442559+00:00",
+  "saved_at": "2026-10-19T03:16:38.042759+00:00",
   "engine": "freerouting",
   "selection": "passing DRC/connectivity, then minimum vias and trace length",
   "checks": {
@@ -90,7 +90,7 @@
       "header_labels": [
         {
           "pin": 1,
-          "label": "1 PB10",
+          "label": "PB10",
           "net": "PB10",
           "side": "back",
           "pad_xy_mm": [
@@ -280,7 +280,7 @@
         },
         {
           "pin": 20,
-          "label": "20 PA22",
+          "label": "PA22",
           "net": "PA22",
           "side": "back",
           "pad_xy_mm": [
@@ -290,7 +290,7 @@
         },
         {
           "pin": 21,
-          "label": "21 PA6",
+          "label": "PA6",
           "net": "PA6",
           "side": "back",
           "pad_xy_mm": [
@@ -480,7 +480,7 @@
         },
         {
           "pin": 40,
-          "label": "40 VBUS",
+          "label": "VBUS",
           "net": "VBUS",
           "side": "back",
           "pad_xy_mm": [
@@ -897,7 +897,7 @@
     },
     "passes_connectivity_and_drc": true
   },
-  "board_sha256": "d28c5be0caca1037fefb6fd217a0a08883ab0cc046f1ddf0ec7537f88a259be0",
+  "board_sha256": "8566302c009ced21599ff0b9fde303149c60e8d48dd5eaf0ea68e261fe7988ee",
   "comparison": {
     "status": "complete",
     "candidates": {
@@ -988,7 +988,7 @@
           "header_labels": [
             {
               "pin": 1,
-              "label": "1 PB10",
+              "label": "PB10",
               "net": "PB10",
               "side": "back",
               "pad_xy_mm": [
@@ -1178,7 +1178,7 @@
             },
             {
               "pin": 20,
-              "label": "20 PA22",
+              "label": "PA22",
               "net": "PA22",
               "side": "back",
               "pad_xy_mm": [
@@ -1188,7 +1188,7 @@
             },
             {
               "pin": 21,
-              "label": "21 PA6",
+              "label": "PA6",
               "net": "PA6",
               "side": "back",
               "pad_xy_mm": [
@@ -1378,7 +1378,7 @@
             },
             {
               "pin": 40,
-              "label": "40 VBUS",
+              "label": "VBUS",
               "net": "VBUS",
               "side": "back",
               "pad_xy_mm": [

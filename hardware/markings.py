@@ -27,10 +27,11 @@ SERVICES = (
 ALIASES = {'NC':'NC', '3V3_OUT':'3V3', '3V3_EN':'EN', 'PA21':'RST', 'GPIO35':'PC7*'}
 LEGACY = {'PROBE SWIO', 'PROBE', 'RESET', 'DBG', 'SWIO'}
 EXPANSIONS = tuple((f'TP{i}', n) for i,n in enumerate((*EXPANSION_SIGNALS,'GND'),6))
-HEADER_LEADERS = {
-    1: ((7.1,1.37),(7.1,.8),(3.4,.8),(2.85,1.37)),
-    40: ((13.9,3.15),(13.9,.8),(17.73,.8),(18.3,1.37)),
-}
+HEADER_LEADERS = {}
+LEGACY_LEADER_PINS = (1,40)
+# Corner pin numbers sit in their pin's row, inward of the name: past the USB
+# shell stakes at the top, and a half-legend gap from the name at the bottom.
+CORNER_NUMBERS = {1:(7.25,1.37), 40:(13.4,1.37), 20:(7.0,49.63), 21:(14.35,49.63)}
 
 
 def expansion_label_position(ref,x,y):
@@ -39,41 +40,33 @@ def expansion_label_position(ref,x,y):
 
 
 def header_legend(pin):
-    label = ALIASES.get(pin.proposed, pin.proposed)
-    if pin.number in (1,20,21,40):
-        return f'{pin.number} {label}'
-    return label
+    return ALIASES.get(pin.proposed, pin.proposed)
 
 
 def header_label_position(pin):
     _, y = MECHANICAL.position(pin.number)
     x = 4.4 if pin.number <= 20 else 16.6
-    # Two numbered rows fit between the USB shell stakes at the top end.
-    if pin.number == 1:
-        return 10, y
-    if pin.number == 40:
-        return 10.5, 3.15
-    # Pins 3 and 38 step away from the USB shell stakes.
-    return {3:4.3,20:5.2,21:15.8,38:16.7}.get(pin.number,x), y
+    # Pins 1, 3, 38 and 40 step away from the USB shell stakes.
+    return {1:4.05,3:4.3,38:16.7,40:16.95}.get(pin.number,x), y
 
 
-def text(label, x, y, side, identity, size=.9):
+def text(label, x, y, side, identity, size=.9, width=None):
     mirror = '(justify mirror)' if side == 'B.SilkS' else ''
     return parse(f'''(gr_text {json.dumps(label)} (at {x} {y}) (layer "{side}")
         (uuid "{uid('marking/' + identity)}")
-        (effects (font (size {size} {size}) (thickness .15)) {mirror}))''')
+        (effects (font (size {size} {width or size}) (thickness .15)) {mirror}))''')
 
 
 def apply(doc):
     header_labels = {p.proposed for p in HEADER} | set(ALIASES.values()) | {'-', '3V3', 'EN'} | {f'{p.number} {ALIASES.get(p.proposed,p.proposed)}' for p in HEADER if p.number in (1,20,21,40)}
     header_labels |= {header_legend(p) for p in HEADER}
-    header_labels |= {'1\nPB10', '20\nPA22', '21\nPA6'}
+    header_labels |= {'1\nPB10', '20\nPA22', '21\nPA6'} | {str(n) for n in CORNER_NUMBERS}
     service_labels = LEGACY | {s[1] for s in SERVICES} | set(EXPANSION_SIGNALS) | {'SJ1','PC7'} | {d.label for d in DIAGNOSTICS}
     doc[:] = [n for n in doc if not (isinstance(n,list) and n and n[0]=='gr_text' and
         (n[1] in service_labels or (one(n,'layer')[1]=='B.SilkS' and n[1] in header_labels)))]
     leader_ids={uid('marking/leader/'+ref) for ref in LEADERS}
     leader_ids|={uid(f'marking/header-leader/{pin}/{i}')
-                 for pin in HEADER_LEADERS for i in range(8)}
+                 for pin in (*HEADER_LEADERS,*LEGACY_LEADER_PINS) for i in range(8)}
     doc[:]=[n for n in doc if not (isinstance(n,list) and n and n[0]=='gr_line'
             and children(n,'uuid') and one(n,'uuid')[1] in leader_ids)]
     for ref,(a,b) in LEADERS.items():
@@ -82,7 +75,12 @@ def apply(doc):
             (uuid "{uid('marking/leader/'+ref)}"))'''))
     for pin in HEADER:
         x,y = header_label_position(pin)
-        doc.append(text(header_legend(pin),x,y,'B.SilkS',f'header/{pin.number}',size=.8))
+        # The names beside pins 1 and 40 fit between the pad and the USB shell
+        # stake only as condensed type.
+        doc.append(text(header_legend(pin),x,y,'B.SilkS',f'header/{pin.number}',size=.8,
+                        width=.7 if pin.number in (1,40) else None))
+    for number,(x,y) in CORNER_NUMBERS.items():
+        doc.append(text(str(number),x,y,'B.SilkS',f'header-number/{number}',size=.8))
     for pin,points in HEADER_LEADERS.items():
         for i,(a,b) in enumerate(zip(points,points[1:])):
             doc.append(parse(f'''(gr_line (start {a[0]} {a[1]}) (end {b[0]} {b[1]})
@@ -121,8 +119,12 @@ def audit(doc):
     back = [n for n in texts if one(n,'layer')[1]=='B.SilkS']
     from .branding import artwork
     brand_count=sum(n[0]=='gr_text' and one(n,'layer')[1]=='B.SilkS' for n in artwork())
-    if len(back)!=40+brand_count+len(EXPANSIONS)+sum(d.side=='B' for d in DIAGNOSTICS):
-        raise ValueError('Back must contain 40 header, 8 expansion, diagnostic and current branding labels; services belong on front')
+    if len(back)!=40+len(CORNER_NUMBERS)+brand_count+len(EXPANSIONS)+sum(d.side=='B' for d in DIAGNOSTICS):
+        raise ValueError('Back must contain 40 header, 4 corner number, 8 expansion, diagnostic and current branding labels; services belong on front')
+    for number,(x,y) in CORNER_NUMBERS.items():
+        matched=[n for n in back if math.dist(tuple(map(float,one(n,'at')[1:3])),(x,y))<.01]
+        if len(matched)!=1 or matched[0][1]!=str(number) or abs(pads['J1',str(number)][1]-y)>.01:
+            raise ValueError(f'Corner pin number {number} missing or off its row')
     for n in front+back:
         effects=one(n,'effects'); font=one(effects,'font')
         mirrored=any('mirror' in j[1:] for j in children(effects,'justify'))
@@ -130,9 +132,10 @@ def audit(doc):
             raise ValueError(f'Wrong text mirroring: {n[1]}')
         if 'hide' in n or 'hide' in effects:
             raise ValueError(f'Hidden marking: {n[1]}')
-        minimum=.8
-        # Header and probe legends share 0.8 mm type / 0.15 mm strokes.
-        if min(map(float,one(font,'size')[1:]))<minimum or float(one(font,'thickness')[1])<.15:
+        # Header and probe legends share 0.8 mm type / 0.15 mm strokes; the
+        # two names beside the USB shell stakes are condensed to 0.7 mm wide.
+        height,width=map(float,one(font,'size')[1:3])
+        if height<.8 or width<.7 or float(one(font,'thickness')[1])<.15:
             raise ValueError(f'Undersized marking: {n[1]}')
     allowed={s[1] for s in SERVICES}|{'ch32-pico','LEFT SHIFT','LOGICAL',f'REV {BOARD_REVISION}', 'VBUS 5-20V','SJ1'}
     allowed |= {d.label for d in DIAGNOSTICS if d.side=='F'}

@@ -318,8 +318,10 @@ outside paste; no filled or capped via process is introduced. No signal is route
 covered at every audited sample. This is geometry, not an EMC qualification.
 Surge, thermal and continuous-current qualification still require assembled boards.
 
-The silkscreen uses consistent 0.8 mm header legends, with leaders identifying
-pins 1 and 40 around the USB mounting stakes. CC labels share a baseline, and
-every probe label is closer to its own pad than to any other. Probe-label
-audits compare every test pad on the same side, including the expansion pads,
-and reject missing top-pin leaders.
+The silkscreen uses consistent 0.8 mm header legends. Every header name sits
+beside its own pad; the names for pins 1 and 40 are condensed to 0.7 mm wide
+to fit between the pad and the USB shell stake, and the corner numbers 1, 40,
+20 and 21 sit in their rows just inward of the names. CC labels share a
+baseline, and every probe label is closer to its own pad than to any other.
+Probe-label audits compare every test pad on the same side, including the
+expansion pads, and check the corner numbers against their rows.

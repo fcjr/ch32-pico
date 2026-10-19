@@ -3,7 +3,8 @@
 The silkscreen matches the CH32X035 circuit. All 40 header labels are
 on the back, beside their corresponding physical header row. GPIO labels use
 the X035 names, not Pico GPIO numbers. Corner numbers
-1, 20, 21 and 40 establish orientation. The back artwork is mirrored in PCB
+1, 20, 21 and 40 establish orientation; each sits in its pin's row just
+inward of the pin name, past the USB shell stakes at the top end. The back artwork is mirrored in PCB
 coordinates so it reads normally when the board is turned over.
 
 Pin 30 reads `RST`, pin 35 reads `PC7*`, pin 37 reads `EN`, and pin 40 reads `VBUS`.
@@ -43,7 +44,8 @@ diagnostic legends must match their separately specified coordinates.
 The eight expansion pads have matching back-side legends. The audit follows
 PB4 through TP7 to U1 pin 24, and pin 40 to the USB VBUS contact. It checks SJ1
 for distinct GPIO35/PC7 nets, back-side access, its label and no paste.
-All text is at least 1.0 mm high with at least 0.15 mm strokes.
+All text is at least 0.8 mm high with at least 0.15 mm strokes; the names
+beside pins 1 and 40 are condensed to 0.7 mm wide to clear the USB stakes.
 
 The fault tests reject swapped service labels, a label on the wrong side,
 incorrect GPIO names or MCU connections, missing labels and incorrect back

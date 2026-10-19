@@ -40,7 +40,7 @@ class MarkingAudit(unittest.TestCase):
         with self.assertRaisesRegex(ValueError,'too far|nearer'):audit(self.doc)
 
     def test_wrong_header_gpio_is_rejected(self):
-        self.label('1 PB10')[1]='1 PB11'
+        self.label('PB10')[1]='PB11'
         with self.assertRaisesRegex(ValueError,'header label at pin 1'):audit(self.doc)
 
     def test_correct_header_label_with_wrong_mcu_connection_is_rejected(self):
@@ -52,7 +52,7 @@ class MarkingAudit(unittest.TestCase):
             audit(self.doc)
 
     def test_unmirrored_back_label_is_rejected(self):
-        effects=one(self.label('1 PB10'),'effects')
+        effects=one(self.label('PB10'),'effects')
         effects.remove(one(effects,'justify'))
         with self.assertRaisesRegex(ValueError,'mirroring'):audit(self.doc)
 
@@ -86,12 +86,10 @@ class MarkingAudit(unittest.TestCase):
         one(children(fp,'pad')[0],'layers').append('F.Paste')
         with self.assertRaisesRegex(ValueError,'no paste'):audit(self.doc)
 
-    def test_top_header_leader_cannot_be_lost(self):
-        from hardware.schematic import uid
-        line=next(n for n in children(self.doc,'gr_line')
-                  if one(n,'uuid')[1]==uid('marking/header-leader/40/0'))
-        self.doc.remove(line)
-        with self.assertRaisesRegex(ValueError,'Header leader missing'):audit(self.doc)
+    def test_corner_pin_number_cannot_be_lost_or_moved(self):
+        number=self.label('40')
+        one(number,'at')[2]='3.15'
+        with self.assertRaisesRegex(ValueError,'Corner pin number 40'):audit(self.doc)
 
     def test_diagnostic_label_nearer_an_expansion_pad_is_rejected(self):
         from dataclasses import replace

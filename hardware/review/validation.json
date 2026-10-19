@@ -1,7 +1,7 @@
 {
   "status": "routing checked; not released for ordering",
-  "saved_at": "2026-10-19T02:32:31.702021+00:00",
-  "engine": "power-corrected",
+  "saved_at": "2026-10-19T03:03:31.442559+00:00",
+  "engine": "freerouting",
   "selection": "passing DRC/connectivity, then minimum vias and trace length",
   "checks": {
     "physical_components": 55,
@@ -11,16 +11,16 @@
     "violation_types": {},
     "stackup_matches_source": true,
     "outside_outline_copper": [],
-    "via_count": 137,
-    "trace_length_mm": 1325.798,
-    "trace_via_geometry_sha256": "549008b46d4f6f4a4e5f96e74be8b1468d032aaaddbd594e2bf8743f21bac8a3",
+    "via_count": 130,
+    "trace_length_mm": 1278.244,
+    "trace_via_geometry_sha256": "1ba306969882940d14c28f4cc73173328e20fc0bef2192cf4bfb6e90ac21dd11",
     "via_in_paste": [],
     "changed_critical_segments": [],
     "changed_critical_vias": [],
     "foreign_tracks_on_ground_layer": 0,
     "ground_plane": {
       "signal_crossovers": [],
-      "ground_via_count": 24,
+      "ground_via_count": 28,
       "all_ground_vias_on_one_fill_polygon": true,
       "passes": true,
       "limitations": "Geometry only; USB reference is checked separately; EMC requires hardware"
@@ -602,11 +602,11 @@
           "purpose": "PB3 application status LED",
           "side": "front",
           "pad_xy_mm": [
-            5.05,
-            5.3
+            4.9,
+            5.25
           ],
           "text_xy_mm": [
-            4.3,
+            4.15,
             4.0
           ]
         }
@@ -735,12 +735,12 @@
           "net": "VBUS_SENSE",
           "side": "B",
           "pad_xy_mm": [
-            6.6,
-            4.6
+            10.0,
+            16.0
           ],
           "text_xy_mm": [
-            4.4,
-            4.95
+            10.0,
+            17.2
           ]
         },
         {
@@ -768,7 +768,7 @@
           ],
           "text_xy_mm": [
             8,
-            11.65
+            11.8
           ]
         },
         {
@@ -782,7 +782,7 @@
           ],
           "text_xy_mm": [
             10.8,
-            11.65
+            11.8
           ]
         },
         {
@@ -796,7 +796,7 @@
           ],
           "text_xy_mm": [
             12.3,
-            19.45
+            19.55
           ]
         },
         {
@@ -809,8 +809,8 @@
             34.2
           ],
           "text_xy_mm": [
-            14.7,
-            33.3
+            14.85,
+            33.2
           ]
         },
         {
@@ -861,7 +861,7 @@
         "C1.2_ground_via_mm": 1.35,
         "U4.2_ground_via_mm": 1.0
       },
-      "switch_copper_total_mm": 5.802,
+      "switch_copper_total_mm": 5.854,
       "local_ground_returns": {
         "D5": [
           {
@@ -888,7 +888,7 @@
       "local_return_via_count": 2,
       "local_return_ground_plane_checked": true,
       "supply_trace_totals_mm": {
-        "VSYS": 20.441,
+        "VSYS": 19.861,
         "VIN_SYS": 16.552
       },
       "feedback_via_isolated_from_shared_plane": true,
@@ -897,11 +897,11 @@
     },
     "passes_connectivity_and_drc": true
   },
-  "board_sha256": "218d38060497b31e9f0781a0368b84c82d227bac101be89a94924977eb4c3faa",
+  "board_sha256": "d28c5be0caca1037fefb6fd217a0a08883ab0cc046f1ddf0ec7537f88a259be0",
   "comparison": {
-    "status": "four-layer direct-VBUS layout; geometry checked, physical qualification and order release remain open",
+    "status": "complete",
     "candidates": {
-      "power-corrected": {
+      "freerouting": {
         "physical_components": 55,
         "source_pad_net_parity": true,
         "violations": 0,
@@ -909,16 +909,16 @@
         "violation_types": {},
         "stackup_matches_source": true,
         "outside_outline_copper": [],
-        "via_count": 137,
-        "trace_length_mm": 1325.798,
-        "trace_via_geometry_sha256": "549008b46d4f6f4a4e5f96e74be8b1468d032aaaddbd594e2bf8743f21bac8a3",
+        "via_count": 130,
+        "trace_length_mm": 1278.244,
+        "trace_via_geometry_sha256": "1ba306969882940d14c28f4cc73173328e20fc0bef2192cf4bfb6e90ac21dd11",
         "via_in_paste": [],
         "changed_critical_segments": [],
         "changed_critical_vias": [],
         "foreign_tracks_on_ground_layer": 0,
         "ground_plane": {
           "signal_crossovers": [],
-          "ground_via_count": 24,
+          "ground_via_count": 28,
           "all_ground_vias_on_one_fill_polygon": true,
           "passes": true,
           "limitations": "Geometry only; USB reference is checked separately; EMC requires hardware"
@@ -1500,11 +1500,11 @@
               "purpose": "PB3 application status LED",
               "side": "front",
               "pad_xy_mm": [
-                5.05,
-                5.3
+                4.9,
+                5.25
               ],
               "text_xy_mm": [
-                4.3,
+                4.15,
                 4.0
               ]
             }
@@ -1633,12 +1633,12 @@
               "net": "VBUS_SENSE",
               "side": "B",
               "pad_xy_mm": [
-                6.6,
-                4.6
+                10.0,
+                16.0
               ],
               "text_xy_mm": [
-                4.4,
-                4.95
+                10.0,
+                17.2
               ]
             },
             {
@@ -1666,7 +1666,7 @@
               ],
               "text_xy_mm": [
                 8,
-                11.65
+                11.8
               ]
             },
             {
@@ -1680,7 +1680,7 @@
               ],
               "text_xy_mm": [
                 10.8,
-                11.65
+                11.8
               ]
             },
             {
@@ -1694,7 +1694,7 @@
               ],
               "text_xy_mm": [
                 12.3,
-                19.45
+                19.55
               ]
             },
             {
@@ -1707,8 +1707,8 @@
                 34.2
               ],
               "text_xy_mm": [
-                14.7,
-                33.3
+                14.85,
+                33.2
               ]
             },
             {
@@ -1759,7 +1759,7 @@
             "C1.2_ground_via_mm": 1.35,
             "U4.2_ground_via_mm": 1.0
           },
-          "switch_copper_total_mm": 5.802,
+          "switch_copper_total_mm": 5.854,
           "local_ground_returns": {
             "D5": [
               {
@@ -1786,7 +1786,7 @@
           "local_return_via_count": 2,
           "local_return_ground_plane_checked": true,
           "supply_trace_totals_mm": {
-            "VSYS": 20.441,
+            "VSYS": 19.861,
             "VIN_SYS": 16.552
           },
           "feedback_via_isolated_from_shared_plane": true,
@@ -1795,7 +1795,8 @@
         },
         "passes_connectivity_and_drc": true
       }
-    }
+    },
+    "fabrication_ready": true
   },
   "usb_mechanical_fit": {
     "part": "GT-USB-7010ASV",

@@ -24,6 +24,13 @@ reach it with similar lengths. RESET, BOOT and the SDI pads line the bottom
 edge, with the SJ1 solder jumper beside the right header row just below the
 MCU. The back carries the GPIO expansion and probe pads.
 
+Every fitted footprint carries a real courtyard: pads and body plus 0.25 mm
+(0.15 mm for 0402). The imported EasyEDA patterns originally drew only the
+package body on the courtyard layer, which hid pad overlaps between the buck
+output capacitors and the inductor. The placement gate and KiCad's DRC now
+reject any two courtyards that overlap, so neighbouring parts keep at least
+0.5 mm between bodies.
+
 ## Pin 40 is USB VBUS
 
 Pin 40 connects directly to USB-C VBUS, as on the Pico. Every source starts
@@ -290,7 +297,7 @@ The stack is JLC04101H-3313, nominal 1 mm, with 1 oz outer and 0.5 oz inner
 copper. In1.Cu is an unbroken ground reference; In2.Cu carries 3.3 V pours
 and signals. The 0.0994 mm front-to-ground
 spacing is retained. Fitted components are on F.Cu. The checked layout has
-137 vias and 1,325.798 mm of trace centerline, zero DRC violations and no
+130 vias and 1,278.244 mm of trace centerline, zero DRC violations and no
 unconnected nets. Critical copper, USB ground reference, pad/net parity and
 drill-to-paste checks pass.
 
@@ -303,8 +310,8 @@ connector between its shell stakes. A locked 0.6 mm trunk on the 3.3 V
 layer joins the regulator output to a via at the MCU's decoupling capacitor
 and to header pin 36, so the rail never depends on router-width taps between
 fragments of the shared pour; the pour itself is one polygon on this route.
-VSYS reaches D4 at 0.4 mm. All 24 ground vias and the eight header ground
-pins reach one connected, refilled L2 polygon. Twelve tented stitching vias
+VSYS reaches D4 at 0.4 mm. All 28 ground vias and the eight header ground
+pins reach one connected, refilled L2 polygon. Fifteen tented stitching vias
 tie the back pour to the ground plane on a clearance-filtered grid, so no
 point of that pour is more than 7 mm from a ground via or pin. Vias remain
 outside paste; no filled or capped via process is introduced. No signal is routed on L2; the USB reference is

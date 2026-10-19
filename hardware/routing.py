@@ -215,7 +215,7 @@ def main():
         duration=run(['java','-jar',jar,'--user_data_path='+str(out/'freerouting-profile'),
             '--usage_and_diagnostic_data.disable_analytics=true','--gui.enabled=false',
             '--router.layers.routable='+layers,'--router.automatic_neckdown=false','--router.fanout.enabled=false',
-            '--router.autorouter.max_passes=30','--router.optimizer.max_threads=1',
+            '--router.autorouter.max_passes=80','--router.optimizer.max_threads=1',
             '-de',dsn,'-do',ses],out/'freerouting.log')
         run([a.kicad_python,'-m','hardware.exchange','import',input_board,ses,'--output',raw,'--only-locked'],out/'ses.log')
         copy_rules(input_board,raw)

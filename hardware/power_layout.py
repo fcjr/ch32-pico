@@ -81,7 +81,7 @@ def audit(doc):
                         tuple(map(float,one(s,'end')[1:3]))) for s in sw)
     if length>8 or any(one(s,'layer')[1]!='F.Cu' for s in sw):
         raise ValueError('Buck switch copper exceeds its local top-layer budget')
-    sense=(3.6,19.6)
+    sense=(3.6,20.0)
     if not any(one(v,'net')[-1]=='3V3_OUT' and tuple(map(float,one(v,'at')[1:3]))==sense
                for v in children(doc,'via')):raise ValueError('Missing dedicated feedback via')
     for z in children(doc,'zone'):

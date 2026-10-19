@@ -21,7 +21,7 @@ SERVICES = (
     ('TP5', 'RST', 'PA21', (0,-1.2), 'U1 PA21 reset'),
     ('SW1', 'RESET', 'PA21', (0,-2), 'X035 reset'),
     ('SW2', 'BOOT', 'BOOT_PULLUP', (0,-2), 'Hold at power-up for USB ISP'),
-    ('D3', 'LED', 'LED_A', (0,-1.3), 'PB3 application status LED'),
+    ('D3', 'LED', 'LED_A', (0,-1.25), 'PB3 application status LED'),
 )
 
 ALIASES = {'NC':'NC', '3V3_OUT':'3V3', '3V3_EN':'EN', 'PA21':'RST', 'GPIO35':'PC7*'}
@@ -35,7 +35,7 @@ HEADER_LEADERS = {
 
 def expansion_label_position(ref,x,y):
     if ref=='TP6':return (14.1,30.9)
-    return (x+.6 if ref=='TP7' else x,y+1.15)
+    return (x+.6 if ref=='TP7' else x,y+1.25)
 
 
 def header_legend(pin):
@@ -53,7 +53,8 @@ def header_label_position(pin):
         return 10, y
     if pin.number == 40:
         return 10.5, 3.15
-    return {20:5.2,21:15.8}.get(pin.number,x), y
+    # Pins 3 and 38 step away from the USB shell stakes.
+    return {3:4.3,20:5.2,21:15.8,38:16.7}.get(pin.number,x), y
 
 
 def text(label, x, y, side, identity, size=.9):

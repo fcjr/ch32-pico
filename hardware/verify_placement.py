@@ -15,8 +15,8 @@ from .sexp import parse,children,one
 from .mechanical_checks import usb_fit
 
 
-def courtyard_gaps(doc,minimum=0.2):
-    """Fitted parts must keep a visible gap between courtyards for assembly."""
+def courtyard_gaps(doc,minimum=0.0):
+    """Fitted-part courtyards must not overlap."""
     fitted={c.ref for c in COMPONENTS if c.fitted}
     boxes={}
     for fp in children(doc,'footprint'):

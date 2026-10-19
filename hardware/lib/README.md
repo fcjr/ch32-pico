@@ -19,6 +19,10 @@ value labels.
   on the KiCad LQFP-48 7 × 7 mm land pattern. USBLC6-2SC6, C7519, uses the
   KiCad SOT-23-6 pattern. `scripts/prepare_footprints.py` vendors those
   patterns and moves imported legends to fabrication layers.
+  EasyEDA exports draw the package body on the courtyard layer; the script
+  keeps that outline on F.Fab and draws a courtyard around pads and body with
+  0.25 mm excess (0.15 mm for 0402), so KiCad's courtyard check and the
+  placement gate see real part spacing.
 - GT-USB-7010ASV USB-C receptacle, C2988369, rated 3 A on VBUS. The
   `USB_C_Receptacle_G-Switch_GT-USB-7010` land pattern follows the ASV
   drawing; its SMT row has a 50 µm tailward adjustment within the

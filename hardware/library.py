@@ -59,8 +59,8 @@ def load_library():
                 if code=='C29779902':
                     name=next(k for k,v in TARGET_PINS.items() if str(v)==number)
                     electrical='power_in' if number in {'47','48'} else 'input' if number=='7' else 'bidirectional'
-                elif code=='C780769':
-                    electrical={'1':'input','2':'input','3':'power_in','4':'power_in','5':'power_out','6':'passive'}[number]
+                elif code=='C2927130':
+                    electrical={'1':'passive','2':'power_in','3':'input','4':'input','5':'power_in','6':'power_out'}[number]
                 elif code=='C3662793':
                     electrical={'1':'input','2':'input','3':'open_collector','4':'open_collector','5':'power_in','6':'power_out','7':'passive','8':'power_in','9':'passive','10':'passive'}[number]
                 elif code in {'C1850276','C18197523'}:

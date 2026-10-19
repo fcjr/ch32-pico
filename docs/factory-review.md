@@ -1,6 +1,6 @@
 # Parts and factory review
 
-The board has 26 fitted parts, 18 part numbers and a $3.17 parts-only
+The board has 29 fitted parts, 20 part numbers and a $2.36 parts-only
 estimate at 20 boards. Pin 40 is direct USB VBUS. The
 [pre-order review](preorder-review.md) contains the 2026-10-19 stock table and
 cost assumptions. Every part shows stock for the batch; none is reserved.
@@ -12,12 +12,12 @@ been performed, and no order, payment or reservation has been made.
 
 ## Parts
 
-All 18 distinct fitted C-numbers match the expected MPN in JLC's public
-catalogue. There are 26 fitted parts per device and 19 BOM rows, because
-one part number appears under two circuit descriptions. The batch has 520
+All 20 distinct fitted C-numbers match the expected MPN in JLC's public
+catalogue. There are 29 fitted parts per device and 21 BOM rows, because
+one part number appears under two circuit descriptions. The batch has 580
 placements.
 
-All 18 C-numbers have enough reported stock for the provisional attrition
+All 20 C-numbers have enough reported stock for the provisional attrition
 scenario. C29779902 / CH32X035C8T6 reports 1,082 pieces on 2026-10-19, up
 from two in the previous snapshot; a catalogue observation does not reserve
 stock or prove JLC allocation, so confirm it in the order.
@@ -66,7 +66,7 @@ and [Standard PCBA fiducial guidance](https://jlcpcb.com/help/article/how-to-add
 
 ## Costs
 
-The dated planning scenario is $131.39 for the 20-board batch ($6.57 per
+The dated planning scenario is $118.39 for the 20-board batch ($5.92 per
 board), including provisional component attrition and modeled assembly costs
 but excluding PCB fabrication and other quoted services, shipping and tax. See
 [order review](order-review.md). The

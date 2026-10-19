@@ -1,26 +1,26 @@
 {
   "status": "routing checked; not released for ordering",
-  "saved_at": "2026-10-19T01:08:51.220749+00:00",
+  "saved_at": "2026-10-19T01:33:07.753740+00:00",
   "engine": "power-corrected",
   "selection": "passing DRC/connectivity, then minimum vias and trace length",
   "checks": {
-    "physical_components": 52,
+    "physical_components": 55,
     "source_pad_net_parity": true,
     "violations": 0,
     "unconnected": 0,
     "violation_types": {},
     "stackup_matches_source": true,
     "outside_outline_copper": [],
-    "via_count": 128,
-    "trace_length_mm": 1222.322,
-    "trace_via_geometry_sha256": "718d56ec66365750db30342ef93befbdeb262b095edcc5768bdfe5670b79ffc1",
+    "via_count": 131,
+    "trace_length_mm": 1266.899,
+    "trace_via_geometry_sha256": "841d564e4f3c9f9a9b26c8c7e469cfd360ac631ce05b3ee05f2776d6bae26a38",
     "via_in_paste": [],
     "changed_critical_segments": [],
     "changed_critical_vias": [],
     "foreign_tracks_on_ground_layer": 0,
     "ground_plane": {
       "signal_crossovers": [],
-      "ground_via_count": 26,
+      "ground_via_count": 27,
       "all_ground_vias_on_one_fill_polygon": true,
       "passes": true,
       "limitations": "Geometry only; USB reference is checked separately; EMC requires hardware"
@@ -735,12 +735,12 @@
           "net": "VBUS_SENSE",
           "side": "B",
           "pad_xy_mm": [
-            8,
-            21.6
+            6.6,
+            4.6
           ],
           "text_xy_mm": [
-            8,
-            22.75
+            4.4,
+            4.95
           ]
         },
         {
@@ -857,10 +857,11 @@
     "power_layout_passes": true,
     "power_layout": {
       "input_capacitor_connections_mm": {
-        "VIN_SYS": 1.5615,
-        "GND": 1.5615
+        "VIN_SYS": 4.4161,
+        "C1.2_ground_via_mm": 1.35,
+        "U4.2_ground_via_mm": 1.0
       },
-      "switch_copper_total_mm": 5.066,
+      "switch_copper_total_mm": 5.802,
       "local_ground_returns": {
         "D5": [
           {
@@ -887,8 +888,8 @@
       "local_return_via_count": 2,
       "local_return_ground_plane_checked": true,
       "supply_trace_totals_mm": {
-        "VSYS": 20.746,
-        "VIN_SYS": 9.586
+        "VSYS": 19.861,
+        "VIN_SYS": 16.752
       },
       "feedback_via_isolated_from_shared_plane": true,
       "passes": true,
@@ -896,28 +897,28 @@
     },
     "passes_connectivity_and_drc": true
   },
-  "board_sha256": "1948c16958cb055009114b6a8a5869062fea652cde23d0adbf2092c5c47a87dc",
+  "board_sha256": "9efa28547b76a02b2cc0a2aa438b9ea57005674908ba544dd57d900d60792a91",
   "comparison": {
     "status": "four-layer direct-VBUS layout; geometry checked, physical qualification and order release remain open",
     "candidates": {
       "power-corrected": {
-        "physical_components": 52,
+        "physical_components": 55,
         "source_pad_net_parity": true,
         "violations": 0,
         "unconnected": 0,
         "violation_types": {},
         "stackup_matches_source": true,
         "outside_outline_copper": [],
-        "via_count": 128,
-        "trace_length_mm": 1222.322,
-        "trace_via_geometry_sha256": "718d56ec66365750db30342ef93befbdeb262b095edcc5768bdfe5670b79ffc1",
+        "via_count": 131,
+        "trace_length_mm": 1266.899,
+        "trace_via_geometry_sha256": "841d564e4f3c9f9a9b26c8c7e469cfd360ac631ce05b3ee05f2776d6bae26a38",
         "via_in_paste": [],
         "changed_critical_segments": [],
         "changed_critical_vias": [],
         "foreign_tracks_on_ground_layer": 0,
         "ground_plane": {
           "signal_crossovers": [],
-          "ground_via_count": 26,
+          "ground_via_count": 27,
           "all_ground_vias_on_one_fill_polygon": true,
           "passes": true,
           "limitations": "Geometry only; USB reference is checked separately; EMC requires hardware"
@@ -1632,12 +1633,12 @@
               "net": "VBUS_SENSE",
               "side": "B",
               "pad_xy_mm": [
-                8,
-                21.6
+                6.6,
+                4.6
               ],
               "text_xy_mm": [
-                8,
-                22.75
+                4.4,
+                4.95
               ]
             },
             {
@@ -1754,10 +1755,11 @@
         "power_layout_passes": true,
         "power_layout": {
           "input_capacitor_connections_mm": {
-            "VIN_SYS": 1.5615,
-            "GND": 1.5615
+            "VIN_SYS": 4.4161,
+            "C1.2_ground_via_mm": 1.35,
+            "U4.2_ground_via_mm": 1.0
           },
-          "switch_copper_total_mm": 5.066,
+          "switch_copper_total_mm": 5.802,
           "local_ground_returns": {
             "D5": [
               {
@@ -1784,8 +1786,8 @@
           "local_return_via_count": 2,
           "local_return_ground_plane_checked": true,
           "supply_trace_totals_mm": {
-            "VSYS": 20.746,
-            "VIN_SYS": 9.586
+            "VSYS": 19.861,
+            "VIN_SYS": 16.752
           },
           "feedback_via_isolated_from_shared_plane": true,
           "passes": true,
@@ -1815,7 +1817,7 @@
   },
   "open_reviews": [
     "Pin 40 is unswitched USB VBUS with no on-board current limit or reverse blocking; 3 A target and top-side-only assembly require assembled-board qualification",
-    "Hot-plug ringing at 20 V must be scoped at U4 to confirm the D5 clamp keeps VBUS below the 32 V regulator limit",
+    "Hot-plug ringing at 20 V must be scoped at U4 to confirm the D5 clamp keeps VBUS below the 40 V regulator limit",
     "Inductive loads require an external driver and local suppression; 5 V 24BYJ48 example is not rated for higher PD voltages",
     "Carrier capacitance inrush and PD voltage transitions require measurements with representative sources",
     "Current PCB/assembly quote, MCU stock and 20-device allocation (docs/design.md)",

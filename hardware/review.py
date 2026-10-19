@@ -48,7 +48,7 @@ def main():
         'checks':saved,'board_sha256':hashlib.sha256(board.read_bytes()).hexdigest(),
         'comparison':comparison,'usb_mechanical_fit':usb_fit(parse(board.read_text())), 'open_reviews':[
             'Pin 40 is unswitched USB VBUS with no on-board current limit or reverse blocking; 3 A target and top-side-only assembly require assembled-board qualification',
-            'Hot-plug ringing at 20 V must be scoped at U4 to confirm the D5 clamp keeps VBUS below the 32 V regulator limit',
+            'Hot-plug ringing at 20 V must be scoped at U4 to confirm the D5 clamp keeps VBUS below the 40 V regulator limit',
             'Inductive loads require an external driver and local suppression; 5 V 24BYJ48 example is not rated for higher PD voltages',
             'Carrier capacitance inrush and PD voltage transitions require measurements with representative sources',
             'Current PCB/assembly quote, MCU stock and 20-device allocation (docs/design.md)',

@@ -1,7 +1,7 @@
 {
-  "source_board_sha256": "1948c16958cb055009114b6a8a5869062fea652cde23d0adbf2092c5c47a87dc",
+  "source_board_sha256": "9efa28547b76a02b2cc0a2aa438b9ea57005674908ba544dd57d900d60792a91",
   "models_manifest": "../render-models.json",
-  "fitted_models": 26,
+  "fitted_models": 29,
   "tool": "10.0.6",
   "opaque_models": [
     "SW-SMD_L4.0-W2.9-LS4.8-1.wrl"

@@ -3,10 +3,10 @@
 ch32-pico places a CH32X035C8T6 on the 21 × 51 mm Pico outline with 40 header
 positions, castellations and native CH32 USB-PD. The power circuit sits beside
 USB-C, RESET and BOOT sit together at the bottom, and the back carries LEFT
-SHIFT LOGICAL branding. All 26 fitted parts are on the front. The board has
+SHIFT LOGICAL branding. All 29 fitted parts are on the front. The board has
 four copper layers and exposes 37 GPIOs.
 
-The dated parts-only estimate is $3.17 per device for 20 devices. This
+The dated parts-only estimate is $2.36 per device for 20 devices. This
 excludes fabrication, assembly setup/feeders, attrition, minimum purchases,
 shipping and tax. The saved layout has zero DRC violations and zero
 unconnected nets, and all regression tests pass. Matching panel and
@@ -43,13 +43,26 @@ pin 40:
 
 D5 (TVS2200, 22 V standoff, 28.35 V specified hot surge clamp) sits at the
 USB VBUS breakout. Plugging a cable into a source already at 20 V can ring
-toward twice the supply. D5 keeps that below U4's 32 V operating and 34 V
-absolute limits. It protects the board's own regulator; it is not a motor-energy
+toward twice the supply. D5 keeps that below U4's 40 V input rating. It
+protects the board's own regulator; it is not a motor-energy
 rating for pin 40. External motor drivers need local flyback/recirculation.
 
 R1/R2 divide VBUS by 11 into PB0 (VSNS), so firmware can confirm the
-negotiated voltage. D1 feeds the AP63203 3.3 V buck from VBUS; D4 feeds it from
+negotiated voltage. D1 feeds the 3.3 V buck from VBUS; D4 feeds it from
 VSYS. Header pin 39 VSYS is a 4.3–5.5 V input only, diode-isolated from VBUS.
+
+## 3.3 V regulator
+
+U4 is a Silergy SY8301: a 2 MHz synchronous buck rated for 4.5–40 V input and
+1 A, with 22 µA quiescent current. R13/R14 (47 kΩ / 15 kΩ) set the output to
+0.8 V × (1 + 47/15) = 3.31 V; R13 senses the output capacitors over a
+dedicated bottom-layer trace, away from the shared 3.3 V pour. L1 is 4.7 µH
+(about 0.29 A ripple at 20 V in), C1 10 µF/50 V at the input, C2/C3 2 × 22 µF
+at the output and C4 100 nF between BS and LX. The 2.5 A peak current limit and
+hiccup short-circuit protection are the regulator's; the board's 3.3 V load
+goal is 50 mA at the header plus the MCU, so the 1 A rating is not the limit.
+IN and GND sit on opposite sides of the SOT-23-6, so the input loop closes
+through the ground plane with vias beside both C1 and the IC's ground pin.
 
 The high-current path stays near the USB end. Both VBUS contacts reach a
 0.9 mm bottom- and inner-layer bar through four vias, and a 1.2 mm bottom-layer
@@ -81,20 +94,19 @@ expansion pads, three underside probe pads (PA3, PB1, PB2) and optional PC7.
 
 ## Shutdown control
 
-Pico header pin 37, labeled `EN`, connects directly to U4 pin 2. The AP63203
-has an internal pull-up current source and supports automatic startup with EN
-open. Grounding EN disables the converter. Releasing it starts its soft-start
-sequence again. The specified rising threshold is 1.15–1.23 V; the falling
-threshold is 1.05–1.15 V. These are switching thresholds, not the voltage that
-appears on the released pin.
+Pico header pin 37, labeled `EN`, connects to U4's EN pin, which R15 (100 kΩ)
+pulls up to VIN_SYS, the diode-OR of VBUS and VSYS, so the regulator starts on
+either supply with pin 37 open. Grounding pin 37 disables the converter;
+releasing it starts a new soft-start. The EN thresholds are 1.4 V rising and
+1.0 V falling, and the pin is rated to 40 V.
 
-Use a dry-contact switch between pins 37 and 38, or an external open-drain
-transistor rated at least 35 V with its source/emitter at board ground. Do not
-add a pull-up to VBUS or VIN_SYS, or treat EN as a general-purpose 3.3 V GPIO.
-The datasheet gives no guaranteed maximum open-circuit EN voltage; its internal
-pull-up comes from the internal VCC regulator. Measure the released voltage
-across supported input voltages before qualifying a particular carrier or
-logic driver.
+The released pin sits at VIN_SYS: about 4.5 V on a plain USB supply, up to
+about 19.7 V after a 20 V PD contract, through 100 kΩ. That is higher than the
+Pico, whose 3V3_EN floats at VSYS. Use a dry-contact switch between pins 37
+and 38, or an external open-drain transistor rated at least 40 V with its
+source/emitter at board ground. A 3.3 V push-pull driver can hold the pin
+high or low and sinks at most 200 µA, but do not connect pin 37 to a logic
+input, and do not add another pull-up.
 
 Shutdown removes the MCU and header 3.3 V supply. It stops USB and PD control
 once the rail discharges; it is not galvanic isolation or an emergency stop,
@@ -109,10 +121,10 @@ guarantee. Validate this before using shutdown as a released feature.
 Before release, test cold startup with EN open and held low, repeated release,
 all supported USB/VSYS input conditions, low-leakage and partially powered
 external drivers, USB disconnect/re-enumeration and signal back-power. Board
-standby current is not the regulator's 1 µA typical shutdown current; the
+standby current is not the regulator's shutdown current alone; the EN pull-up,
 sense divider and CC terminations still draw current.
 
-Source: [AP63203 datasheet, pin descriptions and Enable section](https://www.diodes.com/datasheet/download/AP63200-AP63201-AP63203-AP63205.pdf).
+Source: [SY8301 datasheet](https://www.lcsc.com/datasheet/lcsc_datasheet_2207131830_Silergy-Corp-SY8301ABC_C2927130.pdf), pin descriptions, electrical characteristics and layout notes.
 
 ## Header allocation
 
@@ -267,7 +279,7 @@ for routing the whole design from its generated seed.
 - `build/jlcpcb/`: current upload inputs and factory notes.
 - `build/ch32-pico-jlcpcb.zip`: complete JLCPCB fabrication bundle.
 
-Assembly quantity is five four-up panels, 20 devices, with 104 top-side fitted
+Assembly quantity is five four-up panels, 20 devices, with 116 top-side fitted
 placements per panel. There is no underside assembly: test pads and SJ1 are
 bare copper features. See the [factory review](factory-review.md) for stock,
 cost and approval limits.
@@ -278,7 +290,7 @@ The stack is JLC04101H-3313, nominal 1 mm, with 1 oz outer and 0.5 oz inner
 copper. In1.Cu is an unbroken ground reference; In2.Cu carries 3.3 V pours
 and signals. The 0.0994 mm front-to-ground
 spacing is retained. Fitted components are on F.Cu. The checked layout has
-128 vias and 1,222.322 mm of trace centerline, zero DRC violations and no
+131 vias and 1,266.899 mm of trace centerline, zero DRC violations and no
 unconnected nets. Critical copper, USB ground reference, pad/net parity and
 drill-to-paste checks pass.
 
@@ -291,10 +303,10 @@ connector between its shell stakes. A locked 0.6 mm trunk on the 3.3 V
 layer joins the regulator output to a via at the MCU's decoupling capacitor
 and to header pin 36, so the rail never depends on router-width taps between
 fragments of the shared pour; the pour itself is one polygon on this route.
-VSYS reaches D4 at 0.4 mm. All 26 ground vias and the eight header ground
-pins reach one connected, refilled L2 polygon. Sixteen tented stitching vias
+VSYS reaches D4 at 0.4 mm. All 27 ground vias and the eight header ground
+pins reach one connected, refilled L2 polygon. Fifteen tented stitching vias
 tie the back pour to the ground plane on a clearance-filtered grid, so no
-point of that pour is more than 8 mm from a ground via or pin. Vias remain
+point of that pour is more than 6 mm from a ground via or pin. Vias remain
 outside paste; no filled or capped via process is introduced. No signal is routed on L2; the USB reference is
 covered at every audited sample. This is geometry, not an EMC qualification.
 Surge, thermal and continuous-current qualification still require assembled boards.

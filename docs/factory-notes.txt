@@ -30,13 +30,14 @@ trim tab remnants flush. No tabs or burrs may remain on castellated sides.
 
 REVISION IDENTIFICATION
 Rev A is marked on the back; header pin 37 is labeled EN on the back.
-It connects to regulator U4 pin 2. Header pin 35 is labeled PC7*; its SJ1
+It connects to regulator U4 pin 4 through its R15 pull-up. Header pin 35 is
+labeled PC7*; its SJ1
 jumper must remain OPEN. SJ1 has no paste apertures and is excluded from
 BOM/CPL; do not bridge it during assembly. Use the Rev A files together.
 
 ASSEMBLY
-26 fitted parts per device, 104 per panel, 520 across the batch.
-19 BOM rows use 18 distinct LCSC part numbers. Header and test pads are not
+29 fitted parts per device, 116 per panel, 580 across the batch.
+21 BOM rows use 20 distinct LCSC part numbers. Header and test pads are not
 fitted parts. There is no underside assembly and no paste on underside pads.
 Do not substitute components without an exact-part/package review.
 Check every model against assembly-orientation.svg and its JSON coordinates.

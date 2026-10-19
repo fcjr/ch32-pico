@@ -46,7 +46,10 @@ COMPONENTS = (
     # Diode OR feeds ONLY the control supply. Header VSYS never sees PD VBUS.
     two('D1','C8598','VIN_SYS','VBUS','power','B5819W','Cathode pin 1; control-rail current only'),
     two('D4','C8598','VIN_SYS','VSYS','power','B5819W','Cathode pin 1; blocks PD backfeed into header 39'),
-    Component('U4','C780769',{'1':'3V3_OUT','2':'3V3_EN','3':'VIN_SYS','4':'GND','5':'BUCK_SW','6':'BUCK_BST'},'power',note='AP63203 fixed 3.3 V; EN to header 37; ground to shut down, release for autostart'),
+    Component('U4','C2927130',{'1':'BUCK_BST','2':'GND','3':'BUCK_FB','4':'3V3_EN','5':'VIN_SYS','6':'BUCK_SW'},'power',note='SY8301 2 MHz buck, 0.8 V reference; EN pulled up to VIN_SYS by R15, header 37 grounds it to shut down'),
+    two('R13','C25792','3V3_OUT','BUCK_FB','power','47k','Feedback divider top; senses the output capacitors through a dedicated trace'),
+    two('R14','C25756','BUCK_FB','GND','power','15k','Feedback divider bottom: 0.8 V x (1 + 47/15) = 3.307 V'),
+    two('R15','C25741','VIN_SYS','3V3_EN','power','100k','EN pull-up to the diode-OR node so VSYS-only power still starts the regulator'),
     two('L1','C48496','BUCK_SW','3V3_OUT','power','4.7uH'),
     two('C1','C13585','VIN_SYS','GND','power','10uF / 50V','Input capacitance/inrush requires bench qualification'),
     two('C2','C29277','3V3_OUT','GND','power','22uF / 10V'),

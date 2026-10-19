@@ -27,7 +27,9 @@ value labels.
 - TVS2200DRVR, C523793, WSON-6 with exposed ground pad. Imported with
   easyeda2kicad; model removed, legends moved to F.Fab and courtyard expanded
   to include pads/body plus 0.25 mm.
-- AP63203WU-7, C780769, TSOT-26. SWPA5040S4R7MT 4.7 µH inductor, C48496.
+- SY8301ABC, C2927130, on the EasyEDA SOT-23-6 land with legends moved to
+  F.Fab; its 47 kΩ / 15 kΩ feedback resistors are C25792 / C25756.
+  SWPA5040S4R7MT 4.7 µH inductor, C48496.
   B5819W Schottky diodes, C8598, SOD-123.
 - 100 nF capacitors are Samsung CL05B104KB54PNC,
   [C307331](https://www.lcsc.com/product-detail/C307331.html), verified as

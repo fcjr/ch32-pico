@@ -30,7 +30,15 @@ def verify_contract(components=COMPONENTS):
     require('D1',{1:'VIN_SYS',2:'VBUS'})
     require('D4',{1:'VIN_SYS',2:'VSYS'})
     require('D2',{2:'GND',5:'3V3_OUT'})
-    require('U4',{1:'3V3_OUT',2:'3V3_EN',3:'VIN_SYS',4:'GND',5:'BUCK_SW',6:'BUCK_BST'})
+    require('U4',{1:'BUCK_BST',2:'GND',3:'BUCK_FB',4:'3V3_EN',5:'VIN_SYS',6:'BUCK_SW'})
+    if c['U4'].part!='C2927130':raise ValueError('U4: use the reviewed SY8301 buck')
+    require('R13',{1:'3V3_OUT',2:'BUCK_FB'});require('R14',{1:'BUCK_FB',2:'GND'})
+    for ref,part,value in (('R13','C25792','47k'),('R14','C25756','15k'),('R15','C25741','100k')):
+        if (c[ref].part,c[ref].value)!=(part,value):
+            raise ValueError(f'{ref}: the 3.3 V setpoint and enable pull-up use the reviewed resistors')
+    fb_nodes={(x.ref,p) for x in components for p,n in x.nets.items() if n=='BUCK_FB'}
+    if fb_nodes!={('U4','3'),('R13','2'),('R14','1')}:
+        raise ValueError('BUCK_FB must carry only the feedback divider')
     require('L1',{1:'BUCK_SW',2:'3V3_OUT'})
     # Pin 40 is direct VBUS. The input clamp is the only part on the PD path.
     if c['D5'].part!='C523793':raise ValueError('D5: unreviewed TVS clamp')
@@ -71,8 +79,9 @@ def verify_contract(components=COMPONENTS):
     for net in ('VBUS','VIN_SYS','VSYS'):
         if net in c['U1'].nets.values():raise ValueError('High-voltage net connected directly to MCU')
     shutdown_nodes={(x.ref,p) for x in components for p,n in x.nets.items() if n=='3V3_EN'}
-    if shutdown_nodes!={('J1','37'),('U4','2')}:
-        raise ValueError('3V3_EN must connect only header 37 and regulator EN, with no VIN pull-up')
+    if shutdown_nodes!={('J1','37'),('U4','4'),('R15','2')}:
+        raise ValueError('3V3_EN must connect only header 37, regulator EN and the R15 pull-up')
+    require('R15',{1:'VIN_SYS',2:'3V3_EN'})
     if [p.proposed for p in HEADER if p.number==40]!=['VBUS']:
         raise ValueError('Header pin 40 must be direct USB VBUS')
     rating=library[c['C1'].part].voltage_rating_v

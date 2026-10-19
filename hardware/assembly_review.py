@@ -21,7 +21,7 @@ ANCHORS = {
     'D2': ('1', 'Pin 1, USB D+; pin 2 GND and pin 5 fixed 3.3 V'),
     'U1': ('1', 'Pin 1 / dot, PA15; CH32X035C8T6 LQFP48'),
     'D5': ('1', 'Pin 1 GND; input pins 4-6 VBUS; exposed pad GND'),
-    'U4': ('1', 'Pin 1, 3.3 V feedback; pin 3 VIN_SYS, pin 4 GND'),
+    'U4': ('1', 'Pin 1 BS bootstrap; pin 2 GND, pin 5 VIN_SYS, pin 6 LX to the inductor'),
     'D3': ('2', 'Cathode, GND; pin 1 is the LED anode'),
     'SW1': ('1', 'Contact 1, PA21 RESET; contact 2 GND'),
     'SW2': ('1', 'Contact 1, BOOT_PULLUP; contact 2 fixed 3.3 V'),

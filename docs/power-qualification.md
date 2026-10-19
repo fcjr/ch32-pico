@@ -26,7 +26,7 @@ Do not start with a motor or an unknown load.
    Retain reset/debug option bytes. Confirm the board stays at 5 V through
    boot, download, reset, watchdog timeout and detach.
 4. Hot-plug into sources already at 20 V, with short and long cables. Scope
-   VBUS at D5 and U4. The peak must stay below U4's 32 V operating limit.
+   VBUS at D5 and U4. The peak must stay below U4's 40 V input rating.
    Repeat with representative carrier capacitance on pin 40.
 5. Request only advertised fixed 5/9/12/15/20 V PDOs. Verify ACCEPT/PS_RDY
    ordering and VSNS ADC accuracy. Reject unsupported voltages, absent 12 V,

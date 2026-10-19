@@ -3,7 +3,7 @@
 """Convert KiCad placement angles to JLC model-frame CPL values.
 
 Verified against JLC's own component-library footprints on 2026-10-13.
-Our U3, U4, D1, D4, D3, switch, inductor and passive footprints copy JLC's
+Our U4, D1, D4, D3, D5, switch, inductor and passive footprints copy JLC's
 frames, so their KiCad angles translate directly. The entries below correct
 footprints drawn in KiCad's standard conventions or anchored differently:
 

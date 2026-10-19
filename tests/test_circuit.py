@@ -54,8 +54,12 @@ class CircuitContract(unittest.TestCase):
                 verify_netlist(broken)
 
     def test_shutdown_cannot_be_left_unconnected(self):
-        with self.assertRaisesRegex(ValueError, 'U4.2'):
-            verify_contract(self.altered('U4', {'2': None}))
+        with self.assertRaisesRegex(ValueError, 'U4.4'):
+            verify_contract(self.altered('U4', {'4': None}))
+
+    def test_feedback_divider_cannot_be_retuned_silently(self):
+        with self.assertRaisesRegex(ValueError, 'R14: the 3.3 V setpoint'):
+            verify_contract(tuple(replace(c,part='C25744',value='10k') if c.ref=='R14' else c for c in COMPONENTS))
 
     def test_header_35_cannot_bypass_jumper(self):
         with self.assertRaisesRegex(ValueError, 'J1.35'):
@@ -65,10 +69,9 @@ class CircuitContract(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'SJ1.1'):
             verify_contract(self.altered('SJ1', {'1': 'PC7'}))
 
-    def test_shutdown_cannot_be_pulled_up_to_pd_voltage(self):
-        from hardware.circuit import two
-        with self.assertRaisesRegex(ValueError, 'no VIN pull-up'):
-            verify_contract((*COMPONENTS, two('R99', 'C25744', '3V3_EN', 'VIN_SYS', 'power')))
+    def test_shutdown_pull_up_must_use_the_diode_or_node(self):
+        with self.assertRaisesRegex(ValueError, 'R15.1'):
+            verify_contract(self.altered('R15', {'1': 'VBUS'}))
 
     def test_reversed_input_diode_rejected(self):
         with self.assertRaisesRegex(ValueError,'D1.1'):

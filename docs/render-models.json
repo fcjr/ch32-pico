@@ -61,14 +61,6 @@
       "rotate_z": 0,
       "offset_y": 0
     },
-    "TSOT-26_L2.9-W1.6-P0.95-LS2.8-BL": {
-      "lcsc": "C780769",
-      "source": "https://www.lcsc.com/product-detail/C780769.html",
-      "file": "TSOT-26_L2.9-W1.6-P0.95-LS2.8-BL.wrl",
-      "sha256": "cea0f96767724d06e8c232affea97d8817d6fcf062d32513f25749da2068d3c9",
-      "rotate_z": 0,
-      "offset_y": 0
-    },
     "IND-SMD_L5.0-W5.0-P3.60_SMNR5040": {
       "lcsc": "C48496",
       "source": "https://www.lcsc.com/product-detail/C48496.html",
@@ -110,6 +102,14 @@
       "rotate_z": 270.0,
       "offset_y": 0,
       "retrieved": "2026-10-13"
+    },
+    "SOT-23-6_L2.9-W1.6-P0.95-LS2.8-BL": {
+      "lcsc": "C2927130",
+      "source": "https://www.lcsc.com/product-detail/C2927130.html",
+      "file": "SOT-23-6_L2.9-W1.6-H1.5-LS2.8-P0.95.wrl",
+      "sha256": "3da95a191588d286e5c8ef4e2d1f8ea807bca93fb0b1a235252b68e1511ec5cb",
+      "rotate_z": 0,
+      "offset_y": 0
     }
   },
   "board_revision": "E"

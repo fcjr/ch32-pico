@@ -10,7 +10,7 @@ class PowerLayout(TestCase):
         self.doc=parse(Path('build/ch32-pico-seed.kicad_pcb').read_text())
 
     def test_short_local_input_loop(self):
-        self.assertLess(audit(self.doc)['input_capacitor_connections_mm']['VIN_SYS'],2)
+        self.assertLess(audit(self.doc)['input_capacitor_connections_mm']['VIN_SYS'],5)
 
     def test_missing_input_connection_rejected(self):
         s=next(s for s in children(self.doc,'segment')
@@ -24,7 +24,7 @@ class PowerLayout(TestCase):
 
     def test_feedback_plane_shortcut_rejected(self):
         self.doc.append(parse('''(zone (net "3V3_OUT") (filled_polygon (layer "In2.Cu")
-            (pts (xy 5 13) (xy 6.2 13) (xy 6.2 14.1) (xy 5 14.1))))'''))
+            (pts (xy 3 19) (xy 4.2 19) (xy 4.2 20.2) (xy 3 20.2))))'''))
         with self.assertRaisesRegex(ValueError,'bypasses'):audit(self.doc)
 
     def test_capacitor_and_clamps_have_two_short_wide_ground_returns(self):

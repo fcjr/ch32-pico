@@ -52,15 +52,28 @@ def vbus_connections(doc):
             'header_pin40_front_feed_mm':round(feed,4)}
 
 
+def _reachable(segments,start,end):
+    try:path_length(segments,start,end);return True
+    except ValueError:return False
+
+
 def audit(doc):
     pads=pad_centers(doc)
     tracks=children(doc,'segment')
     loops={}
-    for net,cap,terminal in (('VIN_SYS','1','3'),('GND','2','4')):
-        copper=[s for s in tracks if one(s,'net')[-1]==net and one(s,'layer')[1]=='F.Cu']
-        length=path_length(copper,pads['C1',cap],pads['U4',terminal])
-        if length>2:raise ValueError(f'Buck input-capacitor {net} connection exceeds 2 mm')
-        loops[net]=round(length,4)
+    copper=[s for s in tracks if one(s,'net')[-1]=='VIN_SYS' and one(s,'layer')[1]=='F.Cu']
+    length=path_length(copper,pads['C1','1'],pads['U4','5'])
+    if length>5:raise ValueError('Buck input-capacitor VIN_SYS connection exceeds 5 mm')
+    loops['VIN_SYS']=round(length,4)
+    # IN and GND are on opposite sides of the SOT-23-6, so the return closes
+    # through the ground plane: both capacitor and IC ground need a via close by.
+    gnd=[s for s in tracks if one(s,'net')[-1]=='GND' and one(s,'layer')[1]=='F.Cu']
+    vias={tuple(map(float,one(v,'at')[1:3])) for v in children(doc,'via') if one(v,'net')[-1]=='GND'}
+    for ref,pin in (('C1','2'),('U4','2')):
+        near=[v for v in vias if math.dist(pads[ref,pin],v)<=2.0]
+        if not any(path_length(gnd,pads[ref,pin],v)<=2.0 for v in near if _reachable(gnd,pads[ref,pin],v)):
+            raise ValueError(f'{ref}.{pin} needs a ground via within 2 mm of front copper')
+        loops[f'{ref}.{pin}_ground_via_mm']=round(min(path_length(gnd,pads[ref,pin],v) for v in near if _reachable(gnd,pads[ref,pin],v)),4)
     if any(one(v,'net')[-1] in ('BUCK_SW','BUCK_BST') for v in children(doc,'via')):
         raise ValueError('Buck switch/bootstrap loop must not acquire vias')
     sw=[s for s in tracks if one(s,'net')[-1]=='BUCK_SW']
@@ -68,7 +81,7 @@ def audit(doc):
                         tuple(map(float,one(s,'end')[1:3]))) for s in sw)
     if length>8 or any(one(s,'layer')[1]!='F.Cu' for s in sw):
         raise ValueError('Buck switch copper exceeds its local top-layer budget')
-    sense=(5.6,13.5)
+    sense=(3.6,19.6)
     if not any(one(v,'net')[-1]=='3V3_OUT' and tuple(map(float,one(v,'at')[1:3]))==sense
                for v in children(doc,'via')):raise ValueError('Missing dedicated feedback via')
     for z in children(doc,'zone'):

@@ -22,7 +22,7 @@ DIAGNOSTICS = (
     Diagnostic('TP14','PA3','PA3',(9.4,32.2),(9.4,30.9)),
     Diagnostic('TP15','VBUS','VBUS',(8.6,4.9),(9,7.3)),
     Diagnostic('TP16','GND','GND',(11.3,4.4),(11,5.9)),
-    Diagnostic('TP17','VBUS_SENSE','VSNS',(8,21.6),(8,22.75)),
+    Diagnostic('TP17','VBUS_SENSE','VSNS',(6.6,4.6),(4.4,4.95)),
     Diagnostic('TP18','PB1','PB1',(14.2,25.6),(13.0,24.45)),
     Diagnostic('TP19','CC1','CC1',(8,10.6),(8,11.65)),
     Diagnostic('TP20','CC2','CC2',(10.8,10.2),(10.8,11.65)),

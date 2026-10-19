@@ -16,7 +16,7 @@ def qualification_screen(components=COMPONENTS):
     c={item.ref:item for item in components}
     val=lambda ref:passive_value(c[ref].value)
     ratio=val('R2')/(val('R1')+val('R2'))
-    buck_operating_max_v,buck_absolute_max_v,tvs_hot_clamp_v=32,34,28.35
+    buck_operating_max_v,buck_absolute_max_v,tvs_hot_clamp_v=40,40,28.35
     modes=[]
     for voltage in (5,9,12,15,20):
         upper=voltage*1.05
@@ -41,10 +41,10 @@ def qualification_screen(components=COMPONENTS):
             'buck_operating_max_v':buck_operating_max_v,'buck_absolute_max_v':buck_absolute_max_v,
             'clamp_margin_to_buck_operating_v':round(buck_operating_max_v-tvs_hot_clamp_v,2),
             'hv_capacitors_v':50,
-            'purpose':'Hot-plug into a source already at 20 V can ring toward twice the supply; D5 keeps that below the AP63203 limit.'},
+            'purpose':'Hot-plug into a source already at 20 V can ring toward twice the supply; D5 keeps that below the SY8301 limit.'},
         'bench_candidate_a':3,'bench_candidate_status':'staged test target only',
         'required_before_power_qualification':[
-            'Scope VBUS at U4 and D5 while hot-plugging into sources already at 20 V, with short and long cables. Confirm the peak stays below 32 V.',
+            'Scope VBUS at U4 and D5 while hot-plugging into sources already at 20 V, with short and long cables. Confirm the peak stays below 40 V.',
             'Measure connector, copper, plated holes and the actual pin-40/ground contacts at each fixed PDO, ambient and load step. Stop on excessive temperature.',
             'Measure plug-in inrush and PD voltage transitions with representative carrier capacitance; some sources may reset with large bulk capacitance.',
             'Confirm source shutdown on a pin-40 short at each PDO. The board has no current limit of its own.',
@@ -54,7 +54,7 @@ def qualification_screen(components=COMPONENTS):
             'Integrate native PD transport, calibrated ADC and watchdog. Portable policy tests do not establish flashable firmware readiness.',
         ],
         'sources':{'tvs':'https://www.ti.com/lit/ds/symlink/tvs2200.pdf',
-            'buck':'https://www.diodes.com/assets/Datasheets/AP63200-AP63201-AP63203-AP63205.pdf'}}
+            'buck':'https://www.lcsc.com/datasheet/lcsc_datasheet_2207131830_Silergy-Corp-SY8301ABC_C2927130.pdf'}}
 
 
 def report():

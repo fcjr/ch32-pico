@@ -1,7 +1,7 @@
 # Prototype order review
 
-The current batch scenario is five four-up panels, 20 boards. There are 26
-top-side fitted parts per board, 104 per panel and 18 exact part numbers.
+The current batch scenario is five four-up panels, 20 boards. There are 29
+top-side fitted parts per board, 116 per panel and 20 exact part numbers.
 The 93 x 71 mm panel preserves the 21 x 51 mm board outline, 40 header
 positions and castellations. There are no mounting holes.
 
@@ -37,12 +37,12 @@ JLC04101H-3313 quote before ordering.
 
 | Batch | Panels | Fitted parts per board | Partial parts + assembly per board | Partial batch |
 |---|---:|---:|---:|---:|
-| 20 boards | 5 | $3.1710 | $6.5696 | $131.39 |
-| 100 boards | 25 | $2.5784 | $3.4080 | $340.80 |
+| 20 boards | 5 | $2.3568 | $5.9195 | $118.39 |
+| 100 boards | 25 | $1.9186 | $2.7887 | $278.87 |
 
 Both use the 2026-10-19 exact fitted-part price snapshot and the published
 Standard PCBA fee assumptions. The partial totals include provisional attrition,
-setup, stencil, 18 feeders and modeled SMT joints. PCB fabrication, required
+setup, stencil, feeders for the Extended parts and modeled SMT joints. PCB fabrication, required
 inspection, USB/manual assembly, handling, fixtures, shipping and tax remain
 additional. These are planning scenarios, not quotes. The default batch is
 20 boards. MCU allocation and prototype qualification remain unresolved;

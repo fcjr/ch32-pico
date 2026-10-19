@@ -19,8 +19,8 @@ class JlcModelFrameTests(unittest.TestCase):
         self.assertAlmostEqual(dy, -1.345)
 
     def test_frame_clone_footprints_keep_kicad_angles(self):
-        # U4 (C780769) copies JLC's TSOT-26 frame: no delta, only normalization.
-        self.assertEqual(cpl_adjustment('C780769', -90), (270.0, 0.0, 0.0))
+        # U4 (C2927130) copies JLC's SOT-23-6 frame: no delta, only normalization.
+        self.assertEqual(cpl_adjustment('C2927130', -90), (270.0, 0.0, 0.0))
 
     def test_unknown_part_is_identity_with_normalized_rotation(self):
         self.assertEqual(cpl_adjustment('C2286', -90), (270.0, 0.0, 0.0))

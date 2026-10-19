@@ -9,7 +9,7 @@ from .design import MECHANICAL
 # paths remain wider. VBUS/VSYS current and drop still need release review.
 # High-current VBUS trunks are locked in the revision-specific critical_routes module; these
 # widths apply only to sense/control-supply branches added by the router.
-POWER_WIDTHS={'GND':.15,'3V3_OUT':.15,'VSYS':.25,'VBUS':.25,'VIN_SYS':.35}
+POWER_WIDTHS={'GND':.15,'3V3_OUT':.2,'VSYS':.4,'VBUS':.25,'VIN_SYS':.35}
 
 
 def configure(path):

@@ -277,7 +277,7 @@ The stack is JLC04101H-3313, nominal 1 mm, with 1 oz outer and 0.5 oz inner
 copper. In1.Cu is an unbroken ground reference; In2.Cu carries 3.3 V pours
 and signals. The 0.0994 mm front-to-ground
 spacing is retained. Fitted components are on F.Cu. The checked layout has
-115 vias and 1,219.454 mm of trace centerline, zero DRC violations and no
+121 vias and 1,179.451 mm of trace centerline, zero DRC violations and no
 unconnected nets. Critical copper, USB ground reference, pad/net parity and
 drill-to-paste checks pass.
 
@@ -286,11 +286,15 @@ connection from the adjacent VBUS contact. Its exposed pad has two local
 ground vias reached through at least 0.4 mm front copper within 2.5 mm.
 The 1.2 mm bottom trunk passes below the connector-region ground stitch and
 follows the right edge to pin 40; the 0.8 mm front feed crosses under the
-connector between its shell stakes. All 15 ground vias and the eight header
-ground pins reach one connected, refilled L2 polygon. Six tented stitching
-vias tie the back pour to the ground plane where no through-hole ground pins
-or decoupling returns exist. Vias remain outside paste; no filled or capped
-via process is introduced. No signal is routed on L2; the USB reference is
+connector between its shell stakes. A locked 0.6 mm trunk on the 3.3 V
+layer joins the regulator output to a via at the MCU's decoupling capacitor
+and to header pin 36, so the rail never depends on router-width taps between
+fragments of the shared pour; the pour itself is one polygon on this route.
+VSYS reaches D4 at 0.4 mm. All 27 ground vias and the eight header ground
+pins reach one connected, refilled L2 polygon. Eighteen tented stitching vias
+tie the back pour to the ground plane on a clearance-filtered grid, so no
+point of that pour is more than 6 mm from a ground via or pin. Vias remain
+outside paste; no filled or capped via process is introduced. No signal is routed on L2; the USB reference is
 covered at every audited sample. This is geometry, not an EMC qualification.
 Surge, thermal and continuous-current qualification still require assembled boards.
 

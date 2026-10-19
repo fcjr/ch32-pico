@@ -39,6 +39,13 @@ route('3V3_OUT',.25,pad('L1','2'),(15.6,15.8));VIAS.append(('3V3_OUT',15.6,15.8)
 route('3V3_OUT',.2,(5.6,13.5),(5.6,14.6),(15.6,14.6),(15.6,15.8),layer='B.Cu')
 route('VIN_SYS',.35,pad('D1','1'),(4.2,15.1),(4.4,15.4),(4.4,16.4),pad('C1','1'))
 route('VIN_SYS',.35,pad('D4','1'),(6.0,20.0),(5.21,19.2),pad('C1','1'))
+# A locked 3.3 V trunk on the supply layer joins the regulator output to the
+# MCU decoupling corner and header pin 36, so the rail never depends on
+# router-width taps between fragments of the shared pour.
+route('3V3_OUT',.6,(15.6,15.8),(15.6,17.6),(17.0,19.0),(17.5,19.5),(17.5,33.2),(5.02,33.2),(5.02,32.1),layer='In2.Cu')
+route('3V3_OUT',.6,(17.5,19.5),(17.5,12.0),(18.3,11.53),(19.39,11.53),layer='In2.Cu')
+VIAS.append(('3V3_OUT',5.02,32.1))
+route('3V3_OUT',.3,pad('C6','1'),(5.02,32.1))
 
 def main():
     source=ROOT/'build/ch32-pico-placed.kicad_pcb'

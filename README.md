@@ -1,93 +1,83 @@
 # ch32-pico
 
-A tiny RISC-V board with USB-C programming, 37 accessible GPIOs and hardware
-for programmable USB Power Delivery. Built by Left Shift Logical around the
-CH32X035, in a familiar 21 × 51 mm Pico-sized board.
+A tiny RISC-V dev board in the Pico's footprint, with USB-C, 37 GPIOs and
+USB Power Delivery you control from your own code. Built by Left Shift
+Logical around the WCH CH32X035.
 
-**Prototype layout complete.** The fitted parts estimate is about $3.21 per
-board at a quantity of 20. The 3.3 V regulator sits directly under the USB-C
-connector beside the header pins it serves, the MCU is centred on the GPIO
-rows, and RESET and BOOT share the bottom edge. The four-layer board has an
-unbroken ground plane, a one-piece 3.3 V pour with a locked 0.6 mm supply
-trunk, two independent VBUS feeds to pin 40 and 27 ground stitching vias,
-all with front-side assembly. PCB, assembly, attrition and shipping costs are
-additional. The renders below show the checked layout.
+![ch32-pico, front and back](docs/images/ch32-pico.png)
 
-![ch32-pico Rev A, front and back](docs/images/ch32-pico.png)
+## Why you might want one
 
-- Program through USB-C using the chip's factory USB bootloader. No separate
-  programmer is needed to load your application.
-- Put your USB-C supply to work. The integrated PD peripheral lets firmware
-  request 5, 9, 12, 15 or 20 V on pin 40, when offered by your supply.
-- Connect sensors, displays and controls through 26 header GPIOs, with UART,
-  I2C, SPI, PWM and three ADC inputs. Ten underside GPIO pads expose more
-  of the chip, including op-amp connections and two more ADC inputs. Bridge
-  SJ1 for PC7 and one-wire PIOC on pin 35.
-- Probe what the board is doing. Labeled contacts expose VBUS and its sense
-  voltage, CC1/CC2, LED control and USB data.
-- Fit a breadboard with headers, or solder the castellated edges straight
-  onto your own carrier. USB-C sits at the board edge for easy cable access.
-- Make it yours. The hardware is open, the project software is MIT-licensed,
-  and the Python design sources are included so you can generate revisions.
+- **Plug in and program.** The chip's factory USB bootloader loads your
+  application straight over USB-C. No programmer, no adapter.
+- **Ask your charger for more.** The CH32X035 speaks USB-PD natively. Your
+  firmware can request 5, 9, 12, 15 or 20 V from a PD supply, and that voltage
+  appears on pin 40 for whatever you're driving.
+- **Plenty of pins.** 26 GPIOs on the headers with UART, I2C, SPI, PWM and
+  three ADC inputs, plus ten more on pads underneath, including op-amp and two
+  extra ADC inputs.
+- **Fits where a Pico fits.** Same 21 × 51 mm outline, same 40 header
+  positions, castellated edges for soldering straight onto a carrier.
+- **See what it's doing.** Labelled probe pads for VBUS, the CC lines, USB data
+  and the LED, and a RESET and BOOT button on the bottom edge.
+- **Open.** MIT-licensed software, CERN-OHL-P hardware, and the whole design
+  is Python you can read and regenerate.
 
-**Pin 40 is USB VBUS, like the Pico's.** It is 5 V by default, and carries up to
-**20 V** once firmware negotiates a higher contract. Check your carrier tolerates
-every voltage your firmware may request. As on the Pico, there is no switch,
-current limit or reverse blocking on pin 40: the USB source's own protection
-handles shorts, and pin 40 must not be powered while USB is connected. A TVS
-clamp at the connector protects the board's regulator from hot-plug spikes.
+## Read this before you connect anything to pin 40
 
-The outline and 40 header positions match the Pico, with CH32-specific GPIO
-labels. Check the [pinout](docs/design.md#header-allocation) before connecting
-a Pico accessory. This board runs CH32 firmware. Pin 35, marked `PC7*`, is
-isolated by default; bridge the normally open `SJ1` pads to connect PC7.
-Pin 37, labeled `EN`, controls the 3.3 V regulator: ground it to disable, then
-release to enable. See the
-[shutdown notes](docs/design.md#shutdown-control) for driver requirements.
+Pin 40 is the USB VBUS rail, exactly as on the Pico. It's 5 V when you plug in,
+and it stays 5 V unless your firmware asks the supply for more. If it does, pin
+40 carries that higher voltage, up to 20 V, with nothing in between to stop it.
+So:
 
-**Rev A is a prototype in development.** The schematic and routed board pass
-DRC with zero violations and zero open connections, the power, USB-reference,
-ground-plane and silkscreen audits, and all 102 regression tests. USB-PD
-application firmware, USB serial and assembled-board testing, including
-shutdown and restart, are still ahead; the continuous output-current rating
-is not yet qualified. The hardware target is 3 A, with the board supply
-subtracted from the negotiated current. See
-[pin 40 power](docs/design.md#pin-40-is-usb-vbus).
+- Only request a voltage your carrier board can take.
+- Don't feed power into pin 40 while a USB cable is connected.
+- A short on pin 40 relies on your charger's protection, not the board's.
 
-Explore the [design and pinout](docs/design.md),
-[build the hardware files](docs/design.md#generated-files), or read the
-[parts and factory review](docs/factory-review.md) for manufacturing status
-and costs. The front and back renders above come from the checked KiCad board.
+Pin 39 (VSYS) is still a 4.3–5.5 V input and pin 36 is still a fixed 3.3 V
+output, so a plain 5 V Pico carrier works as long as your firmware leaves the
+PD voltage alone.
 
-## Build the JLCPCB fabrication files
+## A few pins are different from the Pico
 
-Install `uv`, `just` and KiCad 10 with `kicad-cli` on your PATH, then run:
+| Pin | On a Pico | Here |
+|---|---|---|
+| 35 | ADC_VREF | Not connected until you bridge solder jumper SJ1 on the back; then it's PC7 |
+| 37 | 3V3_EN | Pull low to switch the 3.3 V regulator off |
+| 40 | VBUS, 5 V | VBUS, 5 V or whatever PD voltage you negotiate |
+
+The GPIO labels on the back use the chip's own names (PA0, PB10, …), not Pico
+GP numbers. The full pinout and peripheral map are in the
+[design notes](docs/design.md#header-allocation).
+
+## Where things stand
+
+This is a prototype. The design passes every automated check we have, but no
+boards have been built yet, so the 3 A power target, the USB-PD application
+firmware and the thermal and surge behaviour are all unverified. Treat it as a
+board to build and test, not one to put in a product. Open items are tracked in
+the [qualification plan](docs/power-qualification.md).
+
+## Build your own
+
+With `uv`, `just` and KiCad 10 installed:
 
 ```sh
 just jlcpcb
 ```
 
-This checks the design and generates a four-board panel for a five-panel,
-20-device prototype batch. Python dependencies install from the committed
-locks. Upload these files together:
+That checks the design and produces the Gerbers, BOM and placement file for a
+JLCPCB order of twenty boards. See [build instructions](docs/build.md) and the
+[manufacturing notes](docs/manufacturing.md) for details and the parts that
+are hard to source right now.
 
-| File | JLCPCB upload |
-|---|---|
-| `build/jlcpcb/gerbers.zip` | PCB fabrication |
-| `build/jlcpcb/bom.csv` | Assembly BOM |
-| `build/jlcpcb/cpl.csv` | Assembly placement |
+## Learn more
 
-`build/jlcpcb/factory-notes.txt` contains the board and assembly requirements.
-`build/ch32-pico-jlcpcb.zip` bundles all files and review reports; extract it
-first, then upload the inner `gerbers.zip` to JLCPCB.
-
-Generated fabrication files live in the Git-ignored `build/` directory. The
-repo tracks the design, checked PCB, tool locks, renders and generation code.
-See [build instructions](docs/build.md) for KiCad Python setup and routing
-commands, and [manufacturing notes](docs/manufacturing.md) for the prototype's
-pending factory checks. The command does not submit an order.
+- [Design, pinout and limits](docs/design.md)
+- [Power qualification plan](docs/power-qualification.md)
+- [PD firmware policy](firmware/pd/README.md)
+- [Parts and factory review](docs/factory-review.md)
+- [Licensing](docs/licensing.md)
 
 Software: [MIT](LICENSES/MIT.txt). Hardware:
-[CERN-OHL-P-2.0](LICENSES/CERN-OHL-P-2.0.txt). Both allow commercial reuse.
-See [licensing](docs/licensing.md) for scope, third-party attribution and the
-WCH factory bootloader.
+[CERN-OHL-P-2.0](LICENSES/CERN-OHL-P-2.0.txt).

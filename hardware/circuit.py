@@ -56,7 +56,7 @@ COMPONENTS = (
     two('C3','C29277','3V3_OUT','GND','power','22uF / 10V'),
     two('C4','C307331','BUCK_BST','BUCK_SW','power','100nF / 50V'),
     # Native USB. CC pins have independent external Rd, even while MCU is blank.
-    Component('J2','C963411',{'A1B12':'GND','B1A12':'GND',**{str(i):'GND' for i in range(13,17)},'A4B9':'VBUS','B4A9':'VBUS','A5':'CC1','B5':'CC2','A6':'USB_DP','B6':'USB_DP','A7':'USB_DM','B7':'USB_DM','A8':None,'B8':None},'usb',note='G-Switch AW drawing 2023-02-01: 5 A VBUS; qualify cable and assembly fit'),
+    Component('J2','C2988369',{'A1B12':'GND','B1A12':'GND',**{str(i):'GND' for i in range(13,17)},'A4B9':'VBUS','B4A9':'VBUS','A5':'CC1','B5':'CC2','A6':'USB_DP','B6':'USB_DP','A7':'USB_DM','B7':'USB_DM','A8':None,'B8':None},'usb',note='G-Switch GT-USB-7010ASV: 3 A VBUS contacts, equal to the board target; the 5 A AN variant shares the copper; qualify cable and assembly fit'),
     two('R3','C25905','CC1','GND','usb','5.1k'),
     two('R4','C25905','CC2','GND','usb','5.1k'),
     Component('D2','C7519',{'1':'USB_DP','2':'GND','3':'USB_DM','4':'USB_DM','5':'3V3_OUT','6':'USB_DP'},'usb',note='ESD rail is 3.3 V, NEVER negotiated VBUS'),

@@ -8,8 +8,8 @@ checks establish nominal placement only; cable fit requires prototypes.
 import math
 from .sexp import children, one
 
-MPN = 'GT-USB-7010AW'
-DRAWING_URL = 'https://www.lcsc.com/datasheet/C963411.pdf'
+MPN = 'GT-USB-7010ASV'
+DRAWING_URL = 'https://www.lcsc.com/datasheet/lcsc_datasheet_2411221125_G-Switch-GT-USB-7010ASV_C2988369.pdf'
 MATED_GAP_REFERENCE = 1.85
 EDGE_ALLOWANCE = .20
 PLACEMENT_ALLOWANCE = .10
@@ -21,7 +21,7 @@ def usb_fit(doc):
                   for fp in children(doc, 'footprint')}
     fp = footprints['J2']
     props = {p[1]: p[2] for p in children(fp, 'property')}
-    expected = 'USB_C_Receptacle_G-Switch_GT-USB-7010AW'
+    expected = 'USB_C_Receptacle_G-Switch_GT-USB-7010'
     if props.get('Value') != MPN or not str(fp[1]).endswith(expected):
         raise ValueError('USB mechanical model requires the reviewed G-Switch part')
     at = one(fp, 'at')
@@ -52,7 +52,7 @@ def usb_fit(doc):
             raise ValueError('USB shell overlaps a Pico mounting hole')
         holes.append({'center_mm': [hx, hy], 'nominal_shell_clearance_mm': round(clearance, 4),
                       'head_diameter_at_shell_contact_mm': round(2*distance, 4)})
-    return {'part': MPN, 'lcsc': 'C963411', 'drawing': DRAWING_URL,
+    return {'part': MPN, 'lcsc': 'C2988369', 'drawing': DRAWING_URL,
             'mouth_recess_mm': round(front, 4), 'minimum_mated_gap_mm': None,
             'reference_mated_gap_mm': MATED_GAP_REFERENCE,
             'nominal_cable_margin_mm': MATED_GAP_REFERENCE-front,

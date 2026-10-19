@@ -7140,7 +7140,7 @@
 		)
 		(embedded_fonts no)
 	)
-	(footprint "ch32-pico:USB_C_Receptacle_G-Switch_GT-USB-7010AW"
+	(footprint "ch32-pico:USB_C_Receptacle_G-Switch_GT-USB-7010"
 		(layer "F.Cu")
 		(uuid "dd2e05fd-29cc-5b1e-a5f8-a4372dea3ca2")
 		(at 10.5 3.375 180)
@@ -7158,7 +7158,7 @@
 				)
 			)
 		)
-		(property "Value" "GT-USB-7010AW"
+		(property "Value" "GT-USB-7010ASV"
 			(at 0 5 180)
 			(layer "F.Fab")
 			(hide yes)
@@ -7196,7 +7196,7 @@
 				)
 			)
 		)
-		(property "LCSC Part" "C963411"
+		(property "LCSC Part" "C2988369"
 			(at 0 5 180)
 			(layer "F.Fab")
 			(hide yes)

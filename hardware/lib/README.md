@@ -19,10 +19,11 @@ value labels.
   on the KiCad LQFP-48 7 × 7 mm land pattern. USBLC6-2SC6, C7519, uses the
   KiCad SOT-23-6 pattern. `scripts/prepare_footprints.py` vendors those
   patterns and moves imported legends to fabrication layers.
-- GT-USB-7010AW USB-C receptacle, C963411. Its footprint follows the
-  manufacturer drawing. The AW drawing specifies 5 A on VBUS. Its SMT row
-  has a 50 µm tailward adjustment within the manufacturer's land-pattern
-  tolerance to clear the locating holes. The socket mouth sits 0.30 mm beyond
+- GT-USB-7010ASV USB-C receptacle, C2988369, rated 3 A on VBUS. The
+  `USB_C_Receptacle_G-Switch_GT-USB-7010` land pattern follows the ASV
+  drawing; its SMT row has a 50 µm tailward adjustment within the
+  manufacturer's tolerance to clear the locating holes, and the 5 A AN and
+  AW variants (C963370, C963411) fit it too. The socket mouth sits 0.30 mm beyond
   the short board edge; there are no Pico mounting holes.
 - TVS2200DRVR, C523793, WSON-6 with exposed ground pad. Imported with
   easyeda2kicad; model removed, legends moved to F.Fab and courtyard expanded

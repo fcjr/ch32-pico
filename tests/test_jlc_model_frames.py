@@ -13,10 +13,10 @@ class JlcModelFrameTests(unittest.TestCase):
         self.assertEqual(cpl_adjustment('C7519', 90), (0.0, 0.0, 0.0))
 
     def test_usb_connector_anchor_shift(self):
-        rotation, dx, dy = cpl_adjustment('C963411', 180)
+        rotation, dx, dy = cpl_adjustment('C2988369', 180)
         self.assertEqual(rotation, 180.0)
         self.assertAlmostEqual(dx, 0.0)
-        self.assertAlmostEqual(dy, -1.345)
+        self.assertAlmostEqual(dy, -1.315)
 
     def test_frame_clone_footprints_keep_kicad_angles(self):
         # U4 (C2927130) copies JLC's SOT-23-6 frame: no delta, only normalization.

@@ -37,8 +37,8 @@ JLC04101H-3313 quote before ordering.
 
 | Batch | Panels | Fitted parts per board | Partial parts + assembly per board | Partial batch |
 |---|---:|---:|---:|---:|
-| 20 boards | 5 | $2.3020 | $5.8605 | $117.21 |
-| 100 boards | 25 | $1.8728 | $2.7422 | $274.22 |
+| 20 boards | 5 | $2.1450 | $5.7123 | $114.25 |
+| 100 boards | 25 | $1.7486 | $2.6195 | $261.95 |
 
 Both use the 2026-10-19 exact fitted-part price snapshot and the published
 Standard PCBA fee assumptions. The partial totals include provisional attrition,

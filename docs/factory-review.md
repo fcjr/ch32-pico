@@ -1,6 +1,6 @@
 # Parts and factory review
 
-The board has 29 fitted parts, 20 part numbers and a $2.30 parts-only
+The board has 29 fitted parts, 20 part numbers and a $2.15 parts-only
 estimate at 20 boards. Pin 40 is direct USB VBUS. The
 [pre-order review](preorder-review.md) contains the 2026-10-19 stock table and
 cost assumptions. Every part shows stock for the batch; none is reserved.
@@ -56,7 +56,8 @@ parts, and inspect the hidden pad joint by X-ray.
 
 The orientation guide identifies U1/U4/D2/D5 pin 1, D1/D4 cathodes at pin 1,
 D3 cathode at pin 2, reset/boot contacts and USB mouth direction. The USB part
-must remain GT-USB-7010AW, with its four plated shell stakes and two locating
+must remain GT-USB-7010ASV (or the 5 A AN variant on the same land pattern),
+with its four plated shell stakes and two locating
 holes. JLC must confirm insertion, shell soldering, reflow compatibility and
 any pallet. The corner tab clears the nominal socket, but manufacturing and
 placement tolerances still require review. Unused header holes must stay open.
@@ -67,7 +68,7 @@ and [Standard PCBA fiducial guidance](https://jlcpcb.com/help/article/how-to-add
 
 ## Costs
 
-The dated planning scenario is $117.21 for the 20-board batch ($5.86 per
+The dated planning scenario is $114.25 for the 20-board batch ($5.71 per
 board), including provisional component attrition and modeled assembly costs
 but excluding PCB fabrication and other quoted services, shipping and tax. See
 [order review](order-review.md). The

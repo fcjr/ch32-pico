@@ -12,7 +12,7 @@ footprints drawn in KiCad's standard conventions or anchored differently:
   delta.
 - C7519 (D2, SOT-23-6): the same top-left versus bottom-left delta against
   SOT-23-6_L2.9-W1.6-P0.95-LS2.8-BL.
-- C963411 (J2, USB-C): JLC's model origin sits 1.345 mm closer to the
+- C2988369 (J2, USB-C): JLC's model origin sits 1.315 mm closer to the
   signal-pad row than our body-center anchor (their pads at local
   -2.37 mm, ours at -3.715 mm), along the footprint's local Y axis.
 
@@ -26,7 +26,8 @@ import math
 FRAME_DELTAS = {
     'C29779902': (-90.0, (0.0, 0.0)),
     'C7519': (-90.0, (0.0, 0.0)),
-    'C963411': (0.0, (0.0, -1.345)),
+    'C2988369': (0.0, (0.0, -1.315)),
+    'C963370': (0.0, (0.0, -1.345)),
 }
 
 

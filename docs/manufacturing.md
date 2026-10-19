@@ -17,7 +17,7 @@ Five panels contain four devices each, for twenty devices total.
 | `hardware/review/ch32-pico.kicad_pcb` | Checked single-board KiCad source |
 | `build/panel-preview/ch32-pico-panel.kicad_pcb` | Generated four-copy KiKit panel |
 
-The fitted BOM estimate is $2.302 per device at twenty devices, before
+The fitted BOM estimate is $2.145 per device at twenty devices, before
 attrition, purchase minimums, PCB fabrication, assembly, shipping and tax.
 The latest dated breakdown and stock shortages are in [order review](order-review.md).
 No order has been submitted and no parts are reserved.

@@ -51,7 +51,9 @@ D5 is TVS2200DRVR C523793, with IN pins 4-6 and exposed-pad ground.
 Review a 0.125 mm stencil and the actual stencil for D5, 0402 passives and
 USB-C together.
 Include hidden-joint X-ray inspection. No filled/capped via-in-pad is specified.
-J2 is GT-USB-7010AW, not the similar ASV model. It has SMT contacts, four plated
+J2 is G-Switch GT-USB-7010ASV (C2988369), rated 3 A. GT-USB-7010AN (C963370,
+5 A) is the only approved substitute; both use this land pattern. It has SMT
+contacts, four plated
 shell stakes and two unplated locating holes. Confirm insertion, shell soldering,
 reflow limits and any separate manual-assembly or fixture charge.
 Keep unpopulated header/castellated holes open during shell soldering.

@@ -85,15 +85,6 @@
       "rotate_z": 0,
       "offset_y": 0
     },
-    "USB_C_Receptacle_G-Switch_GT-USB-7010AW": {
-      "lcsc": "C963411",
-      "source": "https://www.lcsc.com/product-detail/C963411.html",
-      "file": "USB-SMD_GT-USB-7010AN.wrl",
-      "sha256": "39c70c5da93096d45abff1f4a0f1d6da5e22ee3965e2f57e908e18c176c8fcf6",
-      "rotate_z": 0,
-      "offset_y": 1.295,
-      "note": "Supplier returns a shared AN-family model for AW. Stake and peg Y origin aligned by 1.295 mm; illustration only, exact AW drawing controls manufacture."
-    },
     "WSON-6_L2.0-W2.0-P0.65-BL-EP": {
       "lcsc": "C523793",
       "source": "https://www.lcsc.com/product-detail/C523793.html",
@@ -110,6 +101,15 @@
       "sha256": "3da95a191588d286e5c8ef4e2d1f8ea807bca93fb0b1a235252b68e1511ec5cb",
       "rotate_z": 0,
       "offset_y": 0
+    },
+    "USB_C_Receptacle_G-Switch_GT-USB-7010": {
+      "lcsc": "C2988369",
+      "source": "https://www.lcsc.com/product-detail/C2988369.html",
+      "file": "USB-C-SMD_G-SWITCH_GT-USB-7010ASV.wrl",
+      "sha256": "84fb7576c0f553689df975d18a43c2cc8fe67c814771bcc66b37752f2a2fc202",
+      "rotate_z": 0,
+      "offset_y": 1.315,
+      "note": "GT-USB-7010ASV model; its origin sits at the EasyEDA pad row 1.315 mm from our body-centre anchor. Illustration only; the drawing controls manufacture."
     }
   },
   "board_revision": "E"

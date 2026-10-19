@@ -10,10 +10,10 @@ from hardware.sexp import parse, children, one
 class CableClearance(unittest.TestCase):
     def fixture(self):
         doc=parse(board(footprint()))
-        usb=parse(Path('hardware/lib/ch32-pico.pretty/USB_C_Receptacle_G-Switch_GT-USB-7010AW.kicad_mod').read_text())
+        usb=parse(Path('hardware/lib/ch32-pico.pretty/USB_C_Receptacle_G-Switch_GT-USB-7010.kicad_mod').read_text())
         for prop in children(usb,'property'):
             if prop[1]=='Reference':prop[2]='J2'
-            if prop[1]=='Value':prop[2]='GT-USB-7010AW'
+            if prop[1]=='Value':prop[2]='GT-USB-7010ASV'
         usb.append(parse('(at 10.5 3.375 180)'))
         doc.append(usb)
         return doc,usb

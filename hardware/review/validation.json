@@ -1,6 +1,6 @@
 {
   "status": "routing checked; not released for ordering",
-  "saved_at": "2026-10-19T01:49:55.609647+00:00",
+  "saved_at": "2026-10-19T01:54:27.783487+00:00",
   "engine": "freerouting",
   "selection": "passing DRC/connectivity, then minimum vias and trace length",
   "checks": {
@@ -897,7 +897,7 @@
     },
     "passes_connectivity_and_drc": true
   },
-  "board_sha256": "669a2a9b31d92184186a2f91cd57189836f199b4530d7a241abc7ff23b4224c6",
+  "board_sha256": "46e10bd0db5a0370f130badabdc7543831a8e7f08b7b338c71a129a4bad039d2",
   "comparison": {
     "status": "passed",
     "candidates": {
@@ -1798,9 +1798,9 @@
     }
   },
   "usb_mechanical_fit": {
-    "part": "GT-USB-7010AW",
-    "lcsc": "C963411",
-    "drawing": "https://www.lcsc.com/datasheet/C963411.pdf",
+    "part": "GT-USB-7010ASV",
+    "lcsc": "C2988369",
+    "drawing": "https://www.lcsc.com/datasheet/lcsc_datasheet_2411221125_G-Switch-GT-USB-7010ASV_C2988369.pdf",
     "mouth_recess_mm": -0.3,
     "minimum_mated_gap_mm": null,
     "reference_mated_gap_mm": 1.85,

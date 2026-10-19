@@ -1,6 +1,6 @@
 {
   "status": "routing checked; not released for ordering",
-  "saved_at": "2026-10-19T00:21:45.226745+00:00",
+  "saved_at": "2026-10-19T01:08:51.220749+00:00",
   "engine": "power-corrected",
   "selection": "passing DRC/connectivity, then minimum vias and trace length",
   "checks": {
@@ -11,16 +11,16 @@
     "violation_types": {},
     "stackup_matches_source": true,
     "outside_outline_copper": [],
-    "via_count": 121,
-    "trace_length_mm": 1179.451,
-    "trace_via_geometry_sha256": "c68e7bf71f826d35217bd4288e296dea96b4ec4f44f59be89c6fffce236d906b",
+    "via_count": 128,
+    "trace_length_mm": 1222.322,
+    "trace_via_geometry_sha256": "718d56ec66365750db30342ef93befbdeb262b095edcc5768bdfe5670b79ffc1",
     "via_in_paste": [],
     "changed_critical_segments": [],
     "changed_critical_vias": [],
     "foreign_tracks_on_ground_layer": 0,
     "ground_plane": {
       "signal_crossovers": [],
-      "ground_via_count": 27,
+      "ground_via_count": 26,
       "all_ground_vias_on_one_fill_polygon": true,
       "passes": true,
       "limitations": "Geometry only; USB reference is checked separately; EMC requires hardware"
@@ -844,7 +844,7 @@
       ],
       "jumper": {
         "ref": "SJ1",
-        "side": "back",
+        "side": "front",
         "default": "open",
         "header_pin": 35,
         "optional_gpio": "PC7"
@@ -896,7 +896,7 @@
     },
     "passes_connectivity_and_drc": true
   },
-  "board_sha256": "b74c6657ff6d35184be2396bfaa80a26203f8998c69bbfba91b9719b6b5424f6",
+  "board_sha256": "1948c16958cb055009114b6a8a5869062fea652cde23d0adbf2092c5c47a87dc",
   "comparison": {
     "status": "four-layer direct-VBUS layout; geometry checked, physical qualification and order release remain open",
     "candidates": {
@@ -908,16 +908,16 @@
         "violation_types": {},
         "stackup_matches_source": true,
         "outside_outline_copper": [],
-        "via_count": 121,
-        "trace_length_mm": 1179.451,
-        "trace_via_geometry_sha256": "c68e7bf71f826d35217bd4288e296dea96b4ec4f44f59be89c6fffce236d906b",
+        "via_count": 128,
+        "trace_length_mm": 1222.322,
+        "trace_via_geometry_sha256": "718d56ec66365750db30342ef93befbdeb262b095edcc5768bdfe5670b79ffc1",
         "via_in_paste": [],
         "changed_critical_segments": [],
         "changed_critical_vias": [],
         "foreign_tracks_on_ground_layer": 0,
         "ground_plane": {
           "signal_crossovers": [],
-          "ground_via_count": 27,
+          "ground_via_count": 26,
           "all_ground_vias_on_one_fill_polygon": true,
           "passes": true,
           "limitations": "Geometry only; USB reference is checked separately; EMC requires hardware"
@@ -1741,7 +1741,7 @@
           ],
           "jumper": {
             "ref": "SJ1",
-            "side": "back",
+            "side": "front",
             "default": "open",
             "header_pin": 35,
             "optional_gpio": "PC7"

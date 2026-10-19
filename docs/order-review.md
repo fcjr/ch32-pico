@@ -10,8 +10,8 @@ Enter one design and five supplied panels with four copies each. Do not request
 another four-way panelization.
 
 The [pre-order review](preorder-review.md) contains the latest exact-part stock
-snapshot and parts-cost scenario. The exact CH32 is short of the 20-board need.
-No stock is reserved.
+snapshot and parts-cost scenario. Every part shows stock for the batch; none
+is reserved.
 
 `just jlcpcb` checks the saved layout and creates matching panel Gerbers,
 BOM, CPL, orientation guide and hash manifest. Extract the outer ZIP and use its
@@ -37,10 +37,10 @@ JLC04101H-3313 quote before ordering.
 
 | Batch | Panels | Fitted parts per board | Partial parts + assembly per board | Partial batch |
 |---|---:|---:|---:|---:|
-| 20 boards | 5 | $3.2146 | $6.5849 | $131.70 |
-| 100 boards | 25 | $2.5983 | $3.4234 | $342.34 |
+| 20 boards | 5 | $3.1710 | $6.5696 | $131.39 |
+| 100 boards | 25 | $2.5784 | $3.4080 | $340.80 |
 
-Both use the Oct 14 exact fitted-part price snapshot and the published
+Both use the 2026-10-19 exact fitted-part price snapshot and the published
 Standard PCBA fee assumptions. The partial totals include provisional attrition,
 setup, stencil, 18 feeders and modeled SMT joints. PCB fabrication, required
 inspection, USB/manual assembly, handling, fixtures, shipping and tax remain

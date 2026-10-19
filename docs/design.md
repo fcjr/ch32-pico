@@ -6,7 +6,7 @@ USB-C, RESET and BOOT sit together at the bottom, and the back carries LEFT
 SHIFT LOGICAL branding. All 26 fitted parts are on the front. The board has
 four copper layers and exposes 37 GPIOs.
 
-The dated parts-only estimate is $3.21 per device for 20 devices. This
+The dated parts-only estimate is $3.17 per device for 20 devices. This
 excludes fabrication, assembly setup/feeders, attrition, minimum purchases,
 shipping and tax. The saved layout has zero DRC violations and zero
 unconnected nets, and all regression tests pass. Matching panel and
@@ -21,7 +21,8 @@ sense divider occupy the band directly below, next to header pins 36, 37 and
 39 that they serve. The MCU is centred on the GPIO rows at y = 28 mm with its
 decoupling at the supply corner, so the two header columns and the USB pair
 reach it with similar lengths. RESET, BOOT and the SDI pads line the bottom
-edge. The back carries the GPIO expansion pads, probe pads and SJ1.
+edge, with the SJ1 solder jumper beside the right header row just below the
+MCU. The back carries the GPIO expansion and probe pads.
 
 ## Pin 40 is USB VBUS
 
@@ -62,8 +63,8 @@ See [qualification](power-qualification.md).
 ## Pin 35 and SJ1
 
 Pin 35 is marked `PC7*`. The asterisk means that the normally open `SJ1` jumper
-must be bridged with solder to connect PC7. SJ1 is on the back near the upper
-middle of the board. Its two exposed pads have a 0.30 mm copper gap and no
+must be bridged with solder to connect PC7. SJ1 is on the front, beside the
+right header row just below the MCU. Its two exposed pads have a 0.30 mm copper gap and no
 paste apertures. The factory must leave it open.
 
 With SJ1 open, header pin 35 connects only to one side of the jumper and is
@@ -277,7 +278,7 @@ The stack is JLC04101H-3313, nominal 1 mm, with 1 oz outer and 0.5 oz inner
 copper. In1.Cu is an unbroken ground reference; In2.Cu carries 3.3 V pours
 and signals. The 0.0994 mm front-to-ground
 spacing is retained. Fitted components are on F.Cu. The checked layout has
-121 vias and 1,179.451 mm of trace centerline, zero DRC violations and no
+128 vias and 1,222.322 mm of trace centerline, zero DRC violations and no
 unconnected nets. Critical copper, USB ground reference, pad/net parity and
 drill-to-paste checks pass.
 
@@ -290,10 +291,10 @@ connector between its shell stakes. A locked 0.6 mm trunk on the 3.3 V
 layer joins the regulator output to a via at the MCU's decoupling capacitor
 and to header pin 36, so the rail never depends on router-width taps between
 fragments of the shared pour; the pour itself is one polygon on this route.
-VSYS reaches D4 at 0.4 mm. All 27 ground vias and the eight header ground
-pins reach one connected, refilled L2 polygon. Eighteen tented stitching vias
+VSYS reaches D4 at 0.4 mm. All 26 ground vias and the eight header ground
+pins reach one connected, refilled L2 polygon. Sixteen tented stitching vias
 tie the back pour to the ground plane on a clearance-filtered grid, so no
-point of that pour is more than 6 mm from a ground via or pin. Vias remain
+point of that pour is more than 8 mm from a ground via or pin. Vias remain
 outside paste; no filled or capped via process is introduced. No signal is routed on L2; the USB reference is
 covered at every audited sample. This is geometry, not an EMC qualification.
 Surge, thermal and continuous-current qualification still require assembled boards.

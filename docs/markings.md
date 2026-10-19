@@ -8,7 +8,7 @@ coordinates so it reads normally when the board is turned over.
 
 Pin 30 reads `RST`, pin 35 reads `PC7*`, pin 37 reads `EN`, and pin 40 reads `VBUS`.
 The asterisk identifies the optional connection through the normally open
-`SJ1` jumper, also labeled on the back. TP7 reads `PB4`, a free GPIO.
+`SJ1` jumper, labeled on the front beside it. TP7 reads `PB4`, a free GPIO.
 Labels `PA3`, `VBUS`, `GND`, `VSNS`, `PB1`, `CC1`, `CC2`, `PB2` and `PB3`
 identify the nine underside contacts; PA3, PB1 and PB2 are free GPIOs. `D+` and `D-` identify
 the two inline USB probe contacts on the front. Their pad-to-net assignments
@@ -30,6 +30,7 @@ side. The five original front service-pad labels sit below their respective pads
 | RESET | SW1 | Left button; shorts PA21 to ground |
 | BOOT | SW2 | Right button; pulls USB D+ high through 4.7 kΩ for factory ISP entry |
 | LED | D3 | PB3 application LED through R11 |
+| SJ1 | SJ1 | Normally open solder jumper; bridge to connect header 35 to PC7 |
 
 There is one MCU and no onboard programmer. SDIO/SDCK use the X035 two-wire
 debug interface.

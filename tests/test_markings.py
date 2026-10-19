@@ -83,7 +83,7 @@ class MarkingAudit(unittest.TestCase):
     def test_jumper_cannot_receive_factory_paste(self):
         fp=next(fp for fp in children(self.doc,'footprint')
                 if any(p[1:3]==['Reference','SJ1'] for p in children(fp,'property')))
-        one(children(fp,'pad')[0],'layers').append('B.Paste')
+        one(children(fp,'pad')[0],'layers').append('F.Paste')
         with self.assertRaisesRegex(ValueError,'no paste'):audit(self.doc)
 
     def test_top_header_leader_cannot_be_lost(self):

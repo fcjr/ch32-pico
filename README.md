@@ -42,7 +42,7 @@ PD voltage alone.
 
 | Pin | On a Pico | Here |
 |---|---|---|
-| 35 | ADC_VREF | Not connected until you bridge solder jumper SJ1 on the back; then it's PC7 |
+| 35 | ADC_VREF | Not connected until you bridge solder jumper SJ1 (front, below the chip); then it's PC7 |
 | 37 | 3V3_EN | Pull low to switch the 3.3 V regulator off |
 | 40 | VBUS, 5 V | VBUS, 5 V or whatever PD voltage you negotiate |
 

@@ -57,8 +57,8 @@ Keep unpopulated header/castellated holes open during shell soldering.
 
 MCU SOURCING
 20 CH32X035C8T6 / C29779902 devices are fitted, plus actual factory attrition.
-The current JLC public snapshot reports two units. No stock is reserved.
-Please provide exact-part replenishment quantity, price and lead time.
+The 2026-10-19 JLC public snapshot reports 1,082 units. No stock is reserved.
+Please confirm the exact-part allocation, price and lead time.
 Require silicon supporting hardware I2C and ADC3/ADC7. WCH datasheet v1.7,
 table 2-1 note 3, excludes these functions on specified early lots. Obtain
 lot identification and supplier confirmation; do not assume any stock is new.
@@ -81,8 +81,7 @@ Diagnostic contacts TP14-TP24 are bare copper, with NO paste or parts.
 Keep SJ1 open. TP23/TP24 are narrow inline USB contacts on the front.
 TP15 VBUS is a 5-20 V measurement pad, not a load-current output.
 Ground stitches are tented ordinary 0.45/0.20 mm vias.
-RESET SW1 and BOOT SW2 use C720478, XUNPU TS-1088-AR02516, throughout all
-panel copies. Button height is 2.5 mm. The two-pad footprint and CPL rotation
-are intentional. These are nonpolarized momentary switches. Do not substitute
-another switch without review. Confirm C720478 allocation and any
-Extended-part charges in this order.
+RESET SW1 and BOOT SW2 use C720477, XUNPU TS-1088-AR02016 (Basic),
+throughout all panel copies. Button height is 2.0 mm. The two-pad footprint
+and CPL rotation are intentional. These are nonpolarized momentary switches.
+C720478 (2.5 mm) is the only approved substitute; it uses the same copper.

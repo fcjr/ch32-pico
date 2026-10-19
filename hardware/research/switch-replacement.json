@@ -1,7 +1,7 @@
 {
   "observed_utc": "2026-10-13T23:55:02.588058+00:00",
-  "selected": "C720478",
-  "replaces": "C720477",
+  "selected": "C720477",
+  "replaces": "C720478",
   "references": [
     "SW1",
     "SW2"
@@ -151,5 +151,7 @@
     "assessment": "Existing copper accepts replacement terminal envelope; no reroute or CPL rotation change. Supplier landing pattern is reference data, not an exact match to retained pads.",
     "track_via_fingerprint_unchanged": "cbc548f97c5daf206992f2fb4b1a588ba31e33ea27cd966614bda6097d841a23"
   },
-  "assembly": "Extended part; order-specific allocation, feeder charges and placement review remain unconfirmed."
+  "assembly": "Extended part; order-specific allocation, feeder charges and placement review remain unconfirmed.",
+  "reselected_utc": "2026-10-18",
+  "reselection_reason": "C720478 showed no stock on the JLC order page; C720477 is Basic with 623,880 reported units and the same land pattern (2.0 mm height)."
 }

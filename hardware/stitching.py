@@ -1,14 +1,14 @@
 # SPDX-License-Identifier: MIT
 """GND stitching: ordinary tented through vias, outside paste.
 
-One via joins the connector-region back pour to L2; 17 more tie the back
+One via joins the connector-region back pour to L2; 15 more tie the back
 pour to the ground plane on a clearance-filtered grid, including through the
 3.3 V inner pour where it is wide. There is no board-wide fence.
 """
 from .sexp import parse
 from .schematic import uid
 
-VIAS=((14.5,7.55),(5.0,45.5),(5.5,41.0),(6.5,12.0),(6.5,18.5),(6.5,50.0),(9.5,21.5),(10.5,4.5),(10.5,46.0),(10.5,50.0),(11.0,40.0),(12.5,16.5),(14.5,21.5),(14.5,42.0),(14.5,46.0),(14.5,50.0),(15.0,38.0),(17.5,10.0))
+VIAS=((14.5,7.55),(3.0,1.5),(4.5,50.0),(6.0,12.5),(6.0,42.5),(10.0,39.5),(10.5,4.5),(10.5,12.0),(10.5,50.0),(13.5,37.5),(14.0,21.5),(14.0,41.5),(14.5,46.0),(14.5,50.0),(17.5,10.0),(17.5,36.5))
 ROUTES=()
 
 

@@ -98,7 +98,7 @@ def apply(doc):
     for d in DIAGNOSTICS:
         doc.append(text(d.label,*d.text_position,d.side+'.SilkS',d.ref,size=.8))
     x,y,*_ = PLACEMENT['SJ1']
-    doc.append(text('SJ1',x,y-1.45,'B.SilkS','SJ1'))
+    doc.append(text('SJ1',x,y-1.45,'F.SilkS','SJ1'))
 
 
 def update(path):
@@ -120,8 +120,8 @@ def audit(doc):
     back = [n for n in texts if one(n,'layer')[1]=='B.SilkS']
     from .branding import artwork
     brand_count=sum(n[0]=='gr_text' and one(n,'layer')[1]=='B.SilkS' for n in artwork())
-    if len(back)!=41+brand_count+len(EXPANSIONS)+sum(d.side=='B' for d in DIAGNOSTICS):
-        raise ValueError('Back must contain 40 header, 8 expansion, diagnostic, jumper and current branding labels; services belong on front')
+    if len(back)!=40+brand_count+len(EXPANSIONS)+sum(d.side=='B' for d in DIAGNOSTICS):
+        raise ValueError('Back must contain 40 header, 8 expansion, diagnostic and current branding labels; services belong on front')
     for n in front+back:
         effects=one(n,'effects'); font=one(effects,'font')
         mirrored=any('mirror' in j[1:] for j in children(effects,'justify'))
@@ -133,7 +133,7 @@ def audit(doc):
         # Header and probe legends share 0.8 mm type / 0.15 mm strokes.
         if min(map(float,one(font,'size')[1:]))<minimum or float(one(font,'thickness')[1])<.15:
             raise ValueError(f'Undersized marking: {n[1]}')
-    allowed={s[1] for s in SERVICES}|{'ch32-pico','LEFT SHIFT','LOGICAL',f'REV {BOARD_REVISION}', 'VBUS 5-20V'}
+    allowed={s[1] for s in SERVICES}|{'ch32-pico','LEFT SHIFT','LOGICAL',f'REV {BOARD_REVISION}', 'VBUS 5-20V','SJ1'}
     allowed |= {d.label for d in DIAGNOSTICS if d.side=='F'}
     if any(n[1] not in allowed for n in front):raise ValueError('Unknown front legend')
     header=[]
@@ -242,15 +242,15 @@ def audit(doc):
         diagnostic.append({'ref':d.ref,'label':d.label,'net':d.net,'side':d.side,
                            'pad_xy_mm':list(d.position),'text_xy_mm':list(d.text_position)})
     sj=fps['SJ1'];x,y,*_=map(float,one(sj,'at')[1:])
-    labels=[n for n in back if n[1]=='SJ1' and
+    labels=[n for n in front if n[1]=='SJ1' and
             math.dist(tuple(map(float,one(n,'at')[1:3])),(x,y-1.45))<.01]
-    if len(labels)!=1 or one(sj,'layer')[1]!='B.Cu':
-        raise ValueError('SJ1 label must identify the back-side solder jumper')
+    if len(labels)!=1 or one(sj,'layer')[1]!='F.Cu':
+        raise ValueError('SJ1 label must identify the front-side solder jumper')
     for number,net in (('1','GPIO35'),('2','PC7')):
         pad=next(p for p in children(sj,'pad') if p[1]==number)
-        if one(pad,'net')[-1]!=net or set(one(pad,'layers')[1:])!={'B.Cu','B.Mask'}:
+        if one(pad,'net')[-1]!=net or set(one(pad,'layers')[1:])!={'F.Cu','F.Mask'}:
             raise ValueError('SJ1 must expose separate header/PC7 pads with no paste')
     return {'header_labels':header,'service_labels':service,'expansion_labels':expansion,'header_count':len(header),'diagnostic_labels':diagnostic,
-            'jumper':{'ref':'SJ1','side':'back','default':'open','header_pin':35,'optional_gpio':'PC7'},
+            'jumper':{'ref':'SJ1','side':'front','default':'open','header_pin':35,'optional_gpio':'PC7'},
             'front_service_count':len(service),'all_markings_verified':True,
             'coordinate_convention':'PCB coordinates, X right/Y down in front view; back text mirrored'}

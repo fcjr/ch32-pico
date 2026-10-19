@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: MIT
 """Power beside USB-C and its header pins, MCU centred on the GPIO rows,
 paired controls at the bottom; front fitted assembly."""
-PLACEMENT = {'SJ1': (11.5, 22.0, 0),
+PLACEMENT = {'SJ1': (16.8, 35.0, 0),
  'J1': (0, 0, 0),
  'J2': (10.5, 3.375, 180),
  'U1': (10.5, 28, 90),
@@ -43,7 +43,7 @@ PLACEMENT = {'SJ1': (11.5, 22.0, 0),
  'TP13': (13, 44),
  'D5': (4.15, 9.0, 0)}
 
-BACK_REFS = {f'TP{i}' for i in range(6,14)} | {'SJ1'}
+BACK_REFS = {f'TP{i}' for i in range(6,14)}
 from .diagnostics import DIAGNOSTICS
 PLACEMENT.update({d.ref:d.position for d in DIAGNOSTICS})
 BACK_REFS.update(d.ref for d in DIAGNOSTICS if d.side=='B')

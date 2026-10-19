@@ -1,9 +1,9 @@
 # Parts and factory review
 
-The board has 26 fitted parts, 18 part numbers and a $3.21 parts-only
+The board has 26 fitted parts, 18 part numbers and a $3.17 parts-only
 estimate at 20 boards. Pin 40 is direct USB VBUS. The
-[pre-order review](preorder-review.md) contains the 2026-10-14 stock table and
-cost assumptions. The MCU has only two reported units; no parts are reserved.
+[pre-order review](preorder-review.md) contains the 2026-10-19 stock table and
+cost assumptions. Every part shows stock for the batch; none is reserved.
 See the [design notes](design.md) for the power circuit, placement and
 qualification limits, and [factory notes](factory-notes.txt) for the
 manufacturing instructions. The routed board and generated panel pass checks;
@@ -17,22 +17,22 @@ catalogue. There are 26 fitted parts per device and 19 BOM rows, because
 one part number appears under two circuit descriptions. The batch has 520
 placements.
 
-Seventeen C-numbers have enough reported stock for the provisional attrition
-scenario. **C29779902 / CH32X035C8T6 has only two pieces, leaving 18 short.**
-The [LCSC page](https://www.lcsc.com/product-detail/C29779902.html) independently
-shows two pieces too. No alternative supplier offer or replenishment date was
-shown. Neither observation reserves stock or proves JLC allocation.
+All 18 C-numbers have enough reported stock for the provisional attrition
+scenario. C29779902 / CH32X035C8T6 reports 1,082 pieces on 2026-10-19, up
+from two in the previous snapshot; a catalogue observation does not reserve
+stock or prove JLC allocation, so confirm it in the order.
 
-Use JLC sourcing for the exact MPN and package, or wait for replenishment.
+Use JLC sourcing for the exact MPN and package.
 Do not replace it with another X035 package without a new pinout and footprint
 review. Require a lot supporting I2C and ADC3/ADC7: the early-silicon restriction
 in [WCH datasheet v1.7, table 2-1 note 3](https://akizukidenshi.com/goodsaffix/CH32X035.pdf)
 affects functions used on this board. Catalogue stock does not identify the lot.
 The factory must provide lot identification; bring-up must exercise those functions.
 
-Both buttons use C720478 / TS-1088-AR02516. It is Extended and may incur
-feeder charges. The [switch review](../hardware/research/switch-replacement.json)
-records its dimensions, stock and sources.
+Both buttons use C720477 / TS-1088-AR02016, a Basic part with no feeder
+charge. The 2.5 mm C720478 variant fits the same copper and was out of stock
+at order time. The [switch review](../hardware/research/switch-replacement.json)
+records dimensions, stock and sources for both.
 
 ## Fabrication and assembly findings
 
@@ -66,7 +66,7 @@ and [Standard PCBA fiducial guidance](https://jlcpcb.com/help/article/how-to-add
 
 ## Costs
 
-The dated planning scenario is $131.70 for the 20-board batch ($6.58 per
+The dated planning scenario is $131.39 for the 20-board batch ($6.57 per
 board), including provisional component attrition and modeled assembly costs
 but excluding PCB fabrication and other quoted services, shipping and tax. See
 [order review](order-review.md). The

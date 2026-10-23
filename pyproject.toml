@@ -5,7 +5,7 @@ description = "Code-generated CH32X035 Pico-format development board"
 requires-python = ">=3.12"
 dependencies = [
   "easyeda2kicad==1.0.1",
-  "pillow==12.1.0",
+  "pillow==13.0.0",
 ]
 
 [tool.uv]
